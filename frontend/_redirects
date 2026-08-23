@@ -1,0 +1,5 @@
+/admin /pages/dashboard.html 200
+/admin-login /pages/admin-login.html 200
+/affiliate /pages/affiliate.html 200
+/vendor /pages/vendor.html 200
+/* /index.html 200

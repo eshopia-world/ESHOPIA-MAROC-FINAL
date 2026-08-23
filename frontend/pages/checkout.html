@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#1565c0">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Finaliser la Commande — E-Shopia Maroc</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/megamenu.css">
+</head>
+
+<body>
+  <div id="nav"></div>
+
+  <div class="pg-head">
+    <div class="container">
+      <h1>🚚 Informations de livraison</h1>
+      <div class="breadcrumb">
+        <a href="../index.html">Accueil</a><span class="sep">/</span>
+        <a href="cart.html">Panier</a><span class="sep">/</span>
+        <span>Commande</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" id="mainWrap">
+    <div class="checkout-layout">
+      <div class="chk-card">
+        <div class="chk-hd">
+          <h2>Remplissez vos informations</h2>
+        </div>
+
+        <div class="chk-body">
+          <div
+            style="background:var(--green-lt);border:1.5px solid #a7f3d0;border-radius:var(--r-xl);padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:14px">
+            <span style="font-size:2rem">💵</span>
+            <div>
+              <div style="font-family:var(--fh);font-size:.9rem;font-weight:800;color:var(--green);margin-bottom:2px">
+                Paiement à la livraison (COD)
+              </div>
+              <div style="font-size:.8rem;color:var(--text3)">
+                Livraison partout au Maroc — paiement à la réception.
+              </div>
+            </div>
+          </div>
+
+          <div class="fg">
+            <label>Nom complet</label> *
+            <input id="fullname" placeholder="Prénom et Nom de famille" required
+              style="font-size:1rem;padding:13px 16px">
+          </div>
+
+          <div class="fg">
+            <label>Numéro de téléphone</label> *
+            <div style="position:relative">
+              <span
+                style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:.88rem;color:var(--text4);font-weight:600;pointer-events:none">🇲🇦
+                +212</span>
+              <input id="phone" type="tel" placeholder="06XXXXXXXX ou 07XXXXXXXX" required
+                style="padding:13px 16px 13px 90px;font-size:1rem" oninput="window.validatePhone(this)">
+            </div>
+            <span id="ph-hint" style="font-size:.72rem;color:var(--text4);margin-top:4px;display:block">
+              Format : 06XXXXXXXX ou 07XXXXXXXX
+            </span>
+          </div>
+
+          <div class="fg">
+            <label>Adresse complète</label> *
+            <input id="address" placeholder="Ville, quartier, rue, numéro, point de repère…" required
+              style="font-size:.95rem;padding:13px 16px">
+          </div>
+
+          <div class="trust-badges">
+            <div class="trust-badge">
+              <div class="trust-badge-ico">💵</div>
+              <div class="trust-badge-title">Paiement à la livraison</div>
+              <div class="trust-badge-sub">Aucun prépaiement</div>
+            </div>
+            <div class="trust-badge">
+              <div class="trust-badge-ico">🚚</div>
+              <div class="trust-badge-title">Livraison Maroc</div>
+              <div class="trust-badge-sub">24h - 72h</div>
+            </div>
+            <div class="trust-badge">
+              <div class="trust-badge-ico">⭐</div>
+              <div class="trust-badge-title">4 200+ clients</div>
+              <div class="trust-badge-sub">Note 4.8/5</div>
+            </div>
+          </div>
+
+          <button class="btn btn-grad btn-block"
+            style="padding:16px;font-size:1rem;margin-top:8px;border-radius:var(--r-xl)" onclick="window.placeOrder()">
+            ✓ Confirmer ma commande
+          </button>
+
+          <p style="text-align:center;font-size:.74rem;color:var(--text4);margin-top:12px">
+            🔒 Vos données sont sécurisées et protégées
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <div class="sum-box">
+          <div class="sum-hd">
+            <h3>Récapitulatif de commande</h3>
+          </div>
+          <div class="sum-body" id="orderSummary">Chargement…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-root"></div>
+  <div id="modal-root"></div>
+  <div id="whatsapp-root"></div>
+  <div id="backtop-root"></div>
+  <div class="toasts"></div>
+
+  <script>window.ESHOPIA_API_URL = "https://eshopia-backend.onrender.com/api";</script>
+  <script src="../js/script.js"></script>
+  <script src="../js/megamenu.js"></script>
+  <script src="../js/i18n.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/features.js"></script>
+  <script src="../js/pwa.js"></script>
+
+  <script>
+    document.getElementById("nav").innerHTML = buildNav("../");
+    document.getElementById("footer-root").innerHTML = buildFooter("../");
+    document.getElementById("modal-root").innerHTML = buildLoginModal();
+    document.getElementById("whatsapp-root").innerHTML = buildWhatsApp();
+    document.getElementById("backtop-root").innerHTML = buildBackToTop();
+    Cart.badge();
+
+    const DELIVERY_PRICE = 0;
+    const DELIVERY_DELAY = "24h - 72h";
+    const DEFAULT_CITY = "Maroc";
+
+    function validatePhone(input) {
+      const v = input.value.trim();
+      const ok = /^0[5-7]\d{8}$/.test(v);
+
+      input.style.borderColor = v.length > 5 ? (ok ? "var(--green)" : "var(--red)") : "var(--g200)";
+
+      const hint = document.getElementById("ph-hint");
+      if (ok) {
+        hint.textContent = "✓ Numéro valide";
+        hint.style.color = "var(--green)";
+      } else if (v.length > 5) {
+        hint.textContent = "Format incorrect — 10 chiffres requis";
+        hint.style.color = "var(--red)";
+      } else {
+        hint.textContent = "Format : 06XXXXXXXX ou 07XXXXXXXX";
+        hint.style.color = "var(--text4)";
+      }
+    }
+
+    function updateDeliveryInfo() {
+      buildSummary();
+    }
+
+    function buildSummary() {
+      const items = Cart.get();
+
+      if (!items.length) {
+        document.getElementById("orderSummary").innerHTML =
+          `<div style="text-align:center;padding:24px;color:var(--text4)">Votre panier est vide</div>`;
+        return;
+      }
+
+      let html = "";
+
+      items.forEach(i => {
+        const p = PRODUCTS.find(x => x.id === i.id);
+        if (!p) return;
+
+        html += `
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--g200)">
+            <span style="font-size:1.8rem;flex-shrink:0">${p.img}</span>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:.78rem;font-weight:600;color:var(--text);line-height:1.3;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${p.name.split("—")[0].trim()}</div>
+              <div style="font-size:.7rem;color:var(--text4)">Qté: ${i.qty}</div>
+            </div>
+            <div style="font-family:var(--fh);font-size:.85rem;font-weight:800;color:var(--blue);flex-shrink:0">${fmt(p.price * i.qty)}</div>
+          </div>`;
+      });
+
+      const sub = Cart.total();
+      const ship = DELIVERY_PRICE;
+      const total = sub + ship;
+
+      html += `
+        <div style="margin-top:12px">
+          <div class="sum-row">
+            <span>Sous-total</span>
+            <span>${fmt(sub)}</span>
+          </div>
+
+          <div class="sum-row">
+            <span>Livraison partout au Maroc</span>
+            <span style="color:var(--green)">Gratuite ✓</span>
+          </div>
+
+          <div class="sum-row total" style="margin-top:8px;padding-top:12px">
+            <span>Total à payer</span>
+            <span style="color:var(--blue)">${fmt(total)}</span>
+          </div>
+
+          <div style="background:var(--green-lt);border-radius:var(--r-lg);padding:10px 14px;margin-top:12px;font-size:.76rem;color:var(--green);font-weight:600;display:flex;align-items:center;gap:8px">
+            <span>💵</span>
+            <span>Paiement à la livraison — aucun prépaiement</span>
+          </div>
+        </div>`;
+
+      document.getElementById("orderSummary").innerHTML = html;
+    }
+
+    buildSummary();
+
+    async function placeOrder() {
+      const name = document.getElementById("fullname").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const addr = document.getElementById("address").value.trim();
+      const city = DEFAULT_CITY;
+
+      if (!name) {
+        toast("Veuillez entrer votre nom complet", "error");
+        document.getElementById("fullname").focus();
+        return;
+      }
+
+      if (!/^0[5-7]\d{8}$/.test(phone)) {
+        toast("Numéro de téléphone invalide", "error");
+        document.getElementById("phone").focus();
+        return;
+      }
+
+      if (!addr) {
+        toast("Veuillez entrer votre adresse complète", "error");
+        document.getElementById("address").focus();
+        return;
+      }
+
+      const cartItems = Cart.get();
+
+      if (!cartItems.length) {
+        toast("Votre panier est vide", "error");
+        return;
+      }
+
+      const btn = document.querySelector(".btn-grad");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "⏳ Traitement...";
+      }
+
+      const sub = Cart.total();
+      const ship = DELIVERY_PRICE;
+      const total = sub + ship;
+      const affiliateCode = localStorage.getItem("eshopia_ref") || null;
+      const idKey = localStorage.getItem("eshopia_idem") || ("idem_" + Date.now());
+
+      localStorage.setItem("eshopia_idem", idKey);
+
+      const payload = {
+        client: {
+          name,
+          phone,
+          city,
+          address: addr,
+          notes: document.getElementById("notes")?.value || ""
+        },
+        items: cartItems.map(i => ({
+          productId: String(i.id),
+          qty: i.qty || 1
+        })),
+        affiliateCode,
+        idempotencyKey: idKey,
+        lang: window.i18n?.get?.() || "fr",
+        source: "web"
+      };
+
+      let oid = null;
+
+      try {
+        const data = await OrdersAPI.place(payload);
+        oid = data.order?.orderNumber || ("ESH-" + genId().slice(-8).toUpperCase());
+      } catch (err) {
+        console.error(err);
+        oid = "ESH-" + genId().slice(-6).toUpperCase();
+
+        const pending = JSON.parse(localStorage.getItem("eshopia_pending") || "[]");
+        pending.push({ ...payload, oid, ts: Date.now() });
+        localStorage.setItem("eshopia_pending", JSON.stringify(pending));
+      }
+
+      localStorage.setItem("eshopia_last_order", JSON.stringify({
+        orderNumber: oid,
+        phone,
+        city,
+        total,
+        items: cartItems.length,
+        status: "pending"
+      }));
+
+      localStorage.removeItem("eshopia_idem");
+      localStorage.removeItem("eshopia_ref");
+
+      if (window.WhatsAppAuto) {
+        const waData = WhatsAppAuto.orderConfirmed({
+          orderNumber: oid,
+          name,
+          phone,
+          city,
+          address: addr,
+          total
+        });
+        localStorage.setItem("eshopia_last_wa", JSON.stringify(waData));
+      }
+
+      if (window.Loyalty) Loyalty.onOrderComplete(total);
+
+      localStorage.removeItem("eshopia_cart_ts");
+      localStorage.removeItem("eshopia_abandon_sent");
+
+      Cart.clear();
+
+      document.getElementById("mainWrap").innerHTML = `
+        <div class="order-ok">
+          <div class="ok-ico">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+
+          <h2>Commande Confirmée ! 🎉</h2>
+          <p style="margin-bottom:20px">Merci <strong>${name}</strong>, votre commande a bien été enregistrée.</p>
+
+          <div class="ok-id">${oid}</div>
+
+          <div style="background:var(--bg);border-radius:var(--r-xl);padding:18px 20px;margin:20px 0;text-align:left">
+            <div style="display:grid;gap:8px">
+              <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:6px 0;border-bottom:1px solid var(--g200)">
+                <span style="color:var(--text3)">📞 Téléphone</span>
+                <strong>${phone}</strong>
+              </div>
+
+              <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:6px 0;border-bottom:1px solid var(--g200)">
+                <span style="color:var(--text3)">📍 Livraison</span>
+                <strong>Partout au Maroc</strong>
+              </div>
+
+              <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:6px 0;border-bottom:1px solid var(--g200)">
+                <span style="color:var(--text3)">🚚 Délai</span>
+                <strong>${DELIVERY_DELAY}</strong>
+              </div>
+
+              <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:6px 0">
+                <span style="color:var(--text3)">💵 Total</span>
+                <strong style="color:var(--blue)">${fmt(total)}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:var(--blue-lt);border-radius:var(--r-xl);padding:16px 18px;margin-bottom:20px;text-align:left;font-size:.82rem;color:var(--text2)">
+            <strong style="color:var(--blue);display:block;margin-bottom:8px">✓ Prochaines étapes :</strong>
+            <div style="display:grid;gap:6px">
+              <div>1️⃣ Notre équipe vous rappelle au <strong>${phone}</strong> pour confirmer</div>
+              <div>2️⃣ <a href="tracking.html?track=${oid}" style="color:var(--blue);font-weight:600">Suivre ma commande →</a></div>
+              <div>3️⃣ Livraison sous <strong>${DELIVERY_DELAY}</strong> partout au Maroc</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+            <a href="../index.html" class="btn btn-primary btn-lg">Retour à l'accueil</a>
+            <a href="category.html?cat=Tout" class="btn btn-ghost btn-lg">Continuer mes achats</a>
+          </div>
+        </div>`;
+
+      toast("Commande confirmée ! ✓", "success");
+    }
+
+    window.placeOrder = placeOrder;
+    window.validatePhone = validatePhone;
+    window.updateDeliveryInfo = updateDeliveryInfo;
+  </script>
+</body>
+
+</html>

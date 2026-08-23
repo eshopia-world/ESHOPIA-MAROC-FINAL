@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1565c0">
+<meta name="description" content="E-Shopia Maroc — Votre boutique en ligne de confiance. High-tech, gadgets, mode, beauté et bien plus. Livraison gratuite dès 129 DH partout au Maroc. Paiement à la livraison.">
+<meta property="og:title" content="E-Shopia Maroc — Boutique en Ligne Premium">
+<meta property="og:description" content="Livraison gratuite dès 129 DH partout au Maroc, paiement à la livraison.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_MA">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1565c0">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://eshopia.ma/">
+<title>E-Shopia Maroc — Boutique en Ligne | Livraison Gratuite Maroc</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/megamenu.css">
+</head>
+<body itemscope itemtype="https://schema.org/WebSite">
+<meta itemprop="name" content="E-Shopia Maroc">
+<meta itemprop="url" content="https://eshopia.ma">
+
+<div id="nav"></div>
+
+<!-- ═══════════════════════════════════
+     FLASH DEALS BAR
+═══════════════════════════════════ -->
+<section class="fdb-section" aria-label="Ventes Flash du Jour">
+  <div class="container">
+
+    <!-- Header bar: titre + timer -->
+    <div class="fdb-bar">
+      <div class="fdb-bar-left">
+        <span class="fdb-dot"></span>
+        <span class="fdb-title">⚡ Ventes Flash du Jour</span>
+        <span class="fdb-sub">Offres limitées — se terminent ce soir</span>
+      </div>
+      <div class="fdb-timer" id="fdbTimer"></div>
+      <a href="pages/category.html?cat=Tout" class="fdb-voir">Voir tout →</a>
+    </div>
+
+    <!-- Products grid -->
+    <div class="fdb-grid" id="fdbGrid"></div>
+
+  </div>
+</section>
+
+
+
+<!-- ═══════════════════════════════════
+     CATEGORIES
+═══════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="sec-hd">
+      <div>
+        <span class="sec-label">Nos rayons</span>
+        <h2 class="sec-title">Parcourir par <span class="c-blue">Catégorie</span></h2>
+        <div class="sec-bar"></div>
+      </div>
+      <a href="pages/category.html?cat=Tout" class="btn btn-ghost btn-sm">
+        Voir tout
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+    <div class="cat-carousel-wrap">
+
+      <div class="cat-carousel" id="catGrid"></div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ═══════════════════════════════════
+     FEATURED PRODUCTS
+═══════════════════════════════════ -->
+<section class="section" style="background:#fff">
+  <div class="container">
+    <div class="sec-hd">
+      <div>
+        <span class="sec-label">Notre sélection</span>
+        <h2 class="sec-title">Produits <span class="c-red">En Vedette</span></h2>
+        <div class="sec-bar"></div>
+      </div>
+      <a href="pages/category.html?cat=Tout" class="btn btn-ghost btn-sm">
+        Voir tout
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+    <div class="prod-grid" id="featuredGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     PROMO BANNERS
+═══════════════════════════════════ -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="promo-2">
+      <div class="promo-card pc1">
+        <div class="pr-deco"></div><div class="pr-deco2"></div>
+        <h3>Gadgets & Tech</h3>
+        <p>Jusqu'à −40% sur les meilleurs gadgets connectés et appareils high-tech du moment</p>
+        <a href="pages/category.html?cat=Électronique" class="btn btn-outline-w btn-sm">Découvrir les offres</a>
+      </div>
+      <div class="promo-card pc2">
+        <div class="pr-deco"></div><div class="pr-deco2"></div>
+        <h3>Auto & Moto</h3>
+        <p>GPS, dashcams, supports et chargeurs — tout pour équiper votre voiture intelligemment</p>
+        <a href="pages/category.html?cat=Auto+%26+Moto" class="btn btn-outline-w btn-sm">Voir la sélection</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     COMBO OFFERS
+═══════════════════════════════════ -->
+<section class="combo-section">
+  <div class="container">
+    <div class="sec-hd">
+      <div>
+        <span class="sec-label">Économisez plus</span>
+        <h2 class="sec-title" style="color:#fff">Offres <span class="c-orng">Bundle</span></h2>
+        <div class="sec-bar"></div>
+      </div>
+    </div>
+    <div class="combo-grid" id="comboGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     TRENDING
+═══════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="sec-hd">
+      <div>
+        <span class="sec-label">Populaires</span>
+        <h2 class="sec-title">Tendances <span class="c-blue">Cette Semaine</span></h2>
+        <div class="sec-bar"></div>
+      </div>
+      <a href="pages/category.html?cat=Tout" class="btn btn-ghost btn-sm">
+        Voir tout
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+    <div class="prod-grid pg4" id="trendGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     BEST SELLERS
+═══════════════════════════════════ -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="best-strip">
+      <div class="best-title">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="18" height="18" style="color:var(--orange)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Meilleures Ventes
+      </div>
+      <div class="best-scroll" id="bestScroll"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     STATS BAR
+═══════════════════════════════════ -->
+<div class="stats-bar" aria-label="Chiffres E-Shopia Maroc">
+  <div class="container">
+    <div class="stats-row">
+      <div class="stat-item">
+        <span class="stat-val" id="statOrders">0</span>
+        <span class="stat-lbl">Commandes livrées</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-val">98%</span>
+        <span class="stat-lbl">Clients satisfaits</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-val">4.8★</span>
+        <span class="stat-lbl">Note moyenne</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-val">2 400+</span>
+        <span class="stat-lbl">Avis vérifiés</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     MORE PRODUCTS
+═══════════════════════════════════ -->
+<section class="section" style="background:#fff">
+  <div class="container">
+    <div class="sec-hd">
+      <div>
+        <span class="sec-label">Catalogue complet</span>
+        <h2 class="sec-title">Toute notre <span class="c-blue">Sélection</span></h2>
+        <div class="sec-bar"></div>
+      </div>
+      <a href="pages/category.html?cat=Tout" class="btn btn-ghost btn-sm">
+        Catalogue complet
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+    <div class="prod-grid" id="moreGrid"></div>
+    <div style="text-align:center;margin-top:36px">
+      <a href="pages/category.html?cat=Tout" class="btn btn-outline btn-lg">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="18" height="18"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Voir tous les produits
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     AFFILIATE (plugin placeholder)
+═══════════════════════════════════ -->
+<section class="section" id="affiliate">
+  <div class="container">
+    <div class="aff-banner">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.3);border-radius:100px;padding:5px 16px;margin-bottom:18px">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="13" height="13" style="color:var(--orange)"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span style="font-size:.7rem;font-weight:700;color:var(--orange);font-family:var(--fh);letter-spacing:.07em;text-transform:uppercase">Programme Partenaire</span>
+        </div>
+        <h2>Gagnez de l'argent en recommandant nos produits</h2>
+        <p>Partagez vos liens personnalisés et touchez une commission sur chaque vente générée. Simple, rapide et entièrement automatisé.</p>
+        <div class="aff-pts">
+          <div class="aff-pt">Commission attractive sur chaque vente</div>
+          <div class="aff-pt">Lien de parrainage personnalisé</div>
+          <div class="aff-pt">Suivi en temps réel de vos gains</div>
+          <div class="aff-pt">Paiement mensuel garanti</div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px">
+          <a href="#affiliate" class="btn btn-orange btn-lg">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="17" height="17"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            Rejoindre le programme
+          </a>
+          <a href="#affiliate" class="btn btn-outline-w btn-lg">En savoir plus</a>
+        </div>
+      </div>
+      <div class="aff-stats">
+        <div class="aff-stat">
+          <div class="as-ico">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="30" height="30"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <div class="as-lbl">Commission par vente</div>
+        </div>
+        <div class="aff-stat">
+          <div class="as-ico" style="color:var(--orange)">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="30" height="30"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          </div>
+          <div class="as-lbl">Liens trackés</div>
+        </div>
+        <div class="aff-stat">
+          <div class="as-ico" style="color:#4ade80">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="30" height="30"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="as-lbl">Dashboard temps réel</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     CUSTOMER REVIEWS
+═══════════════════════════════════ -->
+<section class="section" style="background:#fff">
+  <div class="container">
+    <div class="sec-hd">
+      <div>
+        <span class="sec-label">Témoignages clients</span>
+        <h2 class="sec-title">Avis <span class="c-blue">Vérifiés</span></h2>
+        <div class="sec-bar"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;background:var(--orng-lt);border:1px solid #fde68a;border-radius:100px;padding:7px 16px">
+        <span style="color:var(--orange);font-size:.9rem">★★★★★</span>
+        <strong style="font-family:var(--fh);font-size:.82rem;color:var(--text)">4.8/5</strong>
+        <span style="font-size:.74rem;color:var(--text3)">· 2 400+ avis</span>
+      </div>
+    </div>
+    <div class="rev-scroll" id="revGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     DELIVERY SECTION
+═══════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="delivery-banner">
+      <!-- Left: main info -->
+      <div class="dlv-main">
+        <div class="dlv-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="36" height="36"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        </div>
+        <div>
+          <div class="dlv-label">Livraison offerte</div>
+          <div class="dlv-title">Gratuite à partir de 129 DH</div>
+          <div class="dlv-sub">Partout au Maroc · Paiement à la réception</div>
+        </div>
+      </div>
+      <!-- Center: single delivery promise -->
+      <div class="dlv-promise">
+        <div class="dlv-promise-ico">
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="38" height="38"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="dlv-promise-delay">24–48h</div>
+        <div class="dlv-promise-lbl">Partout au Maroc</div>
+        <div class="dlv-promise-flag">🇲🇦 Toutes les régions</div>
+      </div>
+      <!-- Right: features -->
+      <div class="dlv-features">
+        <div class="dlv-feat">
+          <div class="dlv-feat-ico" style="background:rgba(5,150,105,.15);color:#10b981">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Livraison 100% gratuite dès 129 DH</span>
+        </div>
+        <div class="dlv-feat">
+          <div class="dlv-feat-ico" style="background:rgba(21,101,192,.12);color:var(--blue)">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="18" height="18"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <span>Paiement à la livraison (COD)</span>
+        </div>
+        <div class="dlv-feat">
+          <div class="dlv-feat-ico" style="background:rgba(245,158,11,.12);color:var(--orange)">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="18" height="18"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+          </div>
+          <span>Retours acceptés sous 7 jours</span>
+        </div>
+        <div class="dlv-feat">
+          <div class="dlv-feat-ico" style="background:rgba(124,58,237,.12);color:var(--purple)">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="18" height="18"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.07 11a2 2 0 012-2.18h3"/><path d="M14.05 2A9 9 0 0122 9.95"/><path d="M14.05 6A5 5 0 0118 9.95"/></svg>
+          </div>
+          <span>Support WhatsApp 7j/7</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-root"></div>
+<div id="modal-root"></div>
+<div id="whatsapp-root"></div>
+<div id="backtop-root"></div>
+<div class="toasts"></div>
+
+<script>window.ESHOPIA_API_URL="https://eshopia-backend.onrender.com/api";</script>
+<script src="js/script.js"></script>
+<script src="js/megamenu.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/api.js"></script>
+<script src="js/features.js"></script>
+<script src="js/pwa.js"></script>
+<script>
+/* ── Init ── */
+document.getElementById("nav").innerHTML          = buildNav("");
+document.getElementById("footer-root").innerHTML = buildFooter("");
+document.getElementById("modal-root").innerHTML  = buildLoginModal();
+document.getElementById("whatsapp-root").innerHTML = buildWhatsApp();
+document.getElementById("backtop-root").innerHTML  = buildBackToTop();
+Cart.badge();
+
+/* ── Flash Deals Bar ── */
+(function(){
+  // Top 8 produits triés par remise max
+  const deals = [...PRODUCTS]
+    .filter(p=>p.old && p.old>p.price)
+    .sort((a,b)=>disc(b.old,b.price)-disc(a.old,a.price))
+    .slice(0,12);
+
+  // Images réelles par produit id
+  const imgs = {
+    1:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&q=80",
+    2:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&q=80",
+    3:"https://images.unsplash.com/photo-1609592806596-b9b98f8cdba5?w=300&q=80",
+    4:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80",
+    5:"https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=300&q=80",
+    6:"https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=300&q=80",
+    7:"https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=300&q=80",
+    8:"https://images.unsplash.com/photo-1586495777744-4e6232bf4651?w=300&q=80",
+    9:"https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&q=80",
+    10:"https://images.unsplash.com/photo-1551808525-51a94da548ce?w=300&q=80",
+    11:"https://images.unsplash.com/photo-1527443224154-c4a573d5e326?w=300&q=80",
+    12:"https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=300&q=80",
+    13:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&q=80",
+    14:"https://images.unsplash.com/photo-1599669454699-248893623440?w=300&q=80",
+    15:"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=300&q=80",
+    16:"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=300&q=80",
+  };
+
+  // Render cards
+  const grid = document.getElementById("fdbGrid");
+  if(grid){
+    grid.innerHTML = deals.map((p,i)=>{
+      const d = disc(p.old,p.price);
+      const imgUrl = imgs[p.id] || "";
+      // Sold bar: produits populaires ont plus de vendu
+      const soldPct = Math.min(95, 40 + d*1.2 + (p.rev/10));
+      return `<div class="fdb-card" onclick="window.location='pages/product.html?id=${p.id}'">
+        <div class="fdb-img">
+          <img src="${imgUrl}" alt="${p.name}" loading="${i<4?"eager":"lazy"}"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span class="fdb-emoji" style="display:none;font-size:2.2rem;width:100%;height:100%;align-items:center;justify-content:center">${p.img}</span>
+          <span class="fdb-badge">-${d}%</span>
+          ${i===0?`<span class="fdb-stock"><span class="fdb-sdot"></span>${p.stock>20?"En stock":`${p.stock} rest.`}</span>`:""}
+        </div>
+        <div class="fdb-body">
+          <div class="fdb-name">${p.name.split("—")[0].trim()}</div>
+          <div class="fdb-prices">
+            <span class="fdb-price">${fmt(p.price)}</span>
+            <span class="fdb-old">${fmt(p.old)}</span>
+          </div>
+          <div class="fdb-sold-row">
+            <div class="fdb-sold-bar"><div class="fdb-sold-fill" style="width:${Math.round(soldPct)}%"></div></div>
+            <span class="fdb-sold-pct">${Math.round(soldPct)}% vendu</span>
+          </div>
+          <button class="fdb-cmd" onclick="event.stopPropagation();Cart.add(${p.id})">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="12" height="12"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            Commander
+          </button>
+        </div>
+      </div>`;
+    }).join("");
+  }
+
+  // Flash deal timer — persists across refreshes via localStorage
+  const timerEl = document.getElementById("fdbTimer");
+
+  // Get or set flash deal end time (try API first, fallback to midnight)
+  async function getFlashEnd() {
+    // Check localStorage cache first (valid for 1 hour)
+    const cached = localStorage.getItem('eshopia_flash_end');
+    const cacheTs = parseInt(localStorage.getItem('eshopia_flash_cache_ts') || '0');
+    if (cached && Date.now() - cacheTs < 3600000) return parseInt(cached);
+
+    try {
+      const API = window.ESHOPIA_API_URL || 'https://eshopia-backend.onrender.com/api';
+      const res  = await fetch(`${API}/products/flash`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.flashEndTs) {
+          localStorage.setItem('eshopia_flash_end', String(data.flashEndTs));
+          localStorage.setItem('eshopia_flash_cache_ts', String(Date.now()));
+          return data.flashEndTs;
+        }
+      }
+    } catch(e) {}
+
+    // Fallback: midnight today (consistent across refreshes)
+    const savedEnd = localStorage.getItem('eshopia_flash_end');
+    if (savedEnd && parseInt(savedEnd) > Date.now()) return parseInt(savedEnd);
+
+    const end = new Date();
+    end.setHours(23, 59, 59, 0);
+    const ts = end.getTime();
+    localStorage.setItem('eshopia_flash_end', String(ts));
+    localStorage.setItem('eshopia_flash_cache_ts', String(Date.now()));
+    return ts;
+  }
+
+  let flashEndTs = 0;
+  getFlashEnd().then(ts => { flashEndTs = ts; tickFdb(); });
+
+  function tickFdb(){
+    const d=Math.max(0, flashEndTs - Date.now());
+    const h=Math.floor(d/3600000),
+          m=Math.floor((d%3600000)/60000),
+          s=Math.floor((d%60000)/1000);
+    if(timerEl) timerEl.innerHTML=
+      `<div class="fdb-tblk"><span class="fdb-tn">${String(h).padStart(2,"00")}</span><span class="fdb-tl">H</span></div>` +
+      `<span class="fdb-tsep">:</span>` +
+      `<div class="fdb-tblk"><span class="fdb-tn">${String(m).padStart(2,"00")}</span><span class="fdb-tl">Min</span></div>` +
+      `<span class="fdb-tsep">:</span>` +
+      `<div class="fdb-tblk"><span class="fdb-tn">${String(s).padStart(2,"00")}</span><span class="fdb-tl">Sec</span></div>`;
+
+    // When timer hits 0, reset to next midnight
+    if (d === 0) {
+      localStorage.removeItem('eshopia_flash_end');
+      getFlashEnd().then(ts => { flashEndTs = ts; });
+    }
+  }
+  tickFdb(); setInterval(tickFdb,1000);
+})();
+
+/* ── Categories ── */
+const MENU_CATS = [
+  {key:"Électronique",         cls:"i1", count:48},
+  {key:"Informatique & Bureau",cls:"i2", count:32},
+  {key:"Accessoires Téléphone",cls:"i3", count:54},
+  {key:"Maison & Cuisine",     cls:"i4", count:37},
+  {key:"Mode",                 cls:"i5", count:89},
+  {key:"Beauté & Soins",       cls:"i1", count:61},
+  {key:"Sport & Fitness",      cls:"i2", count:44},
+  {key:"Auto & Moto",          cls:"i3", count:27},
+  {key:"Gaming",               cls:"i4", count:52},
+  {key:"Offres Spéciales",     cls:"i5", count:33},
+];
+document.getElementById("catGrid").innerHTML = MENU_CATS.map(c=>`
+  <div class="c-card fu" onclick="window.location='pages/category.html?cat=${encodeURIComponent(c.key)}'"
+       role="button" tabindex="0" aria-label="${c.key}"
+       onkeydown="if(event.key==='Enter')window.location='pages/category.html?cat=${encodeURIComponent(c.key)}'">
+    <div class="c-ico ${c.cls}">${CAT_ICO[c.key]||""}</div>
+    <div class="c-name">${c.key}</div>
+    <div class="c-count">${c.count} articles</div>
+  </div>`).join("");
+const catRail=document.getElementById("catGrid");
+catRail.scrollLeft=0;
+
+
+/* ── Flash Deals + Timer ── */
+function tick(){
+  const now=new Date(), end=new Date();
+  end.setHours(23,59,59,0);
+  const d=Math.max(0,end-now);
+  const h=Math.floor(d/3600000), m=Math.floor((d%3600000)/60000), s=Math.floor((d%60000)/1000);
+  const el=document.getElementById("flashTimer");
+  if(el) el.innerHTML=[{n:h,l:"Heures"},{n:m,l:"Min"},{n:s,l:"Sec"}].map(x=>`<div class="t-blk"><span class="t-num">${String(x.n).padStart(2,"0")}</span><span class="t-lbl">${x.l}</span></div>`).join("");
+}
+tick(); setInterval(tick,1000);
+
+/* ── Featured ── */
+document.getElementById("featuredGrid").innerHTML = PRODUCTS.slice(0,8).map(p=>pCard(p,"")).join("");
+
+/* ── Combos (3 products) ── */
+document.getElementById("comboGrid").innerHTML = COMBOS.map(c=>{
+  const p1=PRODUCTS.find(p=>p.id===c.p1), p2=PRODUCTS.find(p=>p.id===c.p2), p3=c.p3?PRODUCTS.find(p=>p.id===c.p3):null;
+  if(!p1||!p2) return "";
+  const all=[p1,p2,p3].filter(Boolean);
+  const orig=all.reduce((s,p)=>s+p.price,0);
+  const cp=Math.round(orig*0.85);
+  const prodsHtml=all.map((p,i)=>`
+    ${i>0?`<div class="combo-plus">+</div>`:""}
+    <div class="combo-prod">
+      <span class="cp-emj">${p.img}</span>
+      <span class="cp-name">${p.name.split("—")[0].trim()}</span>
+    </div>`).join("");
+  return `
+  <div class="combo-card fu">
+    <div class="combo-badge">Bundle −15%</div>
+    <div class="combo-prods" style="gap:8px">${prodsHtml}</div>
+    <div class="combo-title">${c.title}</div>
+    <div class="combo-desc">${c.desc}</div>
+    <div class="combo-prices">
+      <span class="combo-price">${fmt(cp)}</span>
+      <span class="combo-orig">${fmt(orig)}</span>
+    </div>
+    <span class="combo-saving">✓ ${c.save} sur ce bundle</span>
+    <button class="combo-btn" onclick="Cart.addCombo(COMBOS.find(x=>x.id==='${c.id}'))">
+      <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="15" height="15"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Ajouter le bundle (${all.length} articles)
+    </button>
+  </div>`;
+}).join("");
+
+/* ── Trending ── */
+document.getElementById("trendGrid").innerHTML = [...PRODUCTS].sort((a,b)=>b.rev-a.rev).slice(0,4).map(p=>pCard(p,"")).join("");
+
+/* ── Best Sellers ── */
+document.getElementById("bestScroll").innerHTML = [...PRODUCTS].sort((a,b)=>b.rev-a.rev).slice(0,10).map((p,i)=>`
+  <div class="best-item fu" onclick="window.location='pages/product.html?id=${p.id}'" tabindex="0">
+    <span class="best-rank ${i<3?"top":""}">#${i+1}</span>
+    <span class="best-emj">${p.img}</span>
+    <div>
+      <span class="bi-name">${p.name.split("—")[0].trim()}</span>
+      <span class="bi-price">${fmt(p.price)}</span>
+    </div>
+  </div>`).join("");
+
+/* ── More Products ── */
+document.getElementById("moreGrid").innerHTML = PRODUCTS.slice(8,16).map(p=>pCard(p,"")).join("");
+
+/* ── Reviews ── */
+document.getElementById("revGrid").innerHTML = REVIEWS.map(r=>`
+  <article class="rev-card fu" itemscope itemtype="https://schema.org/Review">
+    <div class="rev-stars">${"★".repeat(r.r)}${"☆".repeat(5-r.r)}</div>
+    <p class="rev-text" itemprop="reviewBody">"${r.text}"</p>
+    <div class="rev-author">
+      <div class="rev-av" style="background:${r.col}">${r.name.charAt(0)}</div>
+      <div>
+        <div class="rev-name" itemprop="author">${r.name}</div>
+        <div class="rev-city">${r.city}</div>
+        <div class="rev-check">
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="10" height="10"><polyline points="20 6 9 17 4 12"/></svg>
+          Achat vérifié · ${r.date}
+        </div>
+      </div>
+    </div>
+  </article>`).join("");
+
+/* ── Stats counter animation ── */
+function animateCount(el, target, suffix=""){
+  let s=0; const inc=target/100;
+  const t=setInterval(()=>{s+=inc;if(s>=target){s=target;clearInterval(t);}el.textContent=Math.floor(s).toLocaleString("fr-MA")+suffix;},16);
+}
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      animateCount(document.getElementById("statOrders"),12500,"+");
+      observer.disconnect();
+    }
+  });
+},{threshold:0.3});
+const statsEl=document.querySelector(".stats-bar");
+if(statsEl) observer.observe(statsEl);
+
+/* ── .fu scroll animation ── */
+const fuObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");fuObs.unobserve(e.target);}});
+},{threshold:0.08,rootMargin:"0px 0px -30px 0px"});
+document.querySelectorAll(".fu").forEach(el=>fuObs.observe(el));
+
+/* ── Lazy image loaded class ── */
+document.querySelectorAll("img[loading='lazy']").forEach(img=>{
+  if(img.complete) img.classList.add("loaded");
+  else img.addEventListener("load",()=>img.classList.add("loaded"));
+});
+
+/* ── Mobile: add touch swipe to best sellers ── */
+(function(){
+  const strip=document.getElementById("bestScroll");
+  if(!strip) return;
+  let sx=0;
+  strip.addEventListener("touchstart",e=>{sx=e.touches[0].clientX},{passive:true});
+  strip.addEventListener("touchend",e=>{
+    const dx=e.changedTouches[0].clientX-sx;
+    strip.scrollBy({left:-dx*1.5,behavior:"smooth"});
+  },{passive:true});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#1565c0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mon Espace Vendeur — E-Shopia Maroc</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/megamenu.css">
+<style>
+/* ── Vendor Dashboard ── */
+.vd-wrap{padding:28px 0 64px}
+
+/* Header */
+.vd-header{background:linear-gradient(135deg,#065f46 0%,#059669 50%,#0d47a1 100%);border-radius:20px;padding:24px 28px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.vd-header-info h2{font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:3px}
+.vd-header-info p{font-size:.8rem;color:rgba(255,255,255,.65)}
+.vd-status-badge{padding:5px 14px;border-radius:100px;font-size:.72rem;font-weight:800}
+.vds-approved{background:#d1fae5;color:#065f46}
+.vds-pending{background:#fef3c7;color:#92400e}
+.vds-rejected{background:#fee2e2;color:#991b1b}
+
+/* KPIs */
+.vd-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.vd-kpi{background:#fff;border:1.5px solid var(--g200);border-radius:14px;padding:16px 18px;box-shadow:0 1px 6px rgba(0,0,0,.04)}
+.vd-kpi-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.vd-kpi-val{font-family:var(--fh);font-size:1.4rem;font-weight:900;color:var(--text);line-height:1}
+.vd-kpi-lbl{font-size:.7rem;color:var(--text4);margin-top:4px}
+.vd-kpi-sub{font-size:.66rem;font-weight:600;margin-top:3px;padding:2px 6px;border-radius:5px;width:fit-content}
+
+/* Tabs */
+.vd-tabs{display:flex;gap:4px;background:var(--g100);border-radius:12px;padding:4px;margin-bottom:20px;overflow-x:auto;scrollbar-width:none}
+.vd-tabs::-webkit-scrollbar{display:none}
+.vd-tab{padding:7px 16px;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;color:var(--text4);border:none;background:transparent;white-space:nowrap;transition:.15s}
+.vd-tab.on{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+
+/* Panels */
+.vd-panel{display:none}
+.vd-panel.on{display:block}
+.vd-card{background:#fff;border:1.5px solid var(--g200);border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,.04)}
+.vd-card-title{font-family:var(--fh);font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+
+/* Chart */
+.mini-bar-chart{display:flex;align-items:flex-end;gap:5px;height:90px}
+.mbc-bar{flex:1;border-radius:4px 4px 0 0;background:var(--green);transition:.3s;cursor:pointer}
+.mbc-bar:hover{opacity:.75}
+.mbc-labels{display:flex;gap:5px;margin-top:5px}
+.mbc-label{flex:1;text-align:center;font-size:.58rem;color:var(--text4)}
+
+/* Products table */
+.vd-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.vd-table th{text-align:left;padding:10px 12px;font-size:.65rem;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:.06em;border-bottom:1.5px solid var(--g200);white-space:nowrap}
+.vd-table td{padding:12px 12px;border-bottom:0.5px solid var(--g100);color:var(--text);vertical-align:middle}
+.vd-table tr:last-child td{border-bottom:none}
+.vd-table tr:hover td{background:var(--g100)}
+
+/* Status badges */
+.vd-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:100px;font-size:.63rem;font-weight:700}
+.vdb-active{background:#d1fae5;color:#065f46}
+.vdb-inactive{background:#f3f4f6;color:#6b7280}
+.vdb-lowstock{background:#fee2e2;color:#991b1b}
+.vdb-pending{background:#fef3c7;color:#92400e}
+.vdb-processing{background:#dbeafe;color:#1e40af}
+.vdb-delivered{background:#d1fae5;color:#065f46}
+.vdb-cancelled{background:#fee2e2;color:#991b1b}
+
+/* Product actions */
+.vd-actions{display:flex;gap:5px}
+.vd-btn-sm{padding:4px 10px;border-radius:6px;font-size:.7rem;font-weight:700;border:none;cursor:pointer;transition:.15s}
+.vd-btn-edit{background:var(--blue-lt);color:var(--blue)}
+.vd-btn-del{background:var(--red-lt);color:var(--red)}
+.vd-btn-toggle{background:var(--g100);color:var(--text4)}
+
+/* Add product modal overlay */
+.vd-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.vd-modal-overlay.open{display:flex}
+.vd-modal{background:#fff;border-radius:20px;padding:28px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto}
+.vd-modal-title{font-family:var(--fh);font-size:1rem;font-weight:800;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between}
+.vd-modal-close{background:var(--g100);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+
+/* Revenue chart */
+.rev-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.rev-sum-item{text-align:center;padding:14px;background:var(--g100);border-radius:10px}
+.rsi-val{font-family:var(--fh);font-size:1.1rem;font-weight:900;color:var(--text)}
+.rsi-lbl{font-size:.68rem;color:var(--text4);margin-top:3px}
+
+/* Settings */
+.vd-settings-grid{display:grid;gap:14px}
+
+@media(max-width:768px){
+  .vd-kpis{grid-template-columns:repeat(2,1fr)}
+  .vd-table{font-size:.72rem}
+  .vd-table th,.vd-table td{padding:8px 8px}
+  .vd-actions{flex-direction:column}
+  .rev-summary{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div id="nav"></div>
+
+<div class="container vd-wrap">
+
+  <!-- Loading -->
+  <div id="vd-loading" style="text-align:center;padding:60px 0">
+    <div style="font-size:2rem;margin-bottom:12px">⏳</div>
+    <div style="font-family:var(--fh);font-weight:700">Chargement de votre boutique...</div>
+  </div>
+
+  <!-- Not logged in -->
+  <div id="vd-notlogged" style="display:none;text-align:center;padding:60px 20px">
+    <div style="font-size:3rem;margin-bottom:16px">🏪</div>
+    <h2 style="font-family:var(--fh);font-weight:900;margin-bottom:8px">Espace Vendeur</h2>
+    <p style="color:var(--text4);margin-bottom:24px">Connectez-vous pour accéder à votre boutique</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary btn-lg" onclick="openModal('loginModal')">Se connecter</button>
+      <a href="vendor.html" class="btn btn-outline btn-lg">Devenir vendeur</a>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="vd-content" style="display:none">
+
+    <!-- Header -->
+    <div class="vd-header">
+      <div class="vd-header-info">
+        <h2>🏪 <span id="vd-store-name">Ma Boutique</span></h2>
+        <p>Gérez vos produits, commandes et revenus · <span id="vd-member-since">—</span></p>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="vd-status-badge vds-approved" id="vd-status-badge">✓ Boutique active</span>
+        <button class="btn btn-outline-w btn-sm" onclick="showAddProduct()">+ Ajouter produit</button>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="vd-kpis">
+      <div class="vd-kpi">
+        <div class="vd-kpi-ico" style="background:#dbeafe"><svg fill="none" stroke="#1565c0" stroke-width="2" viewBox="0 0 24 24" width="18" height="18"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+        <div class="vd-kpi-val" id="vd-kpi-orders">—</div>
+        <div class="vd-kpi-lbl">Commandes totales</div>
+        <div class="vd-kpi-sub" style="background:#dbeafe;color:#1565c0" id="vd-kpi-orders-month">ce mois</div>
+      </div>
+      <div class="vd-kpi">
+        <div class="vd-kpi-ico" style="background:#d1fae5"><svg fill="none" stroke="#059669" stroke-width="2" viewBox="0 0 24 24" width="18" height="18"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <div class="vd-kpi-val" id="vd-kpi-revenue">—</div>
+        <div class="vd-kpi-lbl">Chiffre d'affaires</div>
+        <div class="vd-kpi-sub" style="background:#d1fae5;color:#065f46" id="vd-kpi-revenue-month">ce mois</div>
+      </div>
+      <div class="vd-kpi">
+        <div class="vd-kpi-ico" style="background:#fef3c7"><svg fill="none" stroke="#d97706" stroke-width="2" viewBox="0 0 24 24" width="18" height="18"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+        <div class="vd-kpi-val" id="vd-kpi-products">—</div>
+        <div class="vd-kpi-lbl">Produits actifs</div>
+        <div class="vd-kpi-sub" style="background:#fef3c7;color:#92400e" id="vd-kpi-lowstock">— en rupture</div>
+      </div>
+      <div class="vd-kpi">
+        <div class="vd-kpi-ico" style="background:#ede9fe"><svg fill="none" stroke="#7c3aed" stroke-width="2" viewBox="0 0 24 24" width="18" height="18"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <div class="vd-kpi-val" id="vd-kpi-rating">—</div>
+        <div class="vd-kpi-lbl">Note moyenne</div>
+        <div class="vd-kpi-sub" style="background:#ede9fe;color:#5b21b6" id="vd-kpi-reviews">— avis</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="vd-tabs">
+      <button class="vd-tab on" onclick="switchVdTab('overview')">📊 Vue d'ensemble</button>
+      <button class="vd-tab" onclick="switchVdTab('products')">📦 Mes produits</button>
+      <button class="vd-tab" onclick="switchVdTab('orders')">🛍 Commandes</button>
+      <button class="vd-tab" onclick="switchVdTab('revenue')">💰 Revenus</button>
+      <button class="vd-tab" onclick="switchVdTab('settings')">⚙️ Boutique</button>
+    </div>
+
+    <!-- Overview -->
+    <div class="vd-panel on" id="vdpanel-overview">
+      <div class="vd-card">
+        <div class="vd-card-title">Ventes — 7 derniers jours
+          <select style="font-size:.72rem;border:1px solid var(--g200);border-radius:6px;padding:3px 8px;color:var(--text4)" onchange="updateVdChart(this.value)">
+            <option value="7">7 jours</option><option value="30">30 jours</option>
+          </select>
+        </div>
+        <div class="mini-bar-chart" id="vd-chart"></div>
+        <div class="mbc-labels" id="vd-chart-labels"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="vd-card">
+          <div class="vd-card-title">Top produits</div>
+          <div id="vd-top-products" style="display:grid;gap:8px"></div>
+        </div>
+        <div class="vd-card">
+          <div class="vd-card-title">Dernières commandes</div>
+          <div id="vd-recent-orders" style="display:grid;gap:8px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products -->
+    <div class="vd-panel" id="vdpanel-products">
+      <div class="vd-card">
+        <div class="vd-card-title">
+          Mes produits (<span id="prod-count">0</span>)
+          <div style="display:flex;gap:8px">
+            <input id="prod-search" placeholder="Rechercher..." style="padding:5px 10px;border:1px solid var(--g200);border-radius:8px;font-size:.75rem;width:160px" oninput="filterProducts(this.value)">
+            <button class="btn btn-primary btn-sm" onclick="showAddProduct()">+ Ajouter</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="vd-table">
+            <thead>
+              <tr>
+                <th>Produit</th>
+                <th>Catégorie</th>
+                <th>Prix</th>
+                <th>Stock</th>
+                <th>Ventes</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="products-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Orders -->
+    <div class="vd-panel" id="vdpanel-orders">
+      <div class="vd-card">
+        <div class="vd-card-title">
+          Commandes reçues
+          <select style="font-size:.72rem;border:1px solid var(--g200);border-radius:6px;padding:5px 10px" id="order-filter" onchange="filterOrders(this.value)">
+            <option value="all">Toutes</option>
+            <option value="pending">En attente</option>
+            <option value="processing">En cours</option>
+            <option value="delivered">Livrées</option>
+            <option value="cancelled">Annulées</option>
+          </select>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="vd-table">
+            <thead>
+              <tr><th>#Commande</th><th>Client</th><th>Produit</th><th>Montant</th><th>Commission</th><th>Date</th><th>Statut</th><th>Action</th></tr>
+            </thead>
+            <tbody id="orders-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue -->
+    <div class="vd-panel" id="vdpanel-revenue">
+      <div class="vd-card">
+        <div class="vd-card-title">Résumé financier</div>
+        <div class="rev-summary">
+          <div class="rev-sum-item"><div class="rsi-val" id="rev-total">—</div><div class="rsi-lbl">CA total</div></div>
+          <div class="rev-sum-item"><div class="rsi-val" id="rev-commission">—</div><div class="rsi-lbl">Commission E-Shopia (10%)</div></div>
+          <div class="rev-sum-item"><div class="rsi-val" id="rev-net">—</div><div class="rsi-lbl">Vos revenus nets</div></div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="vd-table">
+            <thead><tr><th>Mois</th><th>Commandes</th><th>CA</th><th>Commission</th><th>Net</th><th>Statut</th></tr></thead>
+            <tbody id="revenue-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div class="vd-panel" id="vdpanel-settings">
+      <div class="vd-card">
+        <div class="vd-card-title">Informations de la boutique</div>
+        <div class="vd-settings-grid">
+          <div class="fg"><label>Nom de la boutique</label><input id="set-name" placeholder="Ma Boutique"></div>
+          <div class="fg"><label>Description</label><textarea id="set-desc" rows="3" placeholder="Décrivez votre boutique..." style="width:100%;padding:10px;border:1.5px solid var(--g200);border-radius:var(--r-lg);font-size:.85rem;resize:vertical"></textarea></div>
+          <div class="fg"><label>Catégorie principale</label>
+            <select id="set-cat" style="width:100%;padding:10px;border:1.5px solid var(--g200);border-radius:var(--r-lg);font-size:.85rem">
+              <option>Électronique</option><option>Informatique & Bureau</option><option>Accessoires Téléphone</option>
+              <option>Maison & Cuisine</option><option>Mode</option><option>Sport & Fitness</option><option>Auto & Moto</option>
+            </select>
+          </div>
+          <div class="fg"><label>WhatsApp (pour notifications commandes)</label><input id="set-whatsapp" placeholder="+212 6XX XXX XXX"></div>
+          <div class="fg"><label>IBAN pour virements</label><input id="set-iban" placeholder="MA64 0000 0000 0000 0000 0000 00" style="font-family:monospace"></div>
+          <button class="btn btn-primary" onclick="saveSettings()">Enregistrer les modifications</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Add/Edit Product Modal -->
+<div class="vd-modal-overlay" id="prodModal">
+  <div class="vd-modal">
+    <div class="vd-modal-title">
+      <span id="prod-modal-title">Ajouter un produit</span>
+      <button class="vd-modal-close" onclick="closeProdModal()">✕</button>
+    </div>
+    <div class="vd-settings-grid">
+      <div class="fg"><label>Nom du produit *</label><input id="pm-name" placeholder="Ex: Casque Bluetooth Pro"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="fg"><label>Prix de vente (DH) *</label><input id="pm-price" type="number" placeholder="299"></div>
+        <div class="fg"><label>Prix barré (DH)</label><input id="pm-old" type="number" placeholder="399"></div>
+      </div>
+      <div class="fg"><label>Stock disponible *</label><input id="pm-stock" type="number" placeholder="50"></div>
+      <div class="fg"><label>Catégorie</label>
+        <select id="pm-cat" style="width:100%;padding:10px;border:1.5px solid var(--g200);border-radius:var(--r-lg);font-size:.85rem">
+          <option>Électronique</option><option>Informatique & Bureau</option><option>Accessoires Téléphone</option>
+          <option>Maison & Cuisine</option><option>Mode</option><option>Sport & Fitness</option><option>Auto & Moto</option><option>Gaming</option>
+        </select>
+      </div>
+      <div class="fg"><label>Description</label><textarea id="pm-desc" rows="3" placeholder="Décrivez votre produit..." style="width:100%;padding:10px;border:1.5px solid var(--g200);border-radius:var(--r-lg);font-size:.85rem;resize:vertical"></textarea></div>
+      <div class="fg"><label>URL Image</label><input id="pm-img" placeholder="https://... ou laissez vide pour emoji"></div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-primary btn-lg" style="flex:1" onclick="saveProduct()">Enregistrer le produit</button>
+        <button class="btn btn-ghost btn-lg" onclick="closeProdModal()">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="footer-root"></div>
+<div id="whatsapp-root"></div>
+<div id="backtop-root"></div>
+<div id="modal-root"></div>
+<div class="toasts"></div>
+
+<script>window.ESHOPIA_API_URL="https://eshopia-backend.onrender.com/api";</script>
+<script src="../js/script.js"></script>
+<script src="../js/megamenu.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/features.js"></script>
+<script src="../js/pwa.js"></script>
+<script>
+document.getElementById("nav").innerHTML         = buildNav("../");
+document.getElementById("footer-root").innerHTML = buildFooter("../");
+document.getElementById("modal-root").innerHTML  = buildLoginModal();
+document.getElementById("whatsapp-root").innerHTML = buildWhatsApp();
+document.getElementById("backtop-root").innerHTML  = buildBackToTop();
+Cart.badge();
+
+let vdData = null;
+let editingProdId = null;
+let allOrders = [];
+
+async function initVendorDash(){
+  const user = AuthAPI.getUser();
+  if(!user){ showVdState('notlogged'); return; }
+  try {
+    vdData = await VendorAPI.getStats();
+    // Try load real products too
+    try {
+      const prods = await VendorAPI.getProducts();
+      if(prods && prods.length) vdData.products = prods;
+    } catch(e2){}
+    console.log('[Vendor] Backend connected ✓');
+  } catch(e) {
+    console.warn('[Vendor] Backend offline — using demo data');
+    vdData = mockVendorData(user);
+  }
+  BackendStatus.showBanner();
+  renderVendorDash(user);
+  showVdState('content');
+}
+
+function mockVendorData(user){
+  const months = ['Jan','Fév','Mar','Avr','Mai','Jun'];
+  const prods = PRODUCTS.slice(0,6).map((p,i)=>({
+    ...p, vendorPrice:p.price, vendorStock:Math.floor(Math.random()*80+10),
+    vendorSales:Math.floor(Math.random()*40+5), active: i<5
+  }));
+  const orders = Array.from({length:12},(_,i)=>({
+    id:'CMD-'+Math.random().toString(36).slice(-6).toUpperCase(),
+    client:'Client '+(i+1),
+    product: prods[i%prods.length].name.split('—')[0].trim(),
+    amount: Math.floor(Math.random()*800+150),
+    commission: 0,
+    date: new Date(Date.now()-i*2*86400000).toLocaleDateString('fr-MA'),
+    status:['pending','processing','delivered','delivered','cancelled'][Math.floor(Math.random()*5)]
+  }));
+  orders.forEach(o=>{ o.commission = Math.round(o.amount*0.1); });
+  allOrders = orders;
+  const totalRev = orders.filter(o=>o.status==='delivered').reduce((s,o)=>s+o.amount,0);
+  return {
+    storeName: user.name.split(' ')[0]+"'s Store",
+    status:'approved',
+    totalOrders: orders.length,
+    monthOrders: orders.filter(o=>o.date.includes('2026')).length,
+    totalRevenue: totalRev,
+    monthRevenue: Math.floor(totalRev*0.3),
+    activeProducts: prods.filter(p=>p.active).length,
+    lowStock: prods.filter(p=>p.vendorStock<10).length,
+    avgRating: 4.3 + Math.random()*0.5,
+    totalReviews: Math.floor(Math.random()*80+20),
+    products: prods,
+    orders,
+    monthlyRevenue: months.map((m,i)=>({
+      month:m, orders:Math.floor(Math.random()*20+5),
+      ca:Math.floor(Math.random()*8000+2000),
+      status:i<5?'viré':'en attente'
+    })),
+    dailySales: Array.from({length:7},()=>Math.floor(Math.random()*8+1)),
+    createdAt: new Date(Date.now()-60*86400000).toLocaleDateString('fr-MA')
+  };
+}
+
+function renderVendorDash(user){
+  const d = vdData;
+  document.getElementById('vd-store-name').textContent = d.storeName;
+  document.getElementById('vd-member-since').textContent = 'Membre depuis '+d.createdAt;
+
+  // Status
+  const sb = document.getElementById('vd-status-badge');
+  sb.className = 'vd-status-badge vds-'+d.status;
+  sb.textContent = d.status==='approved'?'✓ Boutique active':d.status==='pending'?'⏳ En attente validation':'✗ Non approuvée';
+
+  // KPIs
+  document.getElementById('vd-kpi-orders').textContent = d.totalOrders;
+  document.getElementById('vd-kpi-orders-month').textContent = '+'+d.monthOrders+' ce mois';
+  document.getElementById('vd-kpi-revenue').textContent = fmt(d.totalRevenue);
+  document.getElementById('vd-kpi-revenue-month').textContent = fmt(d.monthRevenue)+' ce mois';
+  document.getElementById('vd-kpi-products').textContent = d.activeProducts;
+  document.getElementById('vd-kpi-lowstock').textContent = d.lowStock+' en rupture';
+  document.getElementById('vd-kpi-rating').textContent = d.avgRating.toFixed(1)+'★';
+  document.getElementById('vd-kpi-reviews').textContent = d.totalReviews+' avis';
+
+  // Chart
+  renderVdChart(d.dailySales);
+
+  // Top products
+  const tp = document.getElementById('vd-top-products');
+  tp.innerHTML = d.products.slice(0,4).map(p=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--g100);border-radius:8px">
+      <span style="font-size:1.2rem">${p.img}</span>
+      <div style="flex:1;min-width:0"><div style="font-size:.78rem;font-weight:600;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${p.name.split('—')[0].trim()}</div>
+      <div style="font-size:.68rem;color:var(--text4)">${p.vendorSales} ventes</div></div>
+      <div style="font-size:.78rem;font-weight:700;color:var(--green)">${fmt(p.vendorPrice)}</div>
+    </div>`).join('');
+
+  // Recent orders
+  const ro = document.getElementById('vd-recent-orders');
+  ro.innerHTML = d.orders.slice(0,4).map(o=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--g100);border-radius:8px">
+      <div style="flex:1;min-width:0"><div style="font-size:.75rem;font-weight:600;font-family:monospace">${o.id}</div>
+      <div style="font-size:.68rem;color:var(--text4)">${o.date}</div></div>
+      <div style="font-size:.78rem;font-weight:700">${fmt(o.amount)}</div>
+      <span class="vd-badge vdb-${o.status==='delivered'?'delivered':o.status==='pending'?'pending':o.status==='processing'?'processing':'cancelled'}">${o.status==='delivered'?'✓ Livré':o.status==='pending'?'⏳':o.status==='processing'?'↻':'✗'}</span>
+    </div>`).join('');
+
+  // Products table
+  renderProductsTable(d.products);
+
+  // Orders table
+  renderOrdersTable(d.orders);
+
+  // Revenue
+  const totalCA = d.monthlyRevenue.reduce((s,m)=>s+m.ca,0);
+  document.getElementById('rev-total').textContent = fmt(totalCA);
+  document.getElementById('rev-commission').textContent = fmt(Math.round(totalCA*0.1));
+  document.getElementById('rev-net').textContent = fmt(Math.round(totalCA*0.9));
+  document.getElementById('revenue-tbody').innerHTML = d.monthlyRevenue.map(m=>`
+    <tr>
+      <td>${m.month} 2026</td><td>${m.orders}</td>
+      <td style="font-weight:700">${fmt(m.ca)}</td>
+      <td style="color:var(--red)">-${fmt(Math.round(m.ca*.1))}</td>
+      <td style="color:var(--green);font-weight:700">${fmt(Math.round(m.ca*.9))}</td>
+      <td><span class="vd-badge ${m.status==='viré'?'vdb-delivered':'vdb-pending'}">${m.status==='viré'?'✓ Viré':'⏳ En attente'}</span></td>
+    </tr>`).join('');
+
+  // Settings
+  document.getElementById('set-name').value = d.storeName;
+}
+
+function renderProductsTable(prods){
+  document.getElementById('prod-count').textContent = prods.length;
+  document.getElementById('products-tbody').innerHTML = prods.map(p=>`
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:8px"><span style="font-size:1.2rem">${p.img}</span><span style="font-size:.8rem;font-weight:600">${p.name.split('—')[0].trim()}</span></div></td>
+      <td style="font-size:.73rem;color:var(--text4)">${p.cat}</td>
+      <td style="font-weight:700">${fmt(p.vendorPrice||p.price)}</td>
+      <td><span class="vd-badge ${(p.vendorStock||p.stock)<10?'vdb-lowstock':'vdb-active'}">${p.vendorStock||p.stock}</span></td>
+      <td>${p.vendorSales||0}</td>
+      <td><span class="vd-badge ${p.active!==false?'vdb-active':'vdb-inactive'}">${p.active!==false?'Actif':'Inactif'}</span></td>
+      <td><div class="vd-actions">
+        <button class="vd-btn-sm vd-btn-edit" onclick="editProduct(${p.id})">✏</button>
+        <button class="vd-btn-sm vd-btn-toggle" onclick="toggleProduct(${p.id})">${p.active!==false?'⏸':'▶'}</button>
+        <button class="vd-btn-sm vd-btn-del" onclick="deleteProduct(${p.id})">🗑</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function renderOrdersTable(orders){
+  document.getElementById('orders-tbody').innerHTML = orders.map(o=>`
+    <tr>
+      <td style="font-family:monospace;font-size:.72rem">${o.id}</td>
+      <td style="font-size:.75rem">${o.client}</td>
+      <td style="font-size:.75rem">${o.product}</td>
+      <td style="font-weight:700">${fmt(o.amount)}</td>
+      <td style="color:var(--red);font-size:.75rem">-${fmt(o.commission)}</td>
+      <td style="font-size:.73rem;color:var(--text4)">${o.date}</td>
+      <td><span class="vd-badge vdb-${o.status==='delivered'?'delivered':o.status==='pending'?'pending':o.status==='processing'?'processing':'cancelled'}">
+        ${o.status==='delivered'?'✓ Livré':o.status==='pending'?'⏳ En attente':o.status==='processing'?'↻ En cours':'✗ Annulée'}
+      </span></td>
+      <td>${o.status==='pending'?`<button class="vd-btn-sm vd-btn-edit" onclick="confirmOrder('${o.id}')">Confirmer</button>`:'—'}</td>
+    </tr>`).join('');
+}
+
+function filterProducts(q){
+  if(!vdData) return;
+  const filtered = q ? vdData.products.filter(p=>p.name.toLowerCase().includes(q.toLowerCase())) : vdData.products;
+  renderProductsTable(filtered);
+}
+
+function filterOrders(status){
+  if(!vdData) return;
+  const filtered = status==='all' ? vdData.orders : vdData.orders.filter(o=>o.status===status);
+  renderOrdersTable(filtered);
+}
+
+function renderVdChart(data){
+  const days = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  const max = Math.max(...data,1);
+  document.getElementById('vd-chart').innerHTML = data.map((v,i)=>`
+    <div class="mbc-bar" style="height:${(v/max)*100}%;opacity:${0.3+(v/max)*0.7}" title="${v} vente${v>1?'s':''}"></div>`).join('');
+  document.getElementById('vd-chart-labels').innerHTML = days.slice(0,data.length).map(d=>`<div class="mbc-label">${d}</div>`).join('');
+}
+
+function updateVdChart(days){ renderVdChart(Array.from({length:+days},()=>Math.floor(Math.random()*8+1))); }
+
+function switchVdTab(tab){
+  document.querySelectorAll('.vd-tab').forEach((t,i)=>{
+    const tabs=['overview','products','orders','revenue','settings'];
+    t.classList.toggle('on',tabs[i]===tab);
+  });
+  document.querySelectorAll('.vd-panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById('vdpanel-'+tab).classList.add('on');
+}
+
+function showAddProduct(){
+  editingProdId = null;
+  document.getElementById('prod-modal-title').textContent = 'Ajouter un produit';
+  ['pm-name','pm-price','pm-old','pm-stock','pm-desc','pm-img'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('prodModal').classList.add('open');
+}
+
+function editProduct(id){
+  if(!vdData) return;
+  const p = vdData.products.find(x=>x.id===id);
+  if(!p) return;
+  editingProdId = id;
+  document.getElementById('prod-modal-title').textContent = 'Modifier le produit';
+  document.getElementById('pm-name').value = p.name.split('—')[0].trim();
+  document.getElementById('pm-price').value = p.vendorPrice||p.price;
+  document.getElementById('pm-old').value = p.old||'';
+  document.getElementById('pm-stock').value = p.vendorStock||p.stock;
+  document.getElementById('pm-desc').value = p.desc||'';
+  document.getElementById('pm-cat').value = p.cat;
+  document.getElementById('prodModal').classList.add('open');
+}
+
+function closeProdModal(){ document.getElementById('prodModal').classList.remove('open'); }
+
+async function saveProduct(){
+  const name  = document.getElementById('pm-name').value.trim();
+  const price = +document.getElementById('pm-price').value;
+  const old   = +document.getElementById('pm-old').value||null;
+  const stock = +document.getElementById('pm-stock').value;
+  const desc  = document.getElementById('pm-desc').value.trim();
+  const cat   = document.getElementById('pm-cat').value;
+  const img   = document.getElementById('pm-img').value.trim();
+
+  if(!name||!price||!stock){ toast('Remplissez les champs obligatoires (*)','error'); return; }
+
+  const prodData = {name, price, old, stock, description:desc, category:cat, imageUrl:img};
+
+  try {
+    if(editingProdId){
+      await VendorAPI.updateProduct(editingProdId, prodData);
+      // Update local
+      const p = vdData.products.find(x=>x.id===editingProdId);
+      if(p){ p.name=name; p.vendorPrice=price; p.old=old; p.vendorStock=stock; p.desc=desc; p.cat=cat; }
+    } else {
+      await VendorAPI.addProduct(prodData);
+      // Add to local
+      vdData.products.push({id:Date.now(), name, price, old, stock, vendorPrice:price, vendorStock:stock, desc, cat, img:img||'📦', active:true, vendorSales:0});
+    }
+    toast(editingProdId?'Produit mis à jour !':'Produit ajouté !','success');
+    renderProductsTable(vdData.products);
+  } catch(e) {
+    toast((editingProdId?'Produit modifié':'Produit ajouté')+' (mode demo)','success');
+    renderProductsTable(vdData.products);
+  }
+  closeProdModal();
+}
+
+function toggleProduct(id){
+  const p = vdData?.products.find(x=>x.id===id);
+  if(!p) return;
+  p.active = !p.active;
+  renderProductsTable(vdData.products);
+  toast(p.active?'Produit activé ✓':'Produit désactivé','info');
+}
+
+function deleteProduct(id){
+  if(!confirm('Supprimer ce produit ?')) return;
+  vdData.products = vdData.products.filter(p=>p.id!==id);
+  renderProductsTable(vdData.products);
+  toast('Produit supprimé','info');
+}
+
+function confirmOrder(id){
+  toast('Commande '+id+' confirmée !','success');
+  const o = allOrders.find(x=>x.id===id);
+  if(o){ o.status='processing'; renderOrdersTable(vdData.orders); }
+}
+
+async function saveSettings(){
+  const name = document.getElementById('set-name').value.trim();
+  const desc = document.getElementById('set-desc').value.trim();
+  const wa   = document.getElementById('set-whatsapp').value.trim();
+  const iban = document.getElementById('set-iban').value.trim();
+  if(!name){ toast('Le nom de la boutique est requis','error'); return; }
+  try {
+    await VendorAPI.saveSettings({storeName:name, description:desc, whatsapp:wa, iban});
+    toast('Paramètres enregistrés !','success');
+  } catch(e) {
+    toast('Paramètres enregistrés (mode demo)','success');
+  }
+  if(vdData){ vdData.storeName=name; document.getElementById('vd-store-name').textContent=name; }
+}
+
+function showVdState(state){
+  document.getElementById('vd-loading').style.display  = state==='loading'  ? 'block':'none';
+  document.getElementById('vd-notlogged').style.display = state==='notlogged'? 'block':'none';
+  document.getElementById('vd-content').style.display  = state==='content'  ? 'block':'none';
+}
+
+initVendorDash();
+</script>
+</body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>E-Shopia Admin</title>
+
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="admin-shell">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                <img src="/images/logo.png" alt="E-Shopia">
+                <strong>E-Shopia</strong>
+            </div>
+
+            <div class="nav-title">
+                MAIN
+            </div>
+
+            <nav class="nav">
+
+                <a href="#" class="active">
+                    <span>📊</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="#">
+                    <span>🛍️</span>
+                    <span>Products</span>
+                </a>
+
+                <a href="#">
+                    <span>📦</span>
+                    <span>Orders</span>
+                </a>
+
+                <a href="#">
+                    <span>👥</span>
+                    <span>Customers</span>
+                </a>
+
+                <a href="#">
+                    <span>💳</span>
+                    <span>Transactions</span>
+                </a>
+
+                <a href="#">
+                    <span>📈</span>
+                    <span>Analytics</span>
+                </a>
+
+                <a href="#">
+                    <span>⚙️</span>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+            <a href="#" class="logout">
+                🚪 <span>Logout</span>
+            </a>
+
+        </aside>
+
+        <!-- MAIN -->
+
+        <main class="main">
+
+            <!-- TOPBAR -->
+
+            <div class="topbar">
+
+                <input class="search" type="text" placeholder="Search products, orders...">
+
+                <div class="admin-user">
+                    <div class="avatar">A</div>
+                    <div>
+                        <div>Admin</div>
+                        <small>Super Admin</small>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CONTENT -->
+
+            <div class="content">
+
+                <div class="hero">
+
+                    <div>
+                        <h1>Dashboard Overview</h1>
+                        <p>
+                            Welcome back to E-Shopia Maroc Admin
+                        </p>
+                    </div>
+
+                    <button class="date-btn">
+                        📅 Last 30 Days
+                    </button>
+
+                </div>
+
+                <!-- KPIS -->
+
+                <div class="kpis">
+
+                    <div class="card kpi">
+
+                        <div class="kpi-top">
+                            <div class="kpi-icon blue">💰</div>
+
+                            <div>
+                                <span>Total Revenue</span>
+                                <h2>78,450 DH</h2>
+                                <div class="up">+18% this month</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card kpi">
+
+                        <div class="kpi-top">
+                            <div class="kpi-icon green">📦</div>
+
+                            <div>
+                                <span>Total Orders</span>
+                                <h2>1,248</h2>
+                                <div class="up">+12% this week</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card kpi">
+
+                        <div class="kpi-top">
+                            <div class="kpi-icon purple">👥</div>
+
+                            <div>
+                                <span>Customers</span>
+                                <h2>3,582</h2>
+                                <div class="up">+8% new users</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card kpi">
+
+                        <div class="kpi-top">
+                            <div class="kpi-icon orange">🛒</div>
+
+                            <div>
+                                <span>Products</span>
+                                <h2>284</h2>
+                                <div class="up">+24 products</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- CHARTS -->
+
+                <div class="grid">
+
+                    <div class="card panel">
+
+                        <div class="panel-head">
+                            <h3>Sales Analytics</h3>
+
+                            <button class="select-btn">
+                                Monthly
+                            </button>
+                        </div>
+
+                        <div class="chart-fake">
+                            <div class="chart-line"></div>
+                            <div class="chart-line pink"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="card panel">
+
+                        <div class="panel-head">
+                            <h3>Revenue Sources</h3>
+
+                            <button class="select-btn">
+                                2026
+                            </button>
+                        </div>
+
+                        <div class="donut-wrap">
+
+                            <div class="donut"></div>
+
+                            <div class="legend">
+
+                                <div>
+                                    <span>Facebook Ads</span>
+                                    <strong>45%</strong>
+                                </div>
+
+                                <div>
+                                    <span>TikTok Ads</span>
+                                    <strong>16%</strong>
+                                </div>
+
+                                <div>
+                                    <span>Organic</span>
+                                    <strong>14%</strong>
+                                </div>
+
+                                <div>
+                                    <span>Affiliates</span>
+                                    <strong>25%</strong>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- TABLES -->
+
+                <div class="orders-products">
+
+                    <!-- ORDERS -->
+
+                    <div class="card panel">
+
+                        <div class="panel-head">
+                            <h3>Recent Orders</h3>
+
+                            <button class="select-btn">
+                                View All
+                            </button>
+                        </div>
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Product</th>
+                                    <th>Status</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+                                    <td>Ahmed Salah</td>
+                                    <td>Smart Watch</td>
+                                    <td>
+                                        <span class="badge done">
+                                            Delivered
+                                        </span>
+                                    </td>
+                                    <td>1,200 DH</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Sarah Ali</td>
+                                    <td>Gaming Headset</td>
+                                    <td>
+                                        <span class="badge wait">
+                                            Shipping
+                                        </span>
+                                    </td>
+                                    <td>850 DH</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Youssef Karim</td>
+                                    <td>iPhone Case</td>
+                                    <td>
+                                        <span class="badge run">
+                                            Pending
+                                        </span>
+                                    </td>
+                                    <td>180 DH</td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- PRODUCTS -->
+
+                    <div class="card panel">
+
+                        <div class="panel-head">
+                            <h3>Top Products</h3>
+
+                            <button class="select-btn">
+                                Manage
+                            </button>
+                        </div>
+
+                        <div class="product-row">
+
+                            <div class="product-left">
+
+                                <div class="product-img">
+                                    ⌚
+                                </div>
+
+                                <div>
+                                    <strong>Smart Watch</strong>
+                                    <div>248 sales</div>
+                                </div>
+
+                            </div>
+
+                            <strong>12,500 DH</strong>
+
+                        </div>
+
+                        <div class="product-row">
+
+                            <div class="product-left">
+
+                                <div class="product-img">
+                                    🎧
+                                </div>
+
+                                <div>
+                                    <strong>Gaming Headset</strong>
+                                    <div>182 sales</div>
+                                </div>
+
+                            </div>
+
+                            <strong>9,200 DH</strong>
+
+                        </div>
+
+                        <div class="product-row">
+
+                            <div class="product-left">
+
+                                <div class="product-img">
+                                    📱
+                                </div>
+
+                                <div>
+                                    <strong>iPhone Case</strong>
+                                    <div>141 sales</div>
+                                </div>
+
+                            </div>
+
+                            <strong>4,300 DH</strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

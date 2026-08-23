@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#1565c0"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Panier — E-Shopia Maroc</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/megamenu.css">
+</head>
+<body>
+<div id="nav"></div>
+<div class="pg-head"><div class="container">
+  <h1>Mon Panier</h1>
+  <div class="breadcrumb"><a href="../index.html">Accueil</a><span class="sep">/</span><span>Panier</span></div>
+</div></div>
+<div class="container">
+  <div class="cart-layout">
+    <div>
+      <div class="cart-box">
+        <div class="cart-hd">
+          <h2 id="cartTitle">Panier (0 article)</h2>
+          <button class="btn btn-ghost btn-sm" onclick="Cart.clear();renderCart()">Vider le panier</button>
+        </div>
+        <div id="cartItems"></div>
+      </div>
+      <div style="margin-top:16px;background:#fff;border-radius:var(--r-xl);padding:20px 24px;border:1px solid var(--g200)">
+        <a href="../pages/category.html?cat=Tout" class="btn btn-ghost btn-sm">← Continuer mes achats</a>
+      </div>
+    </div>
+    <div>
+      <div class="sum-box">
+        <div class="sum-hd"><h3>Récapitulatif</h3></div>
+        <div class="sum-body">
+          <div class="sum-row"><span>Sous-total</span><span id="subtotal">0 DH</span></div>
+          <div class="sum-row"><span>Livraison</span><span id="shipping">—</span></div>
+          <div class="sum-row" id="discRow" style="display:none;color:var(--green)"><span>Remise promo</span><span id="discAmt"></span></div>
+          <div class="sum-row total"><span>Total</span><span id="totalAmt">0 DH</span></div>
+          <div class="cod-note"><strong>💵 Paiement à la livraison</strong>Payez en cash lors de la réception. Pas de prépaiement requis.</div>
+          <div class="promo-form">
+            <input type="text" id="promoInp" placeholder="Code promo" style="text-transform:uppercase">
+            <button class="btn btn-primary btn-sm" onclick="applyPromo()">Appliquer</button>
+          </div>
+          <a href="checkout.html" class="btn btn-grad btn-block btn-lg" style="margin-top:8px">
+            Passer la commande →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="footer-root"></div>
+<div id="whatsapp-root"></div><div id="backtop-root"></div><div id="modal-root"></div><div class="toasts"></div>
+<script>window.ESHOPIA_API_URL="https://eshopia-backend.onrender.com/api";</script>
+<script src="../js/script.js"></script>
+<script src="../js/megamenu.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/features.js"></script>
+<script src="../js/pwa.js"></script>
+<script>
+document.getElementById("nav").innerHTML         = buildNav("../");
+document.getElementById("footer-root").innerHTML = buildFooter("../");
+document.getElementById("modal-root").innerHTML  = buildLoginModal();
+Cart.badge();
+document.getElementById("whatsapp-root").innerHTML=buildWhatsApp();
+document.getElementById("backtop-root").innerHTML=buildBackToTop();
+let promoDisc=0;
+
+function renderCart(){
+  const items=Cart.get();
+  document.getElementById("cartTitle").textContent=`Panier (${Cart.count()} article${Cart.count()!==1?"s":""})`;
+  if(!items.length){
+    document.getElementById("cartItems").innerHTML=`
+      <div class="cart-empty">
+        <div style="font-size:4rem;margin-bottom:12px">🛒</div>
+        <p>Votre panier est vide</p>
+        <a href="../pages/category.html?cat=Tout" class="btn btn-primary btn-lg">Découvrir nos produits</a>
+      </div>`;
+  } else {
+    document.getElementById("cartItems").innerHTML=items.map(i=>{
+      const p=PRODUCTS.find(x=>x.id===i.id); if(!p)return "";
+      return `
+      <div class="cart-item">
+        <div class="ci-img" onclick="window.location='product.html?id=${p.id}'" style="cursor:pointer">${p.img}</div>
+        <div class="ci-info">
+          <div class="ci-cat">${p.cat}</div>
+          <div class="ci-name">${p.name}</div>
+          <div class="ci-unit">${fmt(p.price)} / unité</div>
+        </div>
+        <div class="ci-right">
+          <div class="ci-total">${fmt(p.price*i.qty)}</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:10px">
+            <div class="qty-ctrl" style="border-radius:var(--r);font-size:.82rem">
+              <button style="width:30px;height:30px" onclick="Cart.qty(${p.id},${i.qty-1});renderCart()">−</button>
+              <input style="width:38px;height:30px;font-size:.82rem" type="number" value="${i.qty}" onchange="Cart.qty(${p.id},+this.value);renderCart()">
+              <button style="width:30px;height:30px" onclick="Cart.qty(${p.id},${i.qty+1});renderCart()">+</button>
+            </div>
+            <button class="btn btn-ghost btn-sm" style="padding:4px 8px;color:var(--red)" onclick="Cart.remove(${p.id});renderCart()">✕</button>
+          </div>
+        </div>
+      </div>`;
+    }).join("");
+  }
+  const sub=Cart.total(), ship=0, disc=Math.round(sub*promoDisc);
+  document.getElementById("subtotal").textContent=fmt(sub);
+  document.getElementById("shipping").textContent=sub>=129?"🎁 Gratuite":"Gratuite dès 129 DH";
+  document.getElementById("totalAmt").textContent=fmt(sub+ship-disc);
+  if(disc>0){document.getElementById("discRow").style.display="flex";document.getElementById("discAmt").textContent="-"+fmt(disc)}
+}
+function applyPromo(){
+  const code=document.getElementById("promoInp").value.trim().toUpperCase();
+  if(code==="ESHOPIA10"){promoDisc=.1;toast("Code ESHOPIA10 appliqué ! -10%","success");renderCart()}
+  else toast("Code promo invalide","error");
+}
+renderCart();
+</script>
+</body></html>

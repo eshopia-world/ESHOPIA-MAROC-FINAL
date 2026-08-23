@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#1565c0">
+<title>Suivi Commande — E-Shopia Maroc</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/megamenu.css">
+</head>
+<body>
+<div id="nav"></div>
+
+<div class="pg-head">
+  <div class="container">
+    <h1>Suivre ma commande</h1>
+    <div class="breadcrumb"><a href="../index.html">Accueil</a><span class="sep">/</span><span>Suivi commande</span></div>
+  </div>
+</div>
+
+<div class="container" style="padding-top:32px;padding-bottom:64px">
+  <div id="tracking-root"></div>
+</div>
+
+<div id="footer-root"></div>
+<div id="whatsapp-root"></div><div id="backtop-root"></div>
+<div id="modal-root"></div>
+<div class="toasts"></div>
+
+<script>window.ESHOPIA_API_URL="https://eshopia-backend.onrender.com/api";</script>
+<script src="../js/script.js"></script>
+<script src="../js/megamenu.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/features.js"></script>
+<script>
+document.getElementById("nav").innerHTML         = buildNav("../");
+document.getElementById("footer-root").innerHTML = buildFooter("../");
+document.getElementById("modal-root").innerHTML  = buildLoginModal();
+document.getElementById("whatsapp-root").innerHTML = buildWhatsApp();
+document.getElementById("backtop-root").innerHTML  = buildBackToTop();
+Cart.badge();
+
+document.addEventListener("DOMContentLoaded", () => {
+  TrackOrder.buildPage("tracking-root");
+});
+</script>
+</body>
+</html>

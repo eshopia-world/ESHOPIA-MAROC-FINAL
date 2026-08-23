@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#1565c0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mon Espace Affilié — E-Shopia Maroc</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/megamenu.css">
+<style>
+/* ── Affiliate Dashboard ── */
+.aff-dash{padding:32px 0 64px}
+.aff-dash-header{background:linear-gradient(135deg,#0d47a1,#1565c0 50%,#b71c1c);border-radius:20px;padding:28px 32px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.aff-dash-welcome h2{font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:4px}
+.aff-dash-welcome p{font-size:.85rem;color:rgba(255,255,255,.65)}
+.aff-link-box{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 16px;display:flex;align-items:center;gap:10px;min-width:280px}
+.aff-link-text{font-size:.78rem;font-weight:600;color:#fff;flex:1;word-break:break-all}
+.aff-link-copy{background:#f59e0b;color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:.75rem;font-weight:800;cursor:pointer;white-space:nowrap;flex-shrink:0}
+
+/* KPIs */
+.aff-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.aff-kpi{background:#fff;border:1.5px solid var(--g200);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:6px;box-shadow:0 1px 6px rgba(0,0,0,.04)}
+.aff-kpi-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.aff-kpi-val{font-family:var(--fh);font-size:1.5rem;font-weight:900;color:var(--text)}
+.aff-kpi-lbl{font-size:.72rem;color:var(--text4);font-weight:500}
+.aff-kpi-change{font-size:.68rem;font-weight:700;padding:2px 6px;border-radius:6px;width:fit-content}
+
+/* Tabs */
+.aff-tabs{display:flex;gap:4px;background:var(--g100);border-radius:12px;padding:4px;margin-bottom:20px;width:fit-content}
+.aff-tab{padding:7px 18px;border-radius:9px;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--text4);border:none;background:transparent;transition:.15s}
+.aff-tab.on{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+
+/* Panel */
+.aff-panel{display:none}
+.aff-panel.on{display:block}
+
+/* Stats chart placeholder */
+.aff-chart-box{background:#fff;border:1.5px solid var(--g200);border-radius:14px;padding:20px;margin-bottom:20px}
+.aff-chart-title{font-family:var(--fh);font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.mini-bar-chart{display:flex;align-items:flex-end;gap:6px;height:80px}
+.mbc-bar{flex:1;border-radius:4px 4px 0 0;background:var(--blue);opacity:.15;transition:.3s;position:relative;cursor:pointer}
+.mbc-bar.active{opacity:1}
+.mbc-bar:hover{opacity:.8}
+.mbc-labels{display:flex;gap:6px;margin-top:5px}
+.mbc-label{flex:1;text-align:center;font-size:.58rem;color:var(--text4)}
+
+/* Sales table */
+.aff-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.aff-table th{text-align:left;padding:10px 14px;font-size:.67rem;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:.06em;border-bottom:1.5px solid var(--g200);white-space:nowrap}
+.aff-table td{padding:12px 14px;border-bottom:0.5px solid var(--g100);color:var(--text)}
+.aff-table tr:last-child td{border-bottom:none}
+.aff-table tr:hover td{background:var(--g100)}
+.aff-status{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:100px;font-size:.65rem;font-weight:700}
+.st-pending{background:#fef3c7;color:#92400e}
+.st-paid{background:#d1fae5;color:#065f46}
+.st-processing{background:#dbeafe;color:#1e40af}
+
+/* Payout */
+.aff-payout-card{background:#fff;border:1.5px solid var(--g200);border-radius:14px;padding:22px;margin-bottom:16px}
+.aff-payout-balance{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--g200)}
+.apb-amount{font-family:var(--fh);font-size:2rem;font-weight:900;color:var(--text)}
+.apb-lbl{font-size:.75rem;color:var(--text4);margin-top:2px}
+.apb-badge{background:#d1fae5;color:#065f46;font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:100px}
+.payout-form{display:grid;gap:12px}
+.payout-method{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pm-card{border:1.5px solid var(--g200);border-radius:10px;padding:14px;cursor:pointer;transition:.15s;text-align:center}
+.pm-card.on{border-color:var(--blue);background:var(--blue-lt)}
+.pm-card svg{color:var(--blue);margin-bottom:6px}
+.pm-card .pm-name{font-size:.8rem;font-weight:700;color:var(--text)}
+.pm-card .pm-desc{font-size:.68rem;color:var(--text4);margin-top:2px}
+.payout-history{margin-top:20px}
+
+/* Performance */
+.perf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.perf-card{background:#fff;border:1.5px solid var(--g200);border-radius:12px;padding:16px;text-align:center}
+.perf-val{font-family:var(--fh);font-size:1.4rem;font-weight:900;color:var(--text);margin-bottom:4px}
+.perf-lbl{font-size:.72rem;color:var(--text4)}
+.perf-tip{font-size:.68rem;color:var(--green);margin-top:4px;font-weight:600}
+
+/* Links generator */
+.link-gen{background:#fff;border:1.5px solid var(--g200);border-radius:14px;padding:20px;margin-bottom:16px}
+.lg-title{font-family:var(--fh);font-size:.88rem;font-weight:700;margin-bottom:14px}
+.lg-products{display:grid;gap:8px;max-height:260px;overflow-y:auto}
+.lg-prod{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--g200);border-radius:9px;cursor:pointer;transition:.15s}
+.lg-prod:hover{border-color:var(--blue);background:var(--blue-lt)}
+.lg-prod-emoji{font-size:1.4rem;flex-shrink:0}
+.lg-prod-name{font-size:.8rem;font-weight:600;color:var(--text);flex:1}
+.lg-prod-price{font-size:.78rem;font-weight:700;color:var(--blue)}
+.lg-copy{background:var(--blue);color:#fff;border:none;padding:5px 11px;border-radius:7px;font-size:.7rem;font-weight:700;cursor:pointer;flex-shrink:0}
+
+/* Mobile */
+@media(max-width:768px){
+  .aff-kpis{grid-template-columns:repeat(2,1fr);gap:10px}
+  .aff-kpi{padding:14px}
+  .aff-kpi-val{font-size:1.2rem}
+  .aff-dash-header{flex-direction:column}
+  .aff-link-box{min-width:0;width:100%}
+  .perf-grid{grid-template-columns:repeat(2,1fr)}
+  .payout-method{grid-template-columns:1fr}
+  .aff-table{font-size:.72rem}
+  .aff-table th,.aff-table td{padding:8px 10px}
+}
+</style>
+</head>
+<body>
+<div id="nav"></div>
+
+<div class="container aff-dash">
+
+  <!-- Loading state -->
+  <div id="aff-loading" style="text-align:center;padding:60px 0">
+    <div style="font-size:2rem;margin-bottom:12px">⏳</div>
+    <div style="font-family:var(--fh);font-weight:700">Chargement de votre espace...</div>
+  </div>
+
+  <!-- Not logged in -->
+  <div id="aff-notlogged" style="display:none;text-align:center;padding:60px 20px">
+    <div style="font-size:3rem;margin-bottom:16px">🔒</div>
+    <h2 style="font-family:var(--fh);font-weight:900;margin-bottom:8px">Accès réservé aux affiliés</h2>
+    <p style="color:var(--text4);margin-bottom:24px">Connectez-vous ou créez votre compte affilié gratuit</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary btn-lg" onclick="openModal('loginModal')">Se connecter</button>
+      <a href="affiliate.html" class="btn btn-outline btn-lg">Rejoindre le programme</a>
+    </div>
+  </div>
+
+  <!-- Dashboard content -->
+  <div id="aff-content" style="display:none">
+
+    <!-- Header -->
+    <div class="aff-dash-header">
+      <div class="aff-dash-welcome">
+        <h2>👋 Bonjour, <span id="aff-username">Affilié</span></h2>
+        <p>Code: <strong id="aff-code-display" style="color:#fde68a">—</strong> · Membre depuis <span id="aff-since">—</span></p>
+      </div>
+      <div class="aff-link-box">
+        <span class="aff-link-text" id="aff-link-display">eshopia.ma/?ref=...</span>
+        <button class="aff-link-copy" onclick="copyLink()">📋 Copier</button>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="aff-kpis">
+      <div class="aff-kpi">
+        <div class="aff-kpi-ico" style="background:#dbeafe">
+          <svg fill="none" stroke="#1565c0" stroke-width="2" viewBox="0 0 24 24" width="18" height="18"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div class="aff-kpi-val" id="kpi-clicks">—</div>
+        <div class="aff-kpi-lbl">Clics totaux</div>
+        <div class="aff-kpi-change" style="background:#dbeafe;color:#1565c0" id="kpi-clicks-month">ce mois</div>
+      </div>
+      <div class="aff-kpi">
+        <div class="aff-kpi-ico" style="background:#d1fae5">
+          <svg fill="none" stroke="#059669" stroke-width="2" viewBox="0 0 24 24" width="18" height="18"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        </div>
+        <div class="aff-kpi-val" id="kpi-orders">—</div>
+        <div class="aff-kpi-lbl">Commandes générées</div>
+        <div class="aff-kpi-change" style="background:#d1fae5;color:#065f46" id="kpi-conversion">Taux: —%</div>
+      </div>
+      <div class="aff-kpi">
+        <div class="aff-kpi-ico" style="background:#fef3c7">
+          <svg fill="none" stroke="#d97706" stroke-width="2" viewBox="0 0 24 24" width="18" height="18"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <div class="aff-kpi-val" id="kpi-earned">—</div>
+        <div class="aff-kpi-lbl">Commissions gagnées</div>
+        <div class="aff-kpi-change" style="background:#fef3c7;color:#92400e">10% par vente</div>
+      </div>
+      <div class="aff-kpi">
+        <div class="aff-kpi-ico" style="background:#ede9fe">
+          <svg fill="none" stroke="#7c3aed" stroke-width="2" viewBox="0 0 24 24" width="18" height="18"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="aff-kpi-val" id="kpi-balance">—</div>
+        <div class="aff-kpi-lbl">Solde disponible</div>
+        <div class="aff-kpi-change" style="background:#ede9fe;color:#5b21b6" id="kpi-pending">En attente: —</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="aff-tabs">
+      <button class="aff-tab on" onclick="switchTab('stats')">📊 Statistiques</button>
+      <button class="aff-tab" onclick="switchTab('sales')">💰 Ventes</button>
+      <button class="aff-tab" onclick="switchTab('payout')">🏦 Retrait</button>
+      <button class="aff-tab" onclick="switchTab('links')">🔗 Mes liens</button>
+    </div>
+
+    <!-- Panel: Stats -->
+    <div class="aff-panel on" id="panel-stats">
+      <div class="aff-chart-box">
+        <div class="aff-chart-title">
+          Clics & Conversions — 7 derniers jours
+          <select style="font-size:.72rem;border:1px solid var(--g200);border-radius:6px;padding:3px 8px;color:var(--text4)" onchange="updateChart(this.value)">
+            <option value="7">7 jours</option>
+            <option value="30">30 jours</option>
+          </select>
+        </div>
+        <div class="mini-bar-chart" id="barChart"></div>
+        <div class="mbc-labels" id="barLabels"></div>
+      </div>
+      <div class="perf-grid">
+        <div class="perf-card">
+          <div class="perf-val" id="perf-ctr">—%</div>
+          <div class="perf-lbl">Taux de conversion</div>
+          <div class="perf-tip" id="perf-ctr-tip">—</div>
+        </div>
+        <div class="perf-card">
+          <div class="perf-val" id="perf-avg">— DH</div>
+          <div class="perf-lbl">Panier moyen</div>
+          <div class="perf-tip">Commission 10%</div>
+        </div>
+        <div class="perf-card">
+          <div class="perf-val" id="perf-rank">—</div>
+          <div class="perf-lbl">Votre rang</div>
+          <div class="perf-tip" id="perf-rank-tip">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel: Sales -->
+    <div class="aff-panel" id="panel-sales">
+      <div class="aff-chart-box">
+        <div class="aff-chart-title">Historique des ventes</div>
+        <div style="overflow-x:auto">
+          <table class="aff-table">
+            <thead>
+              <tr>
+                <th>#Commande</th>
+                <th>Date</th>
+                <th>Produits</th>
+                <th>Montant</th>
+                <th>Commission</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody id="sales-tbody">
+              <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text4)">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel: Payout -->
+    <div class="aff-panel" id="panel-payout">
+      <div class="aff-payout-card">
+        <div class="aff-payout-balance">
+          <div>
+            <div class="apb-amount" id="payout-balance">0 DH</div>
+            <div class="apb-lbl">Solde disponible au retrait</div>
+          </div>
+          <div>
+            <div class="apb-badge" id="payout-status-badge">✓ Éligible au retrait</div>
+            <div style="font-size:.68rem;color:var(--text4);margin-top:4px">Minimum: 200 DH</div>
+          </div>
+        </div>
+        <div class="payout-form">
+          <div>
+            <label style="font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:8px;display:block">Méthode de paiement</label>
+            <div class="payout-method">
+              <div class="pm-card on" id="pm-virement" onclick="selectMethod('virement')">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" height="22"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                <div class="pm-name">Virement bancaire</div>
+                <div class="pm-desc">2-3 jours ouvrables</div>
+              </div>
+              <div class="pm-card" id="pm-cih" onclick="selectMethod('cih')">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" height="22"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+                <div class="pm-name">CIH / Barid Bank</div>
+                <div class="pm-desc">24-48h</div>
+              </div>
+            </div>
+          </div>
+          <div class="fg">
+            <label>IBAN / Numéro de compte *</label>
+            <input id="payout-iban" placeholder="MA64 0000 0000 0000 0000 0000 00" style="font-family:monospace">
+          </div>
+          <div class="fg">
+            <label>Montant à retirer (DH) *</label>
+            <input id="payout-amount" type="number" placeholder="Ex: 500" min="200">
+            <span style="font-size:.72rem;color:var(--text4);margin-top:4px;display:block">Minimum 200 DH · Maximum: <span id="payout-max">—</span></span>
+          </div>
+          <div class="fg">
+            <label>Message (optionnel)</label>
+            <input id="payout-note" placeholder="Ex: retrait du mois de mars">
+          </div>
+          <button class="btn btn-primary btn-lg" onclick="requestPayout()">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="16" height="16"><path d="M12 5v14M5 12h14"/></svg>
+            Demander le virement
+          </button>
+        </div>
+      </div>
+      <!-- Payout history -->
+      <div class="aff-chart-box">
+        <div class="aff-chart-title">Historique des retraits</div>
+        <div style="overflow-x:auto">
+          <table class="aff-table">
+            <thead><tr><th>Date</th><th>Montant</th><th>Méthode</th><th>Statut</th></tr></thead>
+            <tbody id="payout-tbody">
+              <tr><td colspan="4" style="text-align:center;padding:24px;color:var(--text4)">Aucun retrait pour le moment</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel: Links -->
+    <div class="aff-panel" id="panel-links">
+      <div class="link-gen">
+        <div class="lg-title">🔗 Générer des liens produits personnalisés</div>
+        <div class="lg-products" id="lg-products"></div>
+      </div>
+      <div class="aff-chart-box">
+        <div class="aff-chart-title">Conseils pour maximiser vos revenus</div>
+        <div style="display:grid;gap:10px">
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;background:var(--blue-lt);border-radius:10px;border:1px solid rgba(21,101,192,.15)">
+            <span style="font-size:1.4rem">📱</span>
+            <div><strong style="font-size:.82rem">Partagez sur WhatsApp & Instagram</strong><div style="font-size:.75rem;color:var(--text4);margin-top:3px">Les groupes WhatsApp marocains = meilleure conversion. Partagez les deals flash.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;background:#fef9c3;border-radius:10px;border:1px solid rgba(245,158,11,.2)">
+            <span style="font-size:1.4rem">⚡</span>
+            <div><strong style="font-size:.82rem">Ciblez les produits en promotion</strong><div style="font-size:.75rem;color:var(--text4);margin-top:3px">Les liens produits avec -30%+ convertissent 3x mieux que les liens génériques.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:12px;background:#d1fae5;border-radius:10px;border:1px solid rgba(5,150,105,.15)">
+            <span style="font-size:1.4rem">🎯</span>
+            <div><strong style="font-size:.82rem">Créez du contenu de qualité</strong><div style="font-size:.75rem;color:var(--text4);margin-top:3px">Un avis honnête + photos réelles = confiance + ventes. Évitez le spam.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="footer-root"></div>
+<div id="whatsapp-root"></div>
+<div id="backtop-root"></div>
+<div id="modal-root"></div>
+<div class="toasts"></div>
+
+<script>window.ESHOPIA_API_URL="https://eshopia-backend.onrender.com/api";</script>
+<script src="../js/script.js"></script>
+<script src="../js/megamenu.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/features.js"></script>
+<script src="../js/pwa.js"></script>
+<script>
+document.getElementById("nav").innerHTML         = buildNav("../");
+document.getElementById("footer-root").innerHTML = buildFooter("../");
+document.getElementById("modal-root").innerHTML  = buildLoginModal();
+document.getElementById("whatsapp-root").innerHTML = buildWhatsApp();
+document.getElementById("backtop-root").innerHTML  = buildBackToTop();
+Cart.badge();
+
+let affData = null;
+let selectedMethod = 'virement';
+
+/* ── Init ── */
+async function initDashboard(){
+  const user = AuthAPI.getUser();
+  if(!user){ showState('notlogged'); return; }
+
+  // Check backend + load real data
+  try {
+    const stats = await AffiliateAPI.getStats();
+    affData = stats;
+    console.log('[Affiliate] Backend connected ✓');
+  } catch(e) {
+    console.warn('[Affiliate] Backend offline — using demo data');
+    affData = mockAffData(user);
+  }
+
+  BackendStatus.showBanner();
+  renderDashboard(user);
+  showState('content');
+}
+
+function mockAffData(user){
+  const code = user.name.split(' ')[0].toUpperCase().replace(/[^A-Z0-9]/g,'') + Math.random().toString(36).slice(-3).toUpperCase();
+  return {
+    code,
+    totalClicks: Math.floor(Math.random()*800+200),
+    monthClicks: Math.floor(Math.random()*120+30),
+    totalOrders: Math.floor(Math.random()*40+10),
+    totalEarned: Math.floor(Math.random()*2000+500),
+    balance: Math.floor(Math.random()*600+100),
+    pending: Math.floor(Math.random()*200+50),
+    avgCart: Math.floor(Math.random()*300+200),
+    rank: Math.floor(Math.random()*50+1),
+    createdAt: new Date(Date.now() - Math.random()*90*86400000).toLocaleDateString('fr-MA'),
+    sales: Array.from({length:8},(_,i)=>({
+      id: 'CMD-'+Math.random().toString(36).slice(-6).toUpperCase(),
+      date: new Date(Date.now() - i*3*86400000).toLocaleDateString('fr-MA'),
+      products: Math.floor(Math.random()*3+1),
+      amount: Math.floor(Math.random()*800+200),
+      commission: Math.floor(Math.random()*80+20),
+      status: ['paid','pending','processing'][Math.floor(Math.random()*3)]
+    })),
+    payouts: Array.from({length:3},(_,i)=>({
+      date: new Date(Date.now() - i*30*86400000).toLocaleDateString('fr-MA'),
+      amount: Math.floor(Math.random()*500+200),
+      method: ['Virement','CIH'][i%2],
+      status: i===0?'pending':'paid'
+    })),
+    dailyClicks: Array.from({length:7},()=>Math.floor(Math.random()*40+5))
+  };
+}
+
+function renderDashboard(user){
+  const d = affData;
+  const affLink = `https://eshopia.ma/?ref=${d.code}`;
+
+  // Header
+  document.getElementById('aff-username').textContent = user.name.split(' ')[0];
+  document.getElementById('aff-code-display').textContent = d.code;
+  document.getElementById('aff-link-display').textContent = affLink;
+  document.getElementById('aff-since').textContent = d.createdAt;
+  window._affLink = affLink;
+
+  // KPIs
+  document.getElementById('kpi-clicks').textContent = d.totalClicks.toLocaleString('fr-MA');
+  document.getElementById('kpi-clicks-month').textContent = `+${d.monthClicks} ce mois`;
+  document.getElementById('kpi-orders').textContent = d.totalOrders;
+  const ctr = d.totalClicks > 0 ? ((d.totalOrders/d.totalClicks)*100).toFixed(1) : 0;
+  document.getElementById('kpi-conversion').textContent = `Taux: ${ctr}%`;
+  document.getElementById('kpi-earned').textContent = fmt(d.totalEarned);
+  document.getElementById('kpi-balance').textContent = fmt(d.balance);
+  document.getElementById('kpi-pending').textContent = `En attente: ${fmt(d.pending)}`;
+
+  // Payout
+  document.getElementById('payout-balance').textContent = fmt(d.balance);
+  document.getElementById('payout-max').textContent = fmt(d.balance);
+  if(d.balance < 200){
+    document.getElementById('payout-status-badge').textContent = `⚠ ${d.balance} DH / 200 DH min`;
+    document.getElementById('payout-status-badge').style.background = '#fef3c7';
+    document.getElementById('payout-status-badge').style.color = '#92400e';
+  }
+
+  // Performance
+  document.getElementById('perf-ctr').textContent = ctr+'%';
+  document.getElementById('perf-ctr-tip').textContent = ctr > 5 ? '✓ Excellent !' : ctr > 2 ? '→ Bien' : '↑ À améliorer';
+  document.getElementById('perf-avg').textContent = fmt(d.avgCart);
+  document.getElementById('perf-rank').textContent = '#'+d.rank;
+  document.getElementById('perf-rank-tip').textContent = d.rank <= 10 ? '🏆 Top 10 !' : d.rank <= 50 ? '⭐ Top 50' : 'Progressez !';
+
+  // Chart
+  renderChart(d.dailyClicks);
+
+  // Sales table
+  const tbody = document.getElementById('sales-tbody');
+  if(d.sales && d.sales.length){
+    tbody.innerHTML = d.sales.map(s=>`
+      <tr>
+        <td style="font-family:monospace;font-size:.75rem">${s.id}</td>
+        <td>${s.date}</td>
+        <td>${s.products} article${s.products>1?'s':''}</td>
+        <td style="font-weight:700">${fmt(s.amount)}</td>
+        <td style="color:var(--green);font-weight:700">+${fmt(s.commission)}</td>
+        <td><span class="aff-status ${s.status==='paid'?'st-paid':s.status==='pending'?'st-pending':'st-processing'}">
+          ${s.status==='paid'?'✓ Payé':s.status==='pending'?'⏳ En attente':'↻ En cours'}
+        </span></td>
+      </tr>`).join('');
+  } else {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text4)">Aucune vente pour le moment. Commencez à partager votre lien !</td></tr>';
+  }
+
+  // Payout history
+  const ptbody = document.getElementById('payout-tbody');
+  if(d.payouts && d.payouts.length){
+    ptbody.innerHTML = d.payouts.map(p=>`
+      <tr>
+        <td>${p.date}</td>
+        <td style="font-weight:700">${fmt(p.amount)}</td>
+        <td>${p.method}</td>
+        <td><span class="aff-status ${p.status==='paid'?'st-paid':'st-pending'}">${p.status==='paid'?'✓ Viré':'⏳ En attente'}</span></td>
+      </tr>`).join('');
+  }
+
+  // Links
+  const lgProds = document.getElementById('lg-products');
+  lgProds.innerHTML = PRODUCTS.slice(0,10).map(p=>`
+    <div class="lg-prod">
+      <span class="lg-prod-emoji">${p.img}</span>
+      <span class="lg-prod-name">${p.name.split('—')[0].trim()}</span>
+      <span class="lg-prod-price">${fmt(p.price)}</span>
+      <button class="lg-copy" onclick="copyProdLink(${p.id}, '${d.code}')">Copier</button>
+    </div>`).join('');
+}
+
+function renderChart(data){
+  const days = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  const max = Math.max(...data, 1);
+  const chart = document.getElementById('barChart');
+  const labels = document.getElementById('barLabels');
+  chart.innerHTML = data.map((v,i)=>`
+    <div class="mbc-bar active" style="height:${(v/max)*100}%;opacity:${0.3 + (v/max)*0.7}" title="${v} clics"></div>
+  `).join('');
+  labels.innerHTML = days.slice(0,data.length).map(d=>`<div class="mbc-label">${d}</div>`).join('');
+}
+
+function updateChart(days){ renderChart(Array.from({length:+days},()=>Math.floor(Math.random()*40+5))); }
+
+function switchTab(tab){
+  document.querySelectorAll('.aff-tab').forEach((t,i)=>{
+    const tabs=['stats','sales','payout','links'];
+    t.classList.toggle('on', tabs[i]===tab);
+  });
+  document.querySelectorAll('.aff-panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById('panel-'+tab).classList.add('on');
+}
+
+function selectMethod(m){
+  selectedMethod = m;
+  document.querySelectorAll('.pm-card').forEach(c=>c.classList.remove('on'));
+  document.getElementById('pm-'+m).classList.add('on');
+}
+
+function copyLink(){
+  if(!window._affLink) return;
+  navigator.clipboard.writeText(window._affLink)
+    .then(()=>toast('Lien copié ! 🎉','success'))
+    .catch(()=>toast('Copiez: '+window._affLink,'info'));
+}
+
+function copyProdLink(id, code){
+  const link = `https://eshopia.ma/pages/product.html?id=${id}&ref=${code}`;
+  navigator.clipboard.writeText(link)
+    .then(()=>toast('Lien produit copié !','success'))
+    .catch(()=>toast('Copiez: '+link,'info'));
+}
+
+async function requestPayout(){
+  if(!affData) return;
+  const iban   = document.getElementById('payout-iban').value.trim();
+  const amount = +document.getElementById('payout-amount').value;
+  const note   = document.getElementById('payout-note').value.trim();
+
+  if(!iban){ toast('Veuillez entrer votre IBAN / numéro de compte','error'); return; }
+  if(!amount || amount < 200){ toast('Montant minimum: 200 DH','error'); return; }
+  if(amount > affData.balance){ toast('Montant supérieur à votre solde disponible','error'); return; }
+
+  try {
+    await AffiliateAPI.requestPayout(amount, selectedMethod, iban, note);
+    toast(`Demande de retrait de ${fmt(amount)} envoyée ! Traitement sous 48h 🎉`,'success');
+    affData.balance -= amount;
+    affData.pending += amount;
+    document.getElementById('payout-balance').textContent = fmt(affData.balance);
+    document.getElementById('kpi-balance').textContent = fmt(affData.balance);
+  } catch(e) {
+    // Demo mode
+    toast(`Demande de retrait de ${fmt(amount)} enregistrée ! (Mode demo — backend requis pour traitement réel)`,'success');
+  }
+}
+
+function showState(state){
+  document.getElementById('aff-loading').style.display  = state==='loading'  ? 'block' : 'none';
+  document.getElementById('aff-notlogged').style.display = state==='notlogged' ? 'block' : 'none';
+  document.getElementById('aff-content').style.display  = state==='content'  ? 'block' : 'none';
+}
+
+// Init
+initDashboard();
+</script>
+</body>
+</html>

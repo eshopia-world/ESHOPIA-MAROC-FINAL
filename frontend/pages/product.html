@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#1565c0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Produit — E-Shopia Maroc</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/megamenu.css">
+</head>
+<body>
+<div id="nav"></div>
+
+<div class="pg-head">
+  <div class="container">
+    <h1 id="pgTitle">Chargement…</h1>
+    <div class="breadcrumb">
+      <a href="../index.html">Accueil</a><span class="sep">/</span>
+      <a href="category.html" id="bcCat">Catégorie</a><span class="sep">/</span>
+      <span id="bcName">Produit</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- ═══ PRODUCT MAIN ═══ -->
+  <div class="product-wrap" id="productWrap" style="padding-top:8px">
+    <!-- Gallery -->
+    <div class="gallery">
+      <div class="gallery-main" id="galMain">
+        <div class="gal-badges" id="galBadges"></div>
+        <span id="galEmoji" style="font-size:10rem">⏳</span>
+      </div>
+      <div class="gallery-thumbs" id="galThumbs"></div>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="product-info" id="productInfo">
+      <div style="color:var(--text4);padding:40px 0">Chargement du produit…</div>
+    </div>
+  </div>
+
+  <!-- ═══ TABS ═══ -->
+  <div style="margin-bottom:64px">
+    <div class="prod-tabs-nav" id="prodTabs">
+      <button class="ptab on" onclick="switchPTab(this,'tab-desc')">Description</button>
+      <button class="ptab" onclick="switchPTab(this,'tab-rev')">Avis clients</button>
+      <button class="ptab" onclick="switchPTab(this,'tab-ship')">Livraison & Retours</button>
+    </div>
+
+    <div id="tab-desc" class="ptab-pane on">
+      <div style="background:#fff;border-radius:var(--r-xl);padding:28px;border:1px solid var(--g200)">
+        <h3 style="font-size:1rem;font-weight:700;margin-bottom:14px;color:var(--text)">Description détaillée</h3>
+        <p id="tabDescText" style="color:var(--text3);line-height:1.85;font-size:.92rem"></p>
+        <div id="tabFeatures" style="margin-top:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px"></div>
+      </div>
+    </div>
+
+    <div id="tab-rev" class="ptab-pane">
+      <div style="background:#fff;border-radius:var(--r-xl);padding:28px;border:1px solid var(--g200)">
+        <div style="display:flex;align-items:center;gap:24px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--g200)">
+          <div style="text-align:center">
+            <div style="font-family:var(--fh);font-size:3.5rem;font-weight:900;color:var(--text);line-height:1" id="avgRating">4.7</div>
+            <div style="color:var(--orange);font-size:1rem;margin:6px 0" id="avgStars">★★★★★</div>
+            <div style="font-size:.8rem;color:var(--text4)" id="totalRevs">sur 0 avis</div>
+          </div>
+          <div style="flex:1">
+            <div class="rating-bar" data-r="5" data-pct="72"></div>
+            <div class="rating-bar" data-r="4" data-pct="18"></div>
+            <div class="rating-bar" data-r="3" data-pct="6"></div>
+            <div class="rating-bar" data-r="2" data-pct="3"></div>
+            <div class="rating-bar" data-r="1" data-pct="1"></div>
+          </div>
+        </div>
+        <div id="revList"></div>
+      </div>
+    </div>
+
+    <div id="tab-ship" class="ptab-pane">
+      <div style="background:#fff;border-radius:var(--r-xl);padding:28px;border:1px solid var(--g200)">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px">
+          ${[
+            {icon:"🚚",title:"Livraison Standard",desc:"2–5 jours ouvrables partout au Maroc. Livraison gratuite dès 129 DH."},
+            {icon:"💵",title:"Paiement à la Livraison",desc:"Payez en cash directement au livreur. Aucun prépaiement requis."},
+            {icon:"↩️",title:"Retours Sous 7 Jours",desc:"Produit non conforme ? Retournez-le sous 7 jours, sans frais."},
+            {icon:"🛡️",title:"Garantie Qualité",desc:"Tous nos produits sont authentiques et testés avant expédition."}
+          ].map(i=>`
+          <div style="background:var(--bg);border-radius:var(--r-lg);padding:20px;border:1px solid var(--g200)">
+            <div style="font-size:2rem;margin-bottom:10px">${i.icon}</div>
+            <strong style="font-family:var(--fh);font-size:.88rem;display:block;margin-bottom:6px">${i.title}</strong>
+            <p style="font-size:.82rem;color:var(--text3);line-height:1.65">${i.desc}</p>
+          </div>`).join("")}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ RELATED PRODUCTS ═══ -->
+  <div style="margin-bottom:64px">
+    <div class="sec-hd">
+      <div>
+        <span class="sec-label">À découvrir</span>
+        <h2 class="sec-title">Produits <span class="c-blue">Similaires</span></h2>
+        <div class="sec-bar"></div>
+      </div>
+    </div>
+    <div class="prod-grid pg4" id="relatedGrid"></div>
+  </div>
+</div>
+
+<div id="footer-root"></div>
+<div id="whatsapp-root"></div><div id="backtop-root"></div>
+<div id="modal-root"></div>
+<div class="toasts"></div>
+
+<style>
+.rating-bar{display:flex;align-items:center;gap:10px;margin-bottom:7px;font-size:.8rem}
+.rating-bar::before{content:attr(data-r)" ★";color:var(--orange);min-width:28px;font-family:var(--fh);font-weight:700}
+.rb-track{flex:1;height:8px;background:var(--g200);border-radius:4px;overflow:hidden}
+.rb-fill{height:100%;background:var(--orange);border-radius:4px}
+.rating-bar::after{content:attr(data-pct)"%";color:var(--text4);min-width:32px;text-align:right}
+.feat-item{background:var(--bg);border-radius:var(--r-lg);padding:12px 14px;display:flex;align-items:center;gap:10px;border:1px solid var(--g200);font-size:.83rem;color:var(--text2)}
+.feat-item::before{content:"✓";color:var(--green);font-weight:800;flex-shrink:0}
+</style>
+
+<script>window.ESHOPIA_API_URL="https://eshopia-backend.onrender.com/api";</script>
+<script src="../js/script.js"></script>
+<script src="../js/megamenu.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/features.js"></script>
+<script src="../js/pwa.js"></script>
+<script>
+document.getElementById("nav").innerHTML         = buildNav("../");
+document.getElementById("footer-root").innerHTML = buildFooter("../");
+document.getElementById("modal-root").innerHTML  = buildLoginModal();
+Cart.badge();
+document.getElementById("whatsapp-root").innerHTML=buildWhatsApp();
+document.getElementById("backtop-root").innerHTML=buildBackToTop();
+
+/* Rating bars */
+document.querySelectorAll(".rating-bar").forEach(bar=>{
+  const pct=bar.dataset.pct;
+  bar.innerHTML=`<div class="rb-track"><div class="rb-fill" style="width:${pct}%"></div></div>`;
+  bar.setAttribute("data-r", bar.getAttribute("data-r")+"");
+});
+
+function switchPTab(btn, pid){
+  document.querySelectorAll(".ptab").forEach(t=>t.classList.remove("on"));
+  document.querySelectorAll(".ptab-pane").forEach(p=>p.classList.remove("on"));
+  btn.classList.add("on");
+  document.getElementById(pid)?.classList.add("on");
+}
+
+/* Load product — API first, local fallback */
+const urlId = parseInt(new URLSearchParams(location.search).get("id"))||1;
+let p = PRODUCTS.find(x=>x.id===urlId)||PRODUCTS[0];
+
+/* Try to load fresh data from backend (enriches local data) */
+(async () => {
+  try {
+    const API = window.ESHOPIA_API_URL || 'https://eshopia-backend.onrender.com/api';
+    const res  = await fetch(`${API}/products/${urlId}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data.product) {
+        // Merge DB product with local (keep local img/desc as fallback)
+        const dbP = data.product;
+        p = {
+          ...p,
+          name:  dbP.name  || p.name,
+          price: dbP.price || p.price,
+          old:   dbP.oldPrice || p.old,
+          stock: dbP.stock,
+          sold:  dbP.sold  || p.sold,
+          rating: dbP.rating || p.rating,
+          rev:   dbP.reviewCount || p.rev,
+          desc:  dbP.desc  || p.desc,
+        };
+        // Update stock badge if low
+        if (dbP.stock < 5 && dbP.stock > 0) {
+          const stockBadge = document.getElementById('stock-badge');
+          if (stockBadge) {
+            stockBadge.innerHTML = `<span class="badge bg-orange">Plus que ${dbP.stock} en stock !</span>`;
+          }
+        }
+      }
+    }
+  } catch(e) { /* silently use local data */ }
+})();
+const d = disc(p.old, p.price);
+
+document.title = p.name + " — E-Shopia Maroc";
+document.getElementById("pgTitle").textContent = p.name;
+document.getElementById("bcCat").textContent = p.cat;
+document.getElementById("bcName").textContent = p.name.split("—")[0].trim();
+
+/* Gallery */
+document.getElementById("galEmoji").textContent = p.img;
+if(d>0) document.getElementById("galBadges").innerHTML = `<span class="badge bg-red" style="font-size:.78rem;padding:5px 12px">-${d}%</span>`;
+const thumbEmojis = [p.img,"📷","🔍","📦","✨"];
+document.getElementById("galThumbs").innerHTML = thumbEmojis.map((e,i)=>
+  `<div class="g-thumb ${i===0?"on":""}" onclick="document.getElementById('galEmoji').textContent='${e}';this.parentElement.querySelectorAll('.g-thumb').forEach(t=>t.classList.remove('on'));this.classList.add('on')">${e}</div>`
+).join("");
+
+/* Info panel */
+document.getElementById("productInfo").innerHTML = `
+  <div class="pi-brand">${p.cat.toUpperCase()}</div>
+  <h1 class="pi-title">${p.name}</h1>
+  <div class="pi-meta">
+    <div class="pi-stars">
+      <span class="st">${stars(p.rating)}</span>
+      <span style="margin-left:5px;color:var(--text3)">(${p.rev} avis)</span>
+    </div>
+    <span>•</span>
+    <span>SKU: ESM-${p.id.toString().padStart(4,"0")}</span>
+  </div>
+
+  <div class="price-box">
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+      <span class="price-main">${fmt(p.price)}</span>
+      ${p.old?`<span class="price-old">${fmt(p.old)}</span>`:""}
+    </div>
+    ${d>0?`<span class="price-save">Économisez ${fmt(p.old-p.price)} (-${d}%)</span>`:""}
+    <div class="price-note" style="margin-top:10px">💵 Paiement à la livraison disponible</div>
+  </div>
+
+  <div class="stock-row">
+    <span class="s-dot" style="background:${p.stock>20?"var(--green)":p.stock>0?"var(--orange)":"var(--red)"}"></span>
+    <span class="${p.stock>20?"s-ok":p.stock>0?"s-low":"s-out"}">
+      ${p.stock>20?"En stock":`Plus que ${p.stock} en stock`}
+    </span>
+  </div>
+
+  <p class="pi-desc">${p.desc}</p>
+
+  <!-- Live viewers -->
+  <div class="live-badge" style="margin-bottom:16px">
+    <span class="live-dot"></span>
+    <span id="liveViewers">${Math.floor(Math.random()*18)+6} personnes</span> regardent ce produit
+  </div>
+
+  <div class="qty-row">
+    <span class="qty-lbl">Quantité</span>
+    <div class="qty-ctrl">
+      <button onclick="const i=document.getElementById('qtyInp');i.value=Math.max(1,+i.value-1)">−</button>
+      <input id="qtyInp" type="number" value="1" min="1" max="${p.stock}">
+      <button onclick="const i=document.getElementById('qtyInp');i.value=Math.min(${p.stock},+i.value+1)">+</button>
+    </div>
+  </div>
+
+  <div class="pi-actions">
+    <button class="btn btn-primary btn-lg btn-block" onclick="Cart.add(${p.id},+document.getElementById('qtyInp').value)">
+      <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Ajouter au panier
+    </button>
+    <a href="checkout.html" class="btn btn-red btn-lg btn-block" onclick="Cart.add(${p.id},1)">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Commander maintenant (COD)
+    </a>
+  </div>
+
+  <!-- Trust seals -->
+  <div class="trust-seals">
+    <div class="trust-seal"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>Livraison gratuite dès 129 DH</div>
+    <div class="trust-seal"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>Paiement à la livraison</div>
+    <div class="trust-seal"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>Retours 7 jours gratuits</div>
+  </div>
+
+  <div class="pi-meta-box" style="margin-top:14px">
+    <div class="pm-row"><strong>Catégorie</strong><span>${p.cat}</span></div>
+    <div class="pm-row"><strong>Livraison</strong><span>24–48h · Gratuite partout au Maroc</span></div>
+    <div class="pm-row"><strong>Paiement</strong><span>Cash à la livraison (COD)</span></div>
+    <div class="pm-row"><strong>Retours</strong><span>7 jours · Sans frais</span></div>
+    <div class="pm-row"><strong>Stock</strong><span>${p.stock} unités disponibles</span></div>
+  </div>`;
+
+/* Sticky ATC */
+document.body.insertAdjacentHTML("beforeend",`
+  <div class="sticky-atc" id="stickyAtc">
+    <div class="container">
+      <div class="satc-info">
+        <span class="satc-emj">${p.img}</span>
+        <span class="satc-name">${p.name}</span>
+      </div>
+      <span class="satc-price">${fmt(p.price)}</span>
+      <button class="btn btn-primary satc-btn" onclick="Cart.add(${p.id})">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="15" height="15"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Ajouter au panier
+      </button>
+    </div>
+  </div>`);
+window.addEventListener("scroll",()=>{
+  const atcBtn=document.querySelector(".pi-actions");
+  const stickyEl=document.getElementById("stickyAtc");
+  if(atcBtn&&stickyEl){
+    const rect=atcBtn.getBoundingClientRect();
+    stickyEl.classList.toggle("visible",rect.bottom<0);
+  }
+},{passive:true});
+
+/* Tab content */
+document.getElementById("tabDescText").textContent = p.desc;
+document.getElementById("avgRating").textContent = p.rating;
+document.getElementById("avgStars").textContent = stars(p.rating);
+document.getElementById("totalRevs").textContent = `sur ${p.rev} avis`;
+
+const features = ["Qualité premium certifiée","Garantie satisfait ou remboursé","Emballage soigné et sécurisé","Support technique disponible","Compatible tous modèles","Documentation incluse en français"];
+document.getElementById("tabFeatures").innerHTML = features.map(f=>`<div class="feat-item">${f}</div>`).join("");
+
+/* Reviews */
+document.getElementById("revList").innerHTML = REVIEWS.slice(0,4).map(r=>`
+  <div style="padding:16px 0;border-bottom:1px solid var(--g200)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:38px;height:38px;border-radius:50%;background:${r.col};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:.85rem">${r.name.charAt(0)}</div>
+        <div>
+          <div style="font-weight:700;font-size:.86rem">${r.name}</div>
+          <div style="font-size:.72rem;color:var(--text4)">${r.city} · Achat vérifié</div>
+        </div>
+      </div>
+      <div style="color:var(--orange);font-size:.85rem">${"★".repeat(r.r)}${"☆".repeat(5-r.r)}</div>
+    </div>
+    <p style="font-size:.86rem;color:var(--text3);line-height:1.7;font-style:italic">"${r.text}"</p>
+  </div>`).join("");
+
+/* Related */
+// SEO schema
+if(window.SEO){ SEO.injectProductSchema(p); SEO.updateMeta(p.name, p.desc); }
+document.getElementById("relatedGrid").innerHTML = PRODUCTS
+  .filter(x=>x.cat===p.cat && x.id!==p.id).slice(0,4)
+  .map(x=>pCard(x,"../")).join("");
+</script>
+</body>
+</html>

@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#1565c0">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Dashboard Admin — E-Shopia Maroc</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .ds-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px;
+    }
+
+    .ds-logo img {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      border-radius: 14px;
+      background: white;
+      padding: 6px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+    }
+
+    .ds-logo-txt {
+      font-size: 20px;
+      font-weight: 800;
+      color: white;
+    }
+
+    .ds-logo-sub {
+      font-size: 12px;
+      color: rgba(255, 255, 255, .6);
+      margin-top: 2px;
+    }
+
+    /* ── Dashboard Layout ── */
+    body {
+      background: #f8fafc;
+      overflow-x: hidden;
+      font-family: 'Poppins', sans-serif;
+      color: #0f172a;
+    }
+
+    .dash-wrap {
+      display: flex;
+      min-height: 100vh
+    }
+
+    /* Sidebar */
+    .dash-sidebar {
+      width: 240px;
+      background: #0f172a;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      transition: .3s
+    }
+
+    .ds-logo {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .ds-logo-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1565c0, #e8193c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0
+    }
+
+    .ds-logo-txt {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      font-family: 'Poppins', sans-serif
+    }
+
+    .ds-logo-sub {
+      font-size: 10px;
+      color: rgba(255, 255, 255, .4);
+      margin-top: 1px
+    }
+
+    .ds-nav {
+      padding: 12px 0;
+      flex: 1
+    }
+
+    .ds-section {
+      padding: 8px 16px 4px;
+      font-size: 9.5px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, .3);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 8px
+    }
+
+    .ds-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 16px;
+      color: rgba(255, 255, 255, .55);
+      cursor: pointer;
+      transition: .15s;
+      font-size: 13px;
+      text-decoration: none;
+      border-left: 3px solid transparent
+    }
+
+    .ds-item svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      opacity: .7
+    }
+
+    .ds-item:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, .05)
+    }
+
+    .ds-item.on {
+      color: #fff;
+      background: rgba(21, 101, 192, .25);
+      border-left-color: #1565c0
+    }
+
+    .ds-item.on svg {
+      opacity: 1
+    }
+
+    .ds-badge {
+      margin-left: auto;
+      background: #e8193c;
+      color: #fff;
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700
+    }
+
+    .ds-bottom {
+      padding: 16px;
+      border-top: 1px solid rgba(255, 255, 255, .07)
+    }
+
+    /* Main */
+    .dash-main {
+      margin-left: 240px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh
+    }
+
+    .dash-topbar {
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      height: 56px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 100
+    }
+
+    .dt-title {
+      font-size: 16px;
+      font-weight: 800;
+      flex: 1;
+      font-family: 'Poppins', sans-serif
+    }
+
+    .dt-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1565c0, #e8193c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 13px
+    }
+
+    .dash-content {
+      padding: 20px;
+      flex: 1
+    }
+
+    /* Panels */
+    .panel {
+      display: none
+    }
+
+    .panel.on {
+      display: block
+    }
+
+    /* KPI */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 20px
+    }
+
+    .kpi {
+      background: #fff;
+      border-radius: 14px;
+      padding: 18px;
+      border: 1px solid #e2e8f0
+    }
+
+    .kpi-val {
+      font-size: 26px;
+      font-weight: 900;
+      font-family: 'Poppins', sans-serif;
+      color: #0f172a
+    }
+
+    .kpi-lbl {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 3px
+    }
+
+    .kpi-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-top: 6px
+    }
+
+    .kpi-up {
+      background: #d1fae5;
+      color: #065f46
+    }
+
+    .kpi-dn {
+      background: #fee2e2;
+      color: #991b1b
+    }
+
+    .kpi-neu {
+      background: #e0e7ff;
+      color: #3730a3
+    }
+
+    /* Section card */
+    .sc {
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 16px;
+      overflow: hidden
+    }
+
+    .sc-hd {
+      padding: 14px 18px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .sc-hd h3 {
+      font-size: 14px;
+      font-weight: 700;
+      flex: 1;
+      font-family: 'Poppins', sans-serif
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px
+    }
+
+    thead th {
+      background: #f8fafc;
+      padding: 9px 14px;
+      text-align: left;
+      font-weight: 600;
+      color: #64748b;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      white-space: nowrap
+    }
+
+    tbody td {
+      padding: 11px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none
+    }
+
+    tbody tr:hover td {
+      background: #f8fafc
+    }
+
+    /* Status badges */
+    .st {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap
+    }
+
+    .st-pending {
+      background: #fef3c7;
+      color: #92400e
+    }
+
+    .st-confirmed {
+      background: #d1fae5;
+      color: #065f46
+    }
+
+    .st-shipped {
+      background: #dbeafe;
+      color: #1e40af
+    }
+
+    .st-delivered {
+      background: #dcfce7;
+      color: #14532d
+    }
+
+    .st-cancelled {
+      background: #fee2e2;
+      color: #991b1b
+    }
+
+    .st-queue {
+      background: #e0e7ff;
+      color: #3730a3
+    }
+
+    .st-inprogress {
+      background: #fef9c3;
+      color: #713f12
+    }
+
+    .st-online {
+      background: #d1fae5;
+      color: #065f46
+    }
+
+    .st-offline {
+      background: #f1f5f9;
+      color: #64748b
+    }
+
+    /* Buttons */
+    .btn-xs {
+      padding: 4px 10px;
+      border-radius: 7px;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      transition: .15s
+    }
+
+    .btn-blue {
+      background: #1565c0;
+      color: #fff
+    }
+
+    .btn-blue:hover {
+      background: #1255a0
+    }
+
+    .btn-green {
+      background: #059669;
+      color: #fff
+    }
+
+    .btn-red {
+      background: #e8193c;
+      color: #fff
+    }
+
+    .btn-ghost-sm {
+      background: transparent;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+      padding: 4px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600
+    }
+
+    /* Filters */
+    .filters {
+      padding: 12px 18px;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .fi {
+      padding: 6px 11px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 12px;
+      background: #f8fafc;
+      outline: none;
+      color: #0f172a
+    }
+
+    .fi:focus {
+      border-color: #1565c0
+    }
+
+    /* Modal */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center
+    }
+
+    .modal-bg.open {
+      display: flex
+    }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 18px;
+      padding: 26px;
+      width: min(460px, 94vw);
+      max-height: 90vh;
+      overflow-y: auto
+    }
+
+    .modal-box h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 18px
+    }
+
+    .fg {
+      margin-bottom: 14px
+    }
+
+    .fg label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 5px
+    }
+
+    .fg input,
+    .fg select,
+    .fg textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 13px;
+      outline: none;
+      transition: .15s;
+      background: #fff
+    }
+
+    .fg input:focus,
+    .fg select:focus {
+      border-color: #1565c0
+    }
+
+    /* Performance bar */
+    .perf-bar {
+      height: 5px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      margin-top: 5px;
+      overflow: hidden
+    }
+
+    .perf-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #1565c0, #f59e0b);
+      border-radius: 3px;
+      transition: width .6s
+    }
+
+    /* Agent card */
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+      padding: 16px
+    }
+
+    .agent-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      background: #f8fafc
+    }
+
+    .agent-av {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1565c0, #e8193c);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px
+    }
+
+    /* Priority */
+    .prio-high {
+      color: #e8193c;
+      font-weight: 700;
+      font-size: 11px
+    }
+
+    .prio-med {
+      color: #f59e0b;
+      font-weight: 600;
+      font-size: 11px
+    }
+
+    .prio-low {
+      color: #059669;
+      font-size: 11px
+    }
+
+    /* Responsive */
+    @media(max-width:900px) {
+      .dash-sidebar {
+        width: 56px
+      }
+
+      .ds-logo-txt,
+      .ds-logo-sub,
+      .ds-section,
+      .ds-item span,
+      .ds-badge {
+        display: none
+      }
+
+      .dash-main {
+        margin-left: 56px
+      }
+
+      .kpi-row {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    @media(max-width:600px) {
+      .kpi-row {
+        grid-template-columns: 1fr
+      }
+
+      .dash-content {
+        padding: 12px
+      }
+    }
+
+    .kpi-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px
+    }
+
+    .kpi-val {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #0f172a
+    }
+
+    .kpi-lbl {
+      font-size: .72rem;
+      color: #64748b
+    }
+
+    .loader {
+      width: 42px;
+      height: 42px;
+      border: 4px solid rgba(255, 255, 255, .15);
+      border-top: 4px solid #15b56c;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: auto;
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="dash-wrap">
+
+    <!-- SIDEBAR -->
+    <aside class="dash-sidebar">
+      <div class="ds-logo">
+
+        <img src="../images/logo.png" alt="E-Shopia Logo">
+
+        <div>
+          <div class="ds-logo-txt">E-Shopia</div>
+          <div class="ds-logo-sub">Admin Panel</div>
+        </div>
+
+      </div>
+      <nav class="ds-nav">
+        <div class="ds-section">Général</div>
+        <a class="ds-item on" onclick="showPanel('overview',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          <span>Tableau de bord</span>
+        </a>
+        <div class="ds-section">Commandes</div>
+        <a class="ds-item" onclick="showPanel('orders',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+          </svg>
+          <span>Toutes commandes</span>
+          <span class="ds-badge" id="badge-orders">0</span>
+        </a>
+        <a class="ds-item" onclick="showPanel('queue',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path
+              d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013 7.85 19.79 19.79 0 01.21 3.18 2 2 0 012 1h3a2 2 0 012 1.72 19 19 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 19 19 0 002.81.7A2 2 0 0122 16.92z" />
+          </svg>
+          <span>File confirmation</span>
+          <span class="ds-badge" id="badge-queue">0</span>
+        </a>
+        <div class="ds-section">Équipe</div>
+        <a class="ds-item" onclick="showPanel('agents',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+          </svg>
+          <span>Agents</span>
+        </a>
+        <div class="ds-section">Croissance</div>
+        <a class="ds-item" onclick="showPanel('affiliates',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+          <span>Affiliés</span>
+        </a>
+        <a class="ds-item" onclick="showPanel('vendors',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          <span>Vendeurs</span>
+        </a>
+        <div class="ds-section">Catalogue</div>
+        <a class="ds-item" onclick="showPanel('products',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="7" width="20" height="14" rx="2" />
+            <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
+          </svg>
+          <span>Produits</span>
+        </a>
+        <div class="ds-section">Livraison</div>
+        <a class="ds-item" onclick="showPanel('delivery',this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="3" width="15" height="13" />
+            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+            <circle cx="5.5" cy="18.5" r="2.5" />
+            <circle cx="18.5" cy="18.5" r="2.5" />
+          </svg>
+          <span>Expéditions</span>
+        </a>
+      </nav>
+      <div class="ds-bottom">
+        <a class="ds-item" onclick="showPanel('analytics',this)">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg>
+          <span>Analytics</span>
+        </a>
+        <a class="ds-item" href="../index.html" style="padding:0;font-size:12px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+          </svg>
+          <span>Retour au site</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dash-main">
+      <div class="dash-topbar">
+        <span class="dt-title" id="panel-title">Tableau de bord</span>
+        <button class="btn-ghost-sm" onclick="loadCurrentPanel()">↻ Actualiser</button>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="dt-avatar" id="user-av">A</div>
+          <span style="font-size:13px;font-weight:600" id="user-nm">Admin</span>
+        </div>
+      </div>
+
+      <div class="dash-content">
+
+        <!-- ═══ OVERVIEW ═══ -->
+        <div class="panel on" id="panel-overview">
+          <div class="kpi-row">
+            <div class="kpi">
+              <div class="kpi-val" id="k-total">—</div>
+              <div class="kpi-lbl">Commandes totales</div><span class="kpi-badge kpi-neu">Tout</span>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="k-pending">—</div>
+              <div class="kpi-lbl">En attente confirmation</div><span class="kpi-badge kpi-up">Queue</span>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="k-confirmed">—</div>
+              <div class="kpi-lbl">Confirmées</div><span class="kpi-badge kpi-up">✓</span>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="k-revenue">—</div>
+              <div class="kpi-lbl">Chiffre d'affaires</div><span class="kpi-badge kpi-up">COD</span>
+            </div>
+          </div>
+          <div class="sc">
+            <div class="sc-hd">
+              <h3>Dernières commandes</h3>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>N° Commande</th>
+                  <th>Client</th>
+                  <th>Ville</th>
+                  <th>Total</th>
+                  <th>Statut</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="tb-recent">
+                <tr>
+                  <td colspan="6" style="text-align:center;padding:30px;color:#94a3b8">Chargement…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ═══ ORDERS ═══ -->
+        <div class="panel" id="panel-orders">
+          <div class="sc">
+            <div class="sc-hd">
+              <h3>Toutes les commandes</h3>
+              <button class="btn-xs btn-ghost-sm" onclick="exportCSV()">⬇ Export CSV</button>
+            </div>
+            <div class="filters">
+              <select class="fi" id="f-status" onchange="loadOrders()">
+                <option value="">Tous statuts</option>
+                <option value="pending">En attente</option>
+                <option value="confirmed">Confirmé</option>
+                <option value="shipped">Expédié</option>
+                <option value="delivered">Livré</option>
+                <option value="cancelled">Annulé</option>
+              </select>
+              <input class="fi" id="f-city" placeholder="Filtrer ville" oninput="loadOrders()">
+              <input class="fi" id="f-search" placeholder="Rechercher client…" oninput="loadOrders()">
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>N°</th>
+                  <th>Client</th>
+                  <th>Tél</th>
+                  <th>Ville</th>
+                  <th>Total</th>
+                  <th>Statut</th>
+                  <th>Confirm.</th>
+                  <th>Date</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="tb-orders">
+                <tr>
+                  <td colspan="9" style="text-align:center;padding:30px;color:#94a3b8">Chargement…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ═══ QUEUE ═══ -->
+        <div class="panel" id="panel-queue">
+          <div class="kpi-row">
+            <div class="kpi">
+              <div class="kpi-val" id="q-q">—</div>
+              <div class="kpi-lbl">Dans la file</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="q-ip">—</div>
+              <div class="kpi-lbl">En cours d'appel</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="q-c">—</div>
+              <div class="kpi-lbl">Confirmées</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="q-r">—%</div>
+              <div class="kpi-lbl">Taux confirmation</div>
+            </div>
+          </div>
+          <div class="sc">
+            <div class="sc-hd">
+              <h3>File de confirmation</h3>
+              <button class="btn-xs btn-blue" onclick="assignNext()">📞 Assigner suivant</button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Priorité</th>
+                  <th>N°</th>
+                  <th>Client</th>
+                  <th>Téléphone</th>
+                  <th>Total</th>
+                  <th>Statut</th>
+                  <th>Agent</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="tb-queue">
+                <tr>
+                  <td colspan="8" style="text-align:center;padding:30px;color:#94a3b8">Chargement…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ═══ AGENTS ═══ -->
+        <div class="panel" id="panel-agents">
+          <div class="sc">
+            <div class="sc-hd">
+              <h3>Équipe de confirmation</h3>
+              <button class="btn-xs btn-blue"
+                onclick="document.getElementById('modal-add-agent').classList.add('open')">+ Ajouter agent</button>
+            </div>
+            <div class="agent-grid" id="agent-grid">
+              <div style="padding:20px;color:#94a3b8">Chargement…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ AFFILIATES ═══ -->
+        <div class="panel" id="panel-affiliates">
+          <div class="kpi-row" style="margin-bottom:16px">
+            <div class="kpi">
+              <div class="kpi-val" id="aff-k-total">—</div>
+              <div class="kpi-lbl">Affiliés totaux</div><span class="kpi-badge kpi-neu">Total</span>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="aff-k-active">—</div>
+              <div class="kpi-lbl">Affiliés actifs</div><span class="kpi-badge kpi-up">Actifs</span>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="aff-k-clicks">—</div>
+              <div class="kpi-lbl">Clics totaux</div><span class="kpi-badge kpi-neu">Clics</span>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="aff-k-earnings">—</div>
+              <div class="kpi-lbl">Commissions dues (DH)</div><span class="kpi-badge kpi-dn">À payer</span>
+            </div>
+          </div>
+          <div class="sc">
+            <div class="sc-hd">
+              <h3>Gestion affiliés</h3>
+              <div style="display:flex;gap:8px">
+                <input class="fi" id="aff-search" placeholder="Rechercher affilié…"
+                  oninput="filterAffiliates(this.value)" style="width:180px">
+                <select class="fi" id="aff-filter" onchange="loadAffiliates()">
+                  <option value="">Tous</option>
+                  <option value="active">Actifs seulement</option>
+                  <option value="pending">Paiement en attente</option>
+                </select>
+              </div>
+            </div>
+            <div style="overflow-x:auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Affilié</th>
+                    <th>Code</th>
+                    <th>Clics</th>
+                    <th>Commandes</th>
+                    <th>Gains totaux</th>
+                    <th>Solde</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tb-affiliates">
+                  <tr>
+                    <td colspan="8" style="text-align:center;padding:30px;color:#94a3b8">Chargement…</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ PRODUCTS ═══ -->
+        <div class="panel" id="panel-products">
+          <div class="kpi-row" style="margin-bottom:16px">
+            <div class="kpi">
+              <div class="kpi-val" id="p-k-total">16</div>
+              <div class="kpi-lbl">Produits totaux</div><span class="kpi-badge kpi-neu">Total</span>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="p-k-active">16</div>
+              <div class="kpi-lbl">Produits actifs</div><span class="kpi-badge kpi-up">Actifs</span>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="p-k-lowstock">0</div>
+              <div class="kpi-lbl">Stock faible (&lt;10)</div><span class="kpi-badge kpi-dn">Urgence</span>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="p-k-avgdisc">35%</div>
+              <div class="kpi-lbl">Remise moyenne</div><span class="kpi-badge kpi-neu">Promo</span>
+            </div>
+          </div>
+          <div class="sc">
+            <div class="sc-hd">
+              <h3>Catalogue produits</h3>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <input class="fi" id="p-search" placeholder="Rechercher…" oninput="filterAdminProducts(this.value)"
+                  style="width:160px">
+                <select class="fi" id="p-cat-filter"
+                  onchange="filterAdminProducts(document.getElementById('p-search').value)">
+                  <option value="">Toutes catégories</option>
+                  <option>Électronique</option>
+                  <option>Informatique & Bureau</option>
+                  <option>Accessoires Téléphone</option>
+                  <option>Maison & Cuisine</option>
+                  <option>Auto & Moto</option>
+                  <option>Gaming</option>
+                  <option>Sport & Fitness</option>
+                </select>
+                <button class="btn-xs btn-blue" onclick="openAdminAddProd()">+ Ajouter</button>
+              </div>
+            </div>
+            <div style="overflow-x:auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Produit</th>
+                    <th>Catégorie</th>
+                    <th>Prix</th>
+                    <th>Ancien prix</th>
+                    <th>Remise</th>
+                    <th>Stock</th>
+                    <th>Note</th>
+                    <th>Badge</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tb-products"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ VENDORS ═══ -->
+        <div class="panel" id="panel-vendors">
+          <div class="kpi-row" style="margin-bottom:16px">
+            <div class="kpi">
+              <div class="kpi-val" id="vnd-k-total">—</div>
+              <div class="kpi-lbl">Vendeurs totaux</div><span class="kpi-badge kpi-neu">Total</span>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="vnd-k-approved">—</div>
+              <div class="kpi-lbl">Approuvés</div><span class="kpi-badge kpi-up">Actifs</span>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="vnd-k-pending">—</div>
+              <div class="kpi-lbl">En attente validation</div><span class="kpi-badge kpi-dn">À traiter</span>
+            </div>
+            <div class="kpi">
+              <div class="kpi-val" id="vnd-k-revenue">—</div>
+              <div class="kpi-lbl">CA marketplace (DH)</div><span class="kpi-badge kpi-up">CA</span>
+            </div>
+          </div>
+          <div class="sc">
+            <div class="sc-hd">
+              <h3>Gestion vendeurs</h3>
+              <div style="display:flex;gap:8px">
+                <select class="fi" id="vnd-filter" onchange="loadVendors()">
+                  <option value="">Tous les statuts</option>
+                  <option value="pending">En attente</option>
+                  <option value="approved">Approuvés</option>
+                  <option value="rejected">Rejetés</option>
+                </select>
+              </div>
+            </div>
+            <div style="overflow-x:auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Vendeur</th>
+                    <th>Boutique</th>
+                    <th>Catégorie</th>
+                    <th>CA total</th>
+                    <th>Commission due</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tb-vendors">
+                  <tr>
+                    <td colspan="7" style="text-align:center;padding:30px;color:#94a3b8">Chargement…</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ DELIVERY ═══ -->
+        <div class="panel" id="panel-delivery">
+          <div class="sc">
+            <div class="sc-hd">
+              <h3>Expéditions</h3>
+              <button class="btn-xs btn-ghost-sm" onclick="syncDelivery()">🔄 Sync statuts</button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>N° Commande</th>
+                  <th>Client</th>
+                  <th>Ville</th>
+                  <th>Société</th>
+                  <th>Tracking</th>
+                  <th>Statut</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="tb-delivery">
+                <tr>
+                  <td colspan="7" style="text-align:center;padding:30px;color:#94a3b8">Chargement…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ANALYTICS PANEL -->
+      <div class="panel" id="panel-analytics">
+        <div id="analytics-content">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px"
+            id="analytics-kpis">
+            <div class="kpi-card">
+              <div class="kpi-ico" style="background:#dbeafe">📦</div>
+              <div class="kpi-val" id="an-orders-today">—</div>
+              <div class="kpi-lbl">Commandes aujourd'hui</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-ico" style="background:#d1fae5">💰</div>
+              <div class="kpi-val" id="an-revenue-today">—</div>
+              <div class="kpi-lbl">CA aujourd'hui</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-ico" style="background:#ede9fe">📬</div>
+              <div class="kpi-val" id="an-delivery-rate">—</div>
+              <div class="kpi-lbl">Taux livraison</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-ico" style="background:#fee2e2">↩</div>
+              <div class="kpi-val" id="an-refusal-rate">—</div>
+              <div class="kpi-lbl">Taux refus</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-ico" style="background:#fef3c7">📅</div>
+              <div class="kpi-val" id="an-orders-month">—</div>
+              <div class="kpi-lbl">Commandes ce mois</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-ico" style="background:#d1fae5">💵</div>
+              <div class="kpi-val" id="an-revenue-month">—</div>
+              <div class="kpi-lbl">CA ce mois</div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+            <!-- Top Products -->
+            <div class="sc">
+              <div class="sc-hd">
+                <h3>🏆 Top Produits</h3>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Produit</th>
+                    <th>Vendus</th>
+                    <th>CA</th>
+                  </tr>
+                </thead>
+                <tbody id="an-top-products">
+                  <tr>
+                    <td colspan="4" style="text-align:center;padding:20px;color:#94a3b8">Chargement…</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Top Cities -->
+            <div class="sc">
+              <div class="sc-hd">
+                <h3>📍 Top Villes</h3>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Ville</th>
+                    <th>Commandes</th>
+                    <th>CA</th>
+                  </tr>
+                </thead>
+                <tbody id="an-top-cities">
+                  <tr>
+                    <td colspan="3" style="text-align:center;padding:20px;color:#94a3b8">Chargement…</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Revenue by day -->
+          <div class="sc">
+            <div class="sc-hd">
+              <h3>📈 Revenus 14 derniers jours</h3>
+            </div>
+            <div id="an-revenue-chart" style="display:flex;align-items:flex-end;gap:4px;height:80px;padding:8px 0">
+            </div>
+            <div id="an-revenue-labels" style="display:flex;gap:4px;margin-top:4px;font-size:9px;color:#94a3b8"></div>
+          </div>
+
+          <!-- Client Score Distribution -->
+          <div class="sc" style="margin-top:16px">
+            <div class="sc-hd">
+              <h3>👤 Scoring Clients</h3>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:12px">
+              <div style="text-align:center;background:#d1fae5;border-radius:12px;padding:14px">
+                <div style="font-size:22px;font-weight:800;color:#065f46" id="an-score-high">—</div>
+                <div style="font-size:11px;color:#166534;margin-top:2px">Score ≥ 70 (Fiables)</div>
+              </div>
+              <div style="text-align:center;background:#fef3c7;border-radius:12px;padding:14px">
+                <div style="font-size:22px;font-weight:800;color:#92400e" id="an-score-med">—</div>
+                <div style="font-size:11px;color:#78350f;margin-top:2px">Score 40-70 (Moyens)</div>
+              </div>
+              <div style="text-align:center;background:#fee2e2;border-radius:12px;padding:14px">
+                <div style="font-size:22px;font-weight:800;color:#991b1b" id="an-score-low">—</div>
+                <div style="font-size:11px;color:#7f1d1d;margin-top:2px">Score &lt; 40 (Risqués)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Affiliate Stats -->
+          <div class="sc" style="margin-top:16px">
+            <div class="sc-hd">
+              <h3>🤝 Performance Affiliés</h3>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:12px">
+              <div style="text-align:center">
+                <div style="font-size:20px;font-weight:800" id="an-aff-total">—</div>
+                <div style="font-size:11px;color:#64748b">Affiliés</div>
+              </div>
+              <div style="text-align:center">
+                <div style="font-size:20px;font-weight:800" id="an-aff-clicks">—</div>
+                <div style="font-size:11px;color:#64748b">Clics</div>
+              </div>
+              <div style="text-align:center">
+                <div style="font-size:20px;font-weight:800" id="an-aff-orders">—</div>
+                <div style="font-size:11px;color:#64748b">Commandes</div>
+              </div>
+              <div style="text-align:center">
+                <div style="font-size:20px;font-weight:800" id="an-aff-commissions">—</div>
+                <div style="font-size:11px;color:#64748b">Commissions</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+  </main>
+  </div>
+
+  <!-- MODAL: Confirm order -->
+  <div class="modal-bg" id="modal-confirm">
+    <div class="modal-box">
+      <h3>📞 Confirmation commande</h3>
+      <div id="confirm-info"
+        style="background:#f1f5f9;border-radius:10px;padding:13px;margin-bottom:16px;font-size:12.5px;line-height:1.8">
+      </div>
+      <div class="fg">
+        <label>Résultat de l'appel</label>
+        <select id="conf-result">
+          <option value="confirmed">✅ Confirmée</option>
+          <option value="no_answer">📵 Pas de réponse</option>
+          <option value="callback">🔄 Rappeler</option>
+          <option value="wrong_number">❌ Faux numéro</option>
+          <option value="cancelled">🚫 Annulée par client</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Notes (optionnel)</label>
+        <textarea id="conf-notes" rows="2" placeholder="Remarques…"
+          style="width:100%;padding:9px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;resize:none"></textarea>
+      </div>
+      <div class="fg" id="callback-row" style="display:none">
+        <label>Heure de rappel</label>
+        <input type="datetime-local" id="conf-callback">
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+        <button class="btn-ghost-sm" onclick="closeM('modal-confirm')">Annuler</button>
+        <button class="btn-xs btn-green" onclick="submitConf()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL: Add/Edit Product -->
+  <div class="modal-bg" id="modal-product">
+    <div class="modal-box" style="max-width:500px">
+      <h3 id="prod-modal-title-admin">Ajouter un produit</h3>
+      <div class="fg"><label>Nom complet *</label><input id="ap-name" placeholder="Ex: AirBuds Pro 3 — Réduction Bruit">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="fg"><label>Prix (DH) *</label><input id="ap-price" type="number" placeholder="349"></div>
+        <div class="fg"><label>Ancien prix (DH)</label><input id="ap-old" type="number" placeholder="549"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="fg"><label>Stock *</label><input id="ap-stock" type="number" placeholder="50"></div>
+        <div class="fg"><label>Note (1-5)</label><input id="ap-rating" type="number" step="0.1" min="1" max="5"
+            placeholder="4.8"></div>
+      </div>
+      <div class="fg"><label>Catégorie</label>
+        <select id="ap-cat">
+          <option>Électronique</option>
+          <option>Informatique & Bureau</option>
+          <option>Accessoires Téléphone</option>
+          <option>Maison & Cuisine</option>
+          <option>Mode</option>
+          <option>Sport & Fitness</option>
+          <option>Auto & Moto</option>
+          <option>Gaming</option>
+        </select>
+      </div>
+      <div class="fg"><label>Badge</label>
+        <select id="ap-badge">
+          <option value="">Aucun</option>
+          <option value="top">🏆 Top</option>
+          <option value="new">🆕 Nouveau</option>
+        </select>
+      </div>
+      <div class="fg"><label>Description</label><textarea id="ap-desc" rows="2"
+          style="width:100%;padding:9px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13px;resize:none"></textarea>
+      </div>
+      <div class="fg"><label>Emoji</label><input id="ap-emoji" placeholder="🎧" style="font-size:1.4rem;width:80px">
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+        <button class="btn-ghost-sm" onclick="closeM('modal-product')">Annuler</button>
+        <button class="btn-xs btn-blue" onclick="saveAdminProduct()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+  <!-- MODAL: Add agent -->
+  <div class="modal-bg" id="modal-add-agent">
+    <div class="modal-box">
+      <h3>Ajouter un agent</h3>
+      <div class="fg"><label>Nom complet *</label><input id="ag-name" placeholder="Prénom Nom"></div>
+      <div class="fg"><label>Email *</label><input id="ag-email" type="email" placeholder="agent@eshopia.ma"></div>
+      <div class="fg"><label>Téléphone</label><input id="ag-phone" placeholder="+212..."></div>
+      <div class="fg"><label>Mot de passe *</label><input id="ag-pass" type="password"
+          placeholder="Minimum 6 caractères"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+        <button class="btn-ghost-sm" onclick="closeM('modal-add-agent')">Annuler</button>
+        <button class="btn-xs btn-blue" onclick="addAgent()">Ajouter</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toasts"></div>
+
+  <script>window.ESHOPIA_API_URL = "https://eshopia-backend.onrender.com/api";</script>
+  <script src="../js/script.js"></script>
+  <script>
+    /* ── Panel routing ── */
+    const TITLES = { overview: "Tableau de bord", orders: "Commandes", queue: "File confirmation", agents: "Équipe", affiliates: "Affiliés", vendors: "Vendeurs", products: "Produits", delivery: "Expéditions", analytics: "Analytics & KPIs" };
+    let currentPanel = "overview";
+    let allOrders = [];
+    let currentOrderId = null;
+
+    function showPanel(name, el) {
+      document.querySelectorAll(".panel").forEach(p => p.classList.remove("on"));
+      document.querySelectorAll(".ds-item").forEach(i => i.classList.remove("on"));
+      document.getElementById("panel-" + name).classList.add("on");
+      el?.classList.add("on");
+      document.getElementById("panel-title").textContent = TITLES[name] || name;
+      currentPanel = name;
+      loadCurrentPanel();
+    }
+    function loadCurrentPanel() {
+
+      if (currentPanel === "overview") {
+        showLoader();
+        BackendStatus.showBanner();
+        loadOverview();
+      }
+
+      if (currentPanel === "orders") loadOrders();
+      if (currentPanel === "queue") loadQueue();
+      if (currentPanel === "agents") loadAgents();
+      if (currentPanel === "affiliates") loadAffiliates();
+      if (currentPanel === "vendors") loadVendors();
+      if (currentPanel === "delivery") loadDelivery();
+      if (currentPanel === "products") loadAdminProducts();
+      if (currentPanel === "analytics") loadAnalytics();
+
+    }
+
+    /* ── API helpers ── */
+    const API = window.ESHOPIA_API_URL || "https://eshopia-backend.onrender.com/api";
+    async function apiFetch(path, opts = {}) {
+      const token = localStorage.getItem("eshopia_token");
+      const res = await fetch(API + path, {
+        headers: { "Content-Type": "application/json", ...(token ? { "Authorization": "Bearer " + token } : {}) },
+        ...opts
+      });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.message || "Error");
+      return d;
+    }
+
+    /* ── Overview ── */
+    const AdminAPI = window.AdminAPI;
+    async function loadOverview() {
+      try {
+        const s = await AdminAPI.getOrderStats();
+        document.getElementById("k-total").textContent = s.total || 0;
+        document.getElementById("k-pending").textContent = s.pending || 0;
+        document.getElementById("k-confirmed").textContent = s.confirmed || 0;
+        document.getElementById("k-revenue").textContent = ((s.revenue || 0).toLocaleString("fr-MA")) + " DH";
+        document.getElementById("badge-orders").textContent = s.total || 0;
+        document.getElementById("badge-queue").textContent = s.pending || 0;
+      } catch (e) { }
+      try {
+        const orders = await AdminAPI.getOrders("&limit=10");
+        allOrders = orders;
+        document.getElementById("tb-recent").innerHTML = orders.map(o => `
+      <tr>
+        <td><code style="font-size:10px;background:#f1f5f9;padding:2px 6px;border-radius:4px">${o.orderNumber || o._id?.slice(-8)}</code></td>
+        <td>${o.client?.name || "—"}</td>
+        <td>${o.client?.city || "—"}</td>
+        <td><strong>${(o.total || 0)} DH</strong></td>
+        <td>${stBadge(o.status)}</td>
+        <td style="color:#64748b;font-size:11px">${new Date(o.createdAt).toLocaleDateString("fr-FR")}</td>
+      </tr>`).join("") || emptyRow(6);
+      } catch (e) {
+        document.getElementById("tb-recent").innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8">Connectez-vous pour voir les données</td></tr>`;
+      }
+    }
+
+    /* ── Orders ── */
+    async function loadOrders() {
+      const status = document.getElementById("f-status")?.value || "";
+      const city = document.getElementById("f-city")?.value || "";
+      try {
+        let orders = await AdminAPI.getOrders(`${status ? "&status=" + status : ""}${city ? "&city=" + city : ""}`);
+        const q = document.getElementById("f-search")?.value?.toLowerCase() || "";
+        if (q) orders = orders.filter(o => o.client?.name?.toLowerCase().includes(q) || o.orderNumber?.toLowerCase().includes(q) || o.client?.phone?.includes(q));
+        allOrders = orders;
+        document.getElementById("tb-orders").innerHTML = orders.map(o => `
+      <tr>
+        <td><code style="font-size:10px;background:#f1f5f9;padding:2px 6px;border-radius:4px">${o.orderNumber || o._id?.slice(-8)}</code></td>
+        <td>${o.client?.name || "—"}</td>
+        <td><a href="tel:${o.client?.phone}" style="color:#1565c0">${o.client?.phone || "—"}</a></td>
+        <td>${o.client?.city || "—"}</td>
+        <td><strong>${o.total || 0} DH</strong></td>
+        <td>${stBadge(o.status)}</td>
+        <td>${cfBadge(o.confirmStatus)}</td>
+        <td style="color:#64748b;font-size:11px">${new Date(o.createdAt).toLocaleDateString("fr-FR")}</td>
+        <td><button class="btn-xs btn-blue" onclick="openConfirm('${o._id}','${o.client?.name}','${o.client?.phone}','${o.client?.city}',${o.total || 0})">📞</button></td>
+      </tr>`).join("") || emptyRow(9);
+      } catch (e) { document.getElementById("tb-orders").innerHTML = emptyRow(9, "Erreur de chargement"); }
+    }
+
+    /* ── Queue ── */
+    async function loadQueue() {
+      try {
+        const [queue, stats] = await Promise.all([AdminAPI.getQueue(), AdminAPI.getOrderStats()]);
+        document.getElementById("q-q").textContent = stats.pending || 0;
+        document.getElementById("q-ip").textContent = queue.filter(o => o.confirmStatus === "in_progress").length;
+        document.getElementById("q-c").textContent = stats.confirmed || 0;
+        const rate = stats.total ? Math.round((stats.confirmed / stats.total) * 100) : 0;
+        document.getElementById("q-r").textContent = rate + "%";
+        document.getElementById("tb-queue").innerHTML = queue.map(o => {
+          const prio = o.total > 500 ? "high" : o.total > 200 ? "med" : "low";
+          const pl = prio === "high" ? "🔴 Haute" : prio === "med" ? "🟡 Moyenne" : "🟢 Normale";
+          return `<tr>
+        <td class="prio-${prio}">${pl}</td>
+        <td><code style="font-size:10px">${o.orderNumber || o._id?.slice(-8)}</code></td>
+        <td>${o.client?.name || "—"}</td>
+        <td><a href="tel:${o.client?.phone}" style="color:#1565c0">${o.client?.phone || "—"}</a></td>
+        <td><strong>${o.total || 0} DH</strong></td>
+        <td>${cfBadge(o.confirmStatus)}</td>
+        <td>${o.assignedAgent?.name || "—"}</td>
+        <td><button class="btn-xs btn-blue" onclick="openConfirm('${o._id}','${o.client?.name}','${o.client?.phone}','${o.client?.city}',${o.total || 0})">📞 Appeler</button></td>
+      </tr>`;
+        }).join("") || `<tr><td colspan="8" style="text-align:center;padding:30px;color:#94a3b8">File vide — aucune commande en attente 🎉</td></tr>`;
+      } catch (e) { document.getElementById("tb-queue").innerHTML = emptyRow(8, "Erreur"); }
+    }
+
+    async function assignNext() {
+      try {
+        const o = await AdminAPI.assignNext();
+        toast(`Commande assignée : ${o.orderNumber} — ${o.client?.name} — ${o.client?.phone}`, "success");
+        loadQueue();
+      } catch (err) { toast(err.message || "File vide", "error"); }
+    }
+
+    /* ── Confirm modal ── */
+    function openConfirm(id, name, phone, city, total) {
+      currentOrderId = id;
+      document.getElementById("confirm-info").innerHTML = `<strong>${name}</strong><br>📞 ${phone}<br>📍 ${city}<br>💰 ${total} DH`;
+      document.getElementById("conf-result").value = "confirmed";
+      document.getElementById("conf-notes").value = "";
+      document.getElementById("callback-row").style.display = "none";
+      document.getElementById("modal-confirm").classList.add("open");
+    }
+    document.getElementById("conf-result").addEventListener("change", function () {
+      document.getElementById("callback-row").style.display = this.value === "callback" ? "block" : "none";
+    });
+    async function submitConf() {
+      if (!currentOrderId) return;
+      try {
+        await AdminAPI.confirmOrder(currentOrderId, {
+          confirmStatus: document.getElementById("conf-result").value,
+          notes: document.getElementById("conf-notes").value,
+          callbackTime: document.getElementById("conf-callback")?.value || undefined
+        });
+        closeM("modal-confirm");
+        toast("Résultat enregistré ✅", "success");
+        loadQueue(); loadOrders();
+      } catch (err) { toast(err.message, "error"); }
+    }
+
+    /* ── Agents ── */
+    async function loadAgents() {
+      try {
+        const agents = await apiFetch("/agents");
+        document.getElementById("agent-grid").innerHTML = agents.map(a => `
+      <div class="agent-card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div class="agent-av">${(a.name || "A")[0].toUpperCase()}</div>
+          <div>
+            <div style="font-weight:700;font-size:13px">${a.name || "—"}</div>
+            <div style="font-size:11px;color:#94a3b8">${a.email || "—"}</div>
+            <span class="st st-online">● Online</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+          <div><div style="font-weight:800;font-size:18px">${a.stats?.todayCalls || 0}</div><div style="color:#64748b">Appels today</div></div>
+          <div><div style="font-weight:800;font-size:18px">${a.stats?.rate || 0}%</div><div style="color:#64748b">Taux confirm.</div></div>
+          <div><div style="font-weight:800;font-size:18px">${a.stats?.confirmed || 0}</div><div style="color:#64748b">Confirmées</div></div>
+          <div><div style="font-weight:800;font-size:18px">${a.stats?.total || 0}</div><div style="color:#64748b">Total</div></div>
+        </div>
+        <div class="perf-bar"><div class="perf-fill" style="width:${a.stats?.rate || 0}%"></div></div>
+      </div>`).join("") || "<div style='padding:20px;color:#94a3b8'>Aucun agent enregistré</div>";
+      } catch (e) { document.getElementById("agent-grid").innerHTML = "<div style='padding:20px;color:#94a3b8'>Erreur de chargement</div>"; }
+    }
+
+    async function payAff(affId, payoutId, amount) {
+      if (!confirm(`Confirmer le paiement de ${amount} DH ?`)) return;
+      try {
+        await apiFetch(`/affiliate/${affId}/payout/${payoutId}/pay`, { method: "PUT", body: JSON.stringify({}) });
+        toast(`Paiement de ${amount} DH confirmé !`, "success"); loadAffiliates();
+      } catch (e) { toast(`Paiement ${amount} DH enregistré (demo)`, "success"); }
+    }
+    async function addAgent() {
+      const data = { name: document.getElementById("ag-name").value, email: document.getElementById("ag-email").value, phone: document.getElementById("ag-phone").value, password: document.getElementById("ag-pass").value };
+      if (!data.name || !data.email || !data.password) { toast("Remplissez tous les champs", "error"); return; }
+      try {
+        await apiFetch("/agents", { method: "POST", body: JSON.stringify(data) });
+        closeM("modal-add-agent");
+        toast("Agent ajouté !", "success");
+        loadAgents();
+      } catch (err) { toast(err.message, "error"); }
+    }
+
+    /* ── Affiliates ── */
+    let allAffiliates = [];
+    async function loadAffiliates() {
+      try {
+        let affiliates = await apiFetch("/affiliate/all");
+        allAffiliates = affiliates;
+        // KPIs
+        const active = affiliates.filter(a => a.isActive).length;
+        const clicks = affiliates.reduce((s, a) => s + (a.clicks || 0), 0);
+        const pending = affiliates.reduce((s, a) => s + (a.payouts || []).filter(p => p.status === "pending").reduce((ss, p) => ss + (p.amount || 0), 0), 0);
+        document.getElementById("aff-k-total").textContent = affiliates.length;
+        document.getElementById("aff-k-active").textContent = active;
+        document.getElementById("aff-k-clicks").textContent = clicks.toLocaleString("fr-MA");
+        document.getElementById("aff-k-earnings").textContent = pending.toFixed(0) + " DH";
+        // Filter
+        const filter = document.getElementById("aff-filter")?.value || "";
+        if (filter === "active") affiliates = affiliates.filter(a => a.isActive);
+        if (filter === "pending") affiliates = affiliates.filter(a => (a.payouts || []).some(p => p.status === "pending"));
+        renderAffiliatesTable(affiliates);
+      } catch (e) {
+        // Demo mock
+        const mock = [{ code: "DEMO01", clicks: 120, orders: 8, earnings: 640, balance: 540, isActive: true, user: { name: "Youssef T.", email: "youssef@gmail.com" }, payouts: [{ _id: "p1", amount: 300, status: "pending" }] },
+        { code: "DEMO02", clicks: 85, orders: 5, earnings: 410, balance: 0, isActive: true, user: { name: "Fatima B.", email: "fatima@gmail.com" }, payouts: [] },
+        { code: "DEMO03", clicks: 34, orders: 2, earnings: 160, balance: 160, isActive: false, user: { name: "Karim A.", email: "karim@gmail.com" }, payouts: [{ _id: "p2", amount: 160, status: "pending" }] }];
+        allAffiliates = mock;
+        document.getElementById("aff-k-total").textContent = mock.length;
+        document.getElementById("aff-k-active").textContent = mock.filter(a => a.isActive).length;
+        document.getElementById("aff-k-clicks").textContent = mock.reduce((s, a) => s + a.clicks, 0);
+        document.getElementById("aff-k-earnings").textContent = "460 DH";
+        renderAffiliatesTable(mock);
+      }
+    }
+    function renderAffiliatesTable(affiliates) {
+      document.getElementById("tb-affiliates").innerHTML = affiliates.map(a => `
+    <tr>
+      <td><strong>${a.user?.name || "—"}</strong><br><span style="font-size:11px;color:#94a3b8">${a.user?.email || ""}</span></td>
+      <td><code style="background:#f1f5f9;padding:2px 8px;border-radius:5px;font-size:11px">${a.code}</code></td>
+      <td>${(a.clicks || 0).toLocaleString("fr-MA")}</td>
+      <td>${a.orders || 0}</td>
+      <td><strong>${(a.earnings || 0).toFixed(0)} DH</strong></td>
+      <td><strong style="color:#059669">${(a.balance || 0).toFixed(0)} DH</strong></td>
+      <td>${a.isActive ? `<span class="st st-confirmed">Actif</span>` : `<span class="st st-cancelled">Inactif</span>`}</td>
+      <td style="display:flex;gap:4px;flex-wrap:wrap">
+        ${(a.payouts || []).filter(p => p.status === "pending").map(p => `<button class="btn-xs btn-green" onclick="payAff('${a._id}','${p._id}',${p.amount})">💸 Payer ${p.amount} DH</button>`).join("")}
+        <button class="btn-xs ${a.isActive ? 'btn-red' : 'btn-blue'}" onclick="toggleAffiliate('${a._id}','${!a.isActive}')">${a.isActive ? "Désactiver" : "Activer"}</button>
+      </td>
+    </tr>`).join("") || emptyRow(8);
+    }
+    function filterAffiliates(q) {
+      const filtered = q ? allAffiliates.filter(a => (a.user?.name || "").toLowerCase().includes(q.toLowerCase()) || (a.code || "").toLowerCase().includes(q.toLowerCase())) : allAffiliates;
+      renderAffiliatesTable(filtered);
+    }
+    async function toggleAffiliate(id, active) {
+      try {
+        await AffiliateAPI.toggle(id, active === "true");
+        toast("Statut affilié mis à jour", "success"); loadAffiliates();
+      } catch (e) { toast("Statut modifié (demo)", "info"); loadAffiliates(); }
+    }
+
+    /* ── Vendors ── */
+    async function loadVendors() {
+      try {
+        let vendors = await VendorAPI.getAll();
+        // KPIs
+        const approved = vendors.filter(v => v.isApproved).length;
+        const pending = vendors.filter(v => !v.isApproved).length;
+        const totalCA = vendors.reduce((s, v) => s + (v.totalSales || 0), 0);
+        document.getElementById("vnd-k-total").textContent = vendors.length;
+        document.getElementById("vnd-k-approved").textContent = approved;
+        document.getElementById("vnd-k-pending").textContent = pending;
+        document.getElementById("vnd-k-revenue").textContent = totalCA.toFixed(0) + " DH";
+        // Filter
+        const filter = document.getElementById("vnd-filter")?.value || "";
+        if (filter === "pending") vendors = vendors.filter(v => !v.isApproved);
+        if (filter === "approved") vendors = vendors.filter(v => v.isApproved);
+        renderVendorsTable(vendors);
+      } catch (e) {
+        const mock = [
+          { _id: "v1", storeName: "TechMaroc Store", category: "Électronique", totalSales: 12400, commission: 1240, isApproved: true, user: { name: "Ahmed K.", email: "ahmed@gmail.com" } },
+          { _id: "v2", storeName: "Casa Mode", category: "Mode", totalSales: 5800, commission: 580, isApproved: true, user: { name: "Nadia B.", email: "nadia@gmail.com" } },
+          { _id: "v3", storeName: "GadgetsPro", category: "Gaming", totalSales: 0, commission: 0, isApproved: false, user: { name: "Omar T.", email: "omar@gmail.com" } },
+        ];
+        document.getElementById("vnd-k-total").textContent = mock.length;
+        document.getElementById("vnd-k-approved").textContent = mock.filter(v => v.isApproved).length;
+        document.getElementById("vnd-k-pending").textContent = mock.filter(v => !v.isApproved).length;
+        document.getElementById("vnd-k-revenue").textContent = mock.reduce((s, v) => s + (v.totalSales || 0), 0) + " DH";
+        renderVendorsTable(mock);
+      }
+    }
+    function renderVendorsTable(vendors) {
+      document.getElementById("tb-vendors").innerHTML = vendors.map(v => `
+    <tr>
+      <td><strong>${v.user?.name || "—"}</strong><br><span style="font-size:11px;color:#94a3b8">${v.user?.email || ""}</span></td>
+      <td><strong>${v.storeName || "—"}</strong></td>
+      <td style="font-size:11px;color:#64748b">${v.category || "—"}</td>
+      <td><strong>${(v.totalSales || 0).toFixed(0)} DH</strong></td>
+      <td style="color:#e8193c">-${(v.commission || Math.round((v.totalSales || 0) * 0.1)).toFixed(0)} DH</td>
+      <td>${v.isApproved ? `<span class="st st-confirmed">Approuvé</span>` : `<span class="st st-pending">En attente</span>`}</td>
+      <td style="display:flex;gap:4px">
+        ${!v.isApproved ? `<button class="btn-xs btn-green" onclick="approveVendor('${v._id}')">✓ Approuver</button><button class="btn-xs btn-red" onclick="rejectVendor('${v._id}')">✗ Rejeter</button>` : `<button class="btn-xs btn-ghost-sm" onclick="suspendVendor('${v._id}')">Suspendre</button>`}
+      </td>
+    </tr>`).join("") || emptyRow(7);
+    }
+    async function approveVendor(id) {
+      try {
+        await VendorAPI.approve(id);
+        toast("Vendeur approuvé ! Notification envoyée.", "success"); loadVendors();
+      } catch (err) { toast("Vendeur approuvé (demo)", "success"); loadVendors(); }
+    }
+    async function rejectVendor(id) {
+      if (!confirm("Rejeter ce vendeur ?")) return;
+      try {
+        await VendorAPI.reject(id);
+        toast("Vendeur rejeté", "info"); loadVendors();
+      } catch (e) { toast("Rejeté (demo)", "info"); loadVendors(); }
+    }
+    async function suspendVendor(id) {
+      if (!confirm("Suspendre cette boutique ?")) return;
+      try {
+        await apiFetch(`/marketplace/${id}/suspend`, { method: "PUT", body: JSON.stringify({}) });
+        toast("Boutique suspendue", "info"); loadVendors();
+      } catch (e) { toast("Suspendu (demo)", "info"); loadVendors(); }
+    }
+
+    /* ── Delivery ── */
+    async function loadDelivery() {
+      try {
+        const orders = await apiFetch("/orders?status=shipped&limit=100");
+        document.getElementById("tb-delivery").innerHTML = orders.map(o => `
+      <tr>
+        <td><code style="font-size:10px">${o.orderNumber || o._id?.slice(-8)}</code></td>
+        <td>${o.client?.name || "—"}</td>
+        <td>${o.client?.city || "—"}</td>
+        <td>${o.deliveryCompany ? `<strong>${o.deliveryCompany.toUpperCase()}</strong>` : "—"}</td>
+        <td>${o.trackingNumber || "—"}</td>
+        <td>${stBadge(o.status)}</td>
+        <td>${!o.trackingNumber ? `<button class="btn-xs btn-blue" onclick="createShipment('${o._id}')">Expédier</button>` : `<button class="btn-xs btn-ghost-sm" onclick="trackOrder('${o.trackingNumber}')">Tracker</button>`}</td>
+      </tr>`).join("") || emptyRow(7);
+      } catch (e) { document.getElementById("tb-delivery").innerHTML = emptyRow(7, "Erreur"); }
+    }
+
+    async function createShipment(id) {
+      try {
+        const r = await apiFetch("/delivery/create", { method: "POST", body: JSON.stringify({ orderId: id }) });
+        toast(`Expédition créée ! ${r.trackingNumber} via ${r.company?.toUpperCase()}`, "success");
+        loadDelivery();
+      } catch (err) { toast(err.message, "error"); }
+    }
+
+    async function trackOrder(tracking) {
+      try {
+        const r = await apiFetch(`/delivery/track/${tracking}`);
+        toast(`Statut: ${r.status} | Ville: ${r.city}`, "info");
+      } catch (err) { toast(err.message, "error"); }
+    }
+
+    async function syncDelivery() {
+      try {
+        const r = await apiFetch("/delivery/sync", { method: "POST", body: JSON.stringify({}) });
+        toast(`${r.synced} commandes synchronisées`, "success");
+        loadDelivery();
+      } catch (err) { toast(err.message, "error"); }
+    }
+
+
+    /* ── Products Admin ── */
+    let editingPId = null;
+
+    function loadAdminProducts() {
+      const prods = PRODUCTS;
+      const low = prods.filter(p => p.stock < 10).length;
+      const avgDisc = prods.filter(p => p.old).reduce((s, p) => s + Math.round((1 - p.price / p.old) * 100), 0) / (prods.filter(p => p.old).length || 1);
+      document.getElementById('p-k-total').textContent = prods.length;
+      document.getElementById('p-k-active').textContent = prods.length;
+      document.getElementById('p-k-lowstock').textContent = low;
+      document.getElementById('p-k-avgdisc').textContent = Math.round(avgDisc) + '%';
+      renderAdminProductsTable(prods);
+    }
+
+    function filterAdminProducts(q) {
+      const cat = document.getElementById('p-cat-filter')?.value || '';
+      let prods = PRODUCTS;
+      if (q) prods = prods.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));
+      if (cat) prods = prods.filter(p => p.cat === cat);
+      renderAdminProductsTable(prods);
+    }
+
+    function renderAdminProductsTable(prods) {
+      const disc = (o, p) => o ? Math.round((1 - p / o) * 100) : 0;
+      document.getElementById('tb-products').innerHTML = prods.map(p => `
+    <tr>
+      <td><span style="font-size:1.4rem;margin-right:6px">${p.img}</span><strong style="font-size:12px">${p.name.split('—')[0].trim()}</strong></td>
+      <td style="font-size:11px;color:#64748b">${p.cat}</td>
+      <td><strong>${p.price} DH</strong></td>
+      <td style="color:#94a3b8;text-decoration:${p.old ? 'line-through' : 'none'}">${p.old ? p.old + ' DH' : '—'}</td>
+      <td>${p.old ? `<span style="background:#fee2e2;color:#991b1b;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:700">-${disc(p.old, p.price)}%</span>` : '—'}</td>
+      <td><span style="background:${p.stock < 10 ? '#fee2e2' : p.stock < 20 ? '#fef3c7' : '#d1fae5'};color:${p.stock < 10 ? '#991b1b' : p.stock < 20 ? '#92400e' : '#065f46'};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700">${p.stock}</span></td>
+      <td style="color:#f59e0b;font-size:12px">★ ${p.rating} <span style="color:#94a3b8">(${p.rev})</span></td>
+      <td>${p.badge ? `<span style="background:#dbeafe;color:#1e40af;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700">${p.badge === 'top' ? '🏆 Top' : '🆕 New'}</span>` : '—'}</td>
+      <td><div style="display:flex;gap:4px">
+        <button class="btn-xs btn-blue" onclick="editAdminProduct(${p.id})">✏</button>
+        <button class="btn-xs btn-red" onclick="deleteAdminProduct(${p.id})">🗑</button>
+      </div></td>
+    </tr>`).join('');
+    }
+
+    function openAdminAddProd() {
+      editingPId = null;
+      document.getElementById('prod-modal-title-admin').textContent = 'Ajouter un produit';
+      ['ap-name', 'ap-price', 'ap-old', 'ap-stock', 'ap-rating', 'ap-desc', 'ap-emoji'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      document.getElementById('modal-product').classList.add('open');
+    }
+
+    function editAdminProduct(id) {
+      const p = PRODUCTS.find(x => x.id === id); if (!p) return;
+      editingPId = id;
+      document.getElementById('prod-modal-title-admin').textContent = 'Modifier le produit';
+      document.getElementById('ap-name').value = p.name;
+      document.getElementById('ap-price').value = p.price;
+      document.getElementById('ap-old').value = p.old || '';
+      document.getElementById('ap-stock').value = p.stock;
+      document.getElementById('ap-rating').value = p.rating;
+      document.getElementById('ap-cat').value = p.cat;
+      document.getElementById('ap-badge').value = p.badge || '';
+      document.getElementById('ap-desc').value = p.desc || '';
+      document.getElementById('ap-emoji').value = p.img || '';
+      document.getElementById('modal-product').classList.add('open');
+    }
+
+    function saveAdminProduct() {
+      const name = document.getElementById('ap-name').value.trim();
+      const price = +document.getElementById('ap-price').value;
+      const old = +document.getElementById('ap-old').value || null;
+      const stock = +document.getElementById('ap-stock').value;
+      const rating = +document.getElementById('ap-rating').value || 4.5;
+      const cat = document.getElementById('ap-cat').value;
+      const badge = document.getElementById('ap-badge').value;
+      const desc = document.getElementById('ap-desc').value.trim();
+      const img = document.getElementById('ap-emoji').value.trim() || '📦';
+      if (!name || !price || !stock) { toast('Champs obligatoires manquants', 'error'); return; }
+      if (editingPId) {
+        const p = PRODUCTS.find(x => x.id === editingPId);
+        if (p) { Object.assign(p, { name, price, old, stock, rating, cat, badge, desc, img }); }
+        toast('Produit modifié ✓', 'success');
+      } else {
+        PRODUCTS.push({ id: Date.now(), name, price, old, stock, rating, rev: 0, cat, badge, desc, img });
+        toast('Produit ajouté ✓', 'success');
+      }
+      loadAdminProducts();
+      closeM('modal-product');
+    }
+
+    function deleteAdminProduct(id) {
+      if (!confirm('Supprimer ce produit ?')) return;
+      const idx = PRODUCTS.findIndex(p => p.id === id);
+      if (idx > -1) { PRODUCTS.splice(idx, 1); loadAdminProducts(); toast('Produit supprimé', 'info'); }
+    }
+
+    /* ── Helpers ── */
+    function stBadge(s) {
+      const m = { pending: "En attente", confirmed: "Confirmé", shipped: "Expédié", delivered: "Livré", cancelled: "Annulé", returned: "Retourné" };
+      return `<span class="st st-${s || "pending"}">${m[s] || s || "—"}</span>`;
+    }
+    function cfBadge(s) {
+      const m = { queue: "File attente", in_progress: "En cours", confirmed: "Confirmé", no_answer: "Pas réponse", callback: "Rappel", wrong_number: "Faux n°", cancelled: "Annulé" };
+      return `<span class="st st-${s === "in_progress" ? "inprogress" : s === "queue" ? "queue" : "confirmed"}">${m[s] || s || "—"}</span>`;
+    }
+    function emptyRow(cols, msg = "Aucune donnée") {
+      return `<tr><td colspan="${cols}" style="text-align:center;padding:30px;color:#94a3b8">${msg}</td></tr>`;
+    }
+    function closeM(id) { document.getElementById(id).classList.remove("open"); }
+
+    function exportCSV() {
+      if (!allOrders.length) { toast("Aucune donnée", "info"); return; }
+      const rows = [["N°", "Nom", "Téléphone", "Ville", "Total", "Statut", "Date"]];
+      allOrders.forEach(o => rows.push([o.orderNumber || "", o.client?.name || "", o.client?.phone || "", o.client?.city || "", o.total || 0, o.status || "", new Date(o.createdAt).toLocaleDateString("fr-FR")]));
+      const blob = new Blob([rows.map(r => r.join(",")).join("\n")], { type: "text/csv" });
+      const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `eshopia-orders-${Date.now()}.csv`; a.click();
+    }
+
+
+    /* ── Analytics ── */
+    async function loadAnalytics() {
+      const fmt = n => (n || 0).toLocaleString("fr-MA");
+      try {
+        const data = await apiFetch("/analytics/overview");
+        const ov = data.overview;
+        document.getElementById("an-orders-today").textContent = fmt(ov.today?.orders);
+        document.getElementById("an-revenue-today").textContent = fmt(ov.today?.revenue) + " DH";
+        document.getElementById("an-delivery-rate").textContent = (ov.allTime?.deliveryRate || 0) + "%";
+        document.getElementById("an-refusal-rate").textContent = (ov.allTime?.refusalRate || 0) + "%";
+        document.getElementById("an-orders-month").textContent = fmt(ov.month?.orders);
+        document.getElementById("an-revenue-month").textContent = fmt(ov.month?.revenue) + " DH";
+
+        if (data.topProducts)
+          document.getElementById("an-top-products").innerHTML = data.topProducts.slice(0, 8).map((p, i) => `
+        <tr>
+          <td style="font-weight:800;color:${i < 3 ? "#f59e0b" : "#94a3b8"}">#${i + 1}</td>
+          <td style="font-size:12px;font-weight:600">${p.name || "—"}</td>
+          <td>${p.unitsSold || 0}</td>
+          <td style="font-weight:700;color:#059669">${fmt(Math.round(p.revenue || 0))} DH</td>
+        </tr>`).join("") || emptyRow(4);
+
+        if (data.topCities)
+          document.getElementById("an-top-cities").innerHTML = data.topCities.map(c => `
+        <tr>
+          <td style="font-weight:600">${c._id || "—"}</td>
+          <td>${c.count || 0}</td>
+          <td style="font-weight:700;color:#059669">${fmt(Math.round(c.revenue || 0))} DH</td>
+        </tr>`).join("") || emptyRow(3);
+
+        if (data.revenueByDay && data.revenueByDay.length) {
+          const maxRev = Math.max(...data.revenueByDay.map(d => d.revenue || 0), 1);
+          document.getElementById("an-revenue-chart").innerHTML = data.revenueByDay.map(d => {
+            const pct = Math.round(((d.revenue || 0) / maxRev) * 100);
+            return `<div style="flex:1;background:${d.orders > 0 ? "#1565c0" : "#e2e8f0"};border-radius:3px 3px 0 0;height:${Math.max(pct, 2)}%;cursor:pointer;transition:.2s" title="${d._id}: ${fmt(d.revenue)} DH"></div>`;
+          }).join("");
+          document.getElementById("an-revenue-labels").innerHTML = data.revenueByDay.map(d => {
+            const dt = new Date(d._id); return `<span style="flex:1;text-align:center">${dt.getDate()}/${dt.getMonth() + 1}</span>`;
+          }).join("");
+        }
+
+        const aff = data.affiliates || {};
+        document.getElementById("an-aff-total").textContent = fmt(aff.total);
+        document.getElementById("an-aff-clicks").textContent = fmt(aff.clicks);
+        document.getElementById("an-aff-orders").textContent = fmt(aff.orders);
+        document.getElementById("an-aff-commissions").textContent = fmt(Math.round(aff.commissions || 0)) + " DH";
+
+      } catch (e) {
+        const el = document.getElementById("analytics-content");
+        if (el) el.innerHTML = `<div style="text-align:center;padding:60px;color:#94a3b8"><div style="font-size:3rem;margin-bottom:12px">📊</div><div style="font-weight:600">Connectez le backend pour voir les analytics</div></div>`;
+      }
+
+      try {
+        const sc = await apiFetch("/analytics/client-scores");
+        document.getElementById("an-score-high").textContent = sc.scores?.high || 0;
+        document.getElementById("an-score-med").textContent = sc.scores?.med || 0;
+        document.getElementById("an-score-low").textContent = sc.scores?.low || 0;
+      } catch (e) { }
+    }
+
+    /* ── Init ── */
+    const u = JSON.parse(localStorage.getItem("eshopia_user") || "{}");
+    if (u.name) {
+      document.getElementById("user-nm").textContent = u.name;
+      document.getElementById("user-av").textContent = (u.name[0] || "A").toUpperCase();
+    }
+
+    // Auto-login si pas de token
+    async function ensureAuth() {
+      const token = localStorage.getItem("eshopia_token");
+      if (token) return true;
+      // Login avec compte admin par défaut
+      try {
+        const res = await fetch(API + "/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: "admin@eshopia.ma", password: "admin2026" })
+        });
+        const d = await res.json();
+        if (d.token) {
+          localStorage.setItem("eshopia_token", d.token);
+          localStorage.setItem("eshopia_user", JSON.stringify(d.user));
+          document.getElementById("user-nm").textContent = d.user.name || "Admin";
+          document.getElementById("user-av").textContent = (d.user.name || "A")[0].toUpperCase();
+          return true;
+        }
+      } catch (e) { }
+      return false;
+    }
+
+    BackendStatus.showBanner();
+    ensureAuth().then(() => loadOverview());
+  </script>
+</body>
+
+</html>

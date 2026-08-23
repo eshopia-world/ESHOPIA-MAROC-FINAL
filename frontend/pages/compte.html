@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#1565c0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Mon Compte — E-Shopia Maroc</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/megamenu.css">
+</head>
+<body>
+<div id="nav"></div>
+
+<div class="pg-head">
+  <div class="container">
+    <h1>Mon Compte</h1>
+    <div class="breadcrumb"><a href="../index.html">Accueil</a><span class="sep">/</span><span>Mon Compte</span></div>
+  </div>
+</div>
+
+<div class="container" style="padding-top:32px;padding-bottom:64px">
+
+  <!-- NOT LOGGED IN -->
+  <div id="not-logged" style="display:none;text-align:center;padding:60px 0">
+    <div style="font-size:4rem;margin-bottom:16px">🔒</div>
+    <h2 style="font-family:var(--fh);font-size:1.4rem;margin-bottom:10px">Connectez-vous pour accéder à votre compte</h2>
+    <p style="color:var(--text3);margin-bottom:24px">Gérez vos commandes, adresses et informations personnelles</p>
+    <button class="btn btn-primary btn-lg" onclick="openModal('loginModal')">Se connecter</button>
+    <div style="margin-top:12px">
+      <span style="font-size:.85rem;color:var(--text4)">Pas encore de compte ? </span>
+      <a href="#" onclick="openModal('loginModal');return false" style="color:var(--blue);font-size:.85rem;font-weight:600">Créer un compte</a>
+    </div>
+  </div>
+
+  <!-- LOGGED IN -->
+  <div id="account-content" style="display:none">
+    <div style="display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start">
+
+      <!-- Sidebar -->
+      <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--g200);overflow:hidden">
+        <div style="padding:20px;text-align:center;border-bottom:1px solid var(--g200)">
+          <div id="acc-avatar" style="width:56px;height:56px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:22px;margin:0 auto 10px">A</div>
+          <div id="acc-name" style="font-family:var(--fh);font-weight:700;font-size:1rem">—</div>
+          <div id="acc-email" style="font-size:.78rem;color:var(--text4);margin-top:2px">—</div>
+        </div>
+        <nav style="padding:8px 0">
+          <a class="acc-nav-item on" onclick="showAccTab('orders',this)">📦 Mes commandes</a>
+          <a class="acc-nav-item" onclick="showAccTab('wishlist',this)">❤️ Mes favoris</a>
+          <a class="acc-nav-item" onclick="showAccTab('profile',this)">👤 Mon profil</a>
+          <a class="acc-nav-item" href="affiliate.html">💰 Programme affilié</a>
+          <a class="acc-nav-item" href="vendor.html">🏪 Vendre sur E-Shopia</a>
+          <a class="acc-nav-item" href="../pages/dashboard.html">⚙️ Dashboard admin</a>
+          <div style="border-top:1px solid var(--g200);margin:8px 0"></div>
+          <a class="acc-nav-item" style="color:var(--red)" onclick="logout()">🚪 Déconnexion</a>
+        </nav>
+      </div>
+
+      <!-- Content -->
+      <div>
+        <!-- ORDERS TAB -->
+        <div class="acc-tab on" id="tab-orders">
+          <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--g200);overflow:hidden">
+            <div style="padding:16px 20px;border-bottom:1px solid var(--g200);display:flex;align-items:center;gap:10px">
+              <h3 style="font-family:var(--fh);font-size:1rem;font-weight:700;flex:1">Mes commandes</h3>
+            </div>
+            <div id="orders-list" style="padding:20px">
+              <div style="text-align:center;padding:40px;color:var(--text4)">
+                <div style="font-size:3rem;margin-bottom:10px">📦</div>
+                <p>Aucune commande trouvée</p>
+                <a href="category.html?cat=Tout" class="btn btn-primary btn-sm" style="margin-top:12px">Découvrir nos produits</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WISHLIST TAB -->
+        <div class="acc-tab" id="tab-wishlist">
+          <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--g200);overflow:hidden">
+            <div style="padding:16px 20px;border-bottom:1px solid var(--g200)">
+              <h3 style="font-family:var(--fh);font-size:1rem;font-weight:700">Mes favoris</h3>
+            </div>
+            <div id="wishlist-grid" style="padding:20px">
+              <div style="text-align:center;padding:40px;color:var(--text4)">
+                <div style="font-size:3rem;margin-bottom:10px">❤️</div>
+                <p>Aucun favori enregistré</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE TAB -->
+        <div class="acc-tab" id="tab-profile">
+          <div style="background:#fff;border-radius:var(--r-xl);border:1px solid var(--g200);overflow:hidden">
+            <div style="padding:16px 20px;border-bottom:1px solid var(--g200)">
+              <h3 style="font-family:var(--fh);font-size:1rem;font-weight:700">Mon profil</h3>
+            </div>
+            <div style="padding:24px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                <div class="fg"><label>Prénom</label><input id="p-fname" placeholder="Prénom"></div>
+                <div class="fg"><label>Nom</label><input id="p-lname" placeholder="Nom"></div>
+              </div>
+              <div class="fg"><label>Email</label><input id="p-email" type="email" placeholder="votre@email.com"></div>
+              <div class="fg"><label>Téléphone</label><input id="p-phone" type="tel" placeholder="06XXXXXXXX"></div>
+              <button class="btn btn-primary" onclick="toast('Profil mis à jour !','success')">Sauvegarder</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="footer-root"></div>
+<div id="whatsapp-root"></div><div id="backtop-root"></div>
+<div id="modal-root"></div>
+<div class="toasts"></div>
+
+<style>
+.acc-nav-item{display:block;padding:10px 20px;font-size:.86rem;color:var(--text2);cursor:pointer;text-decoration:none;transition:.15s;border-left:3px solid transparent}
+.acc-nav-item:hover{background:var(--g100);color:var(--blue)}
+.acc-nav-item.on{background:var(--blue-lt);color:var(--blue);border-left-color:var(--blue);font-weight:600}
+.acc-tab{display:none}
+.acc-tab.on{display:block}
+@media(max-width:700px){
+  #account-content>div{grid-template-columns:1fr}
+}
+</style>
+
+<script>window.ESHOPIA_API_URL="https://eshopia-backend.onrender.com/api";</script>
+<script src="../js/script.js"></script>
+<script src="../js/megamenu.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/features.js"></script>
+<script src="../js/pwa.js"></script>
+<script>
+document.getElementById("nav").innerHTML         = buildNav("../");
+document.getElementById("footer-root").innerHTML = buildFooter("../");
+document.getElementById("modal-root").innerHTML  = buildLoginModal();
+document.getElementById("whatsapp-root").innerHTML = buildWhatsApp();
+document.getElementById("backtop-root").innerHTML  = buildBackToTop();
+Cart.badge();
+
+function showAccTab(name, el){
+  document.querySelectorAll(".acc-tab").forEach(t=>t.classList.remove("on"));
+  document.querySelectorAll(".acc-nav-item").forEach(n=>n.classList.remove("on"));
+  document.getElementById("tab-"+name).classList.add("on");
+  el?.classList.add("on");
+}
+
+function logout(){
+  localStorage.removeItem("eshopia_token");
+  localStorage.removeItem("eshopia_user");
+  window.location.reload();
+}
+
+async function initAccount(){
+  const user = AuthAPI.getUser();
+  if(!user){
+    document.getElementById("not-logged").style.display = "block";
+    return;
+  }
+  document.getElementById("account-content").style.display = "block";
+  document.getElementById("acc-name").textContent   = user.name || "—";
+  document.getElementById("acc-email").textContent  = user.email || "—";
+  document.getElementById("acc-avatar").textContent = (user.name||"A")[0].toUpperCase();
+  const names = (user.name||"").split(" ");
+  if(document.getElementById("p-fname")) document.getElementById("p-fname").value = names[0]||"";
+  if(document.getElementById("p-lname")) document.getElementById("p-lname").value = names.slice(1).join(" ")||"";
+  if(document.getElementById("p-email")) document.getElementById("p-email").value = user.email||"";
+  if(document.getElementById("p-phone")) document.getElementById("p-phone").value = user.phone||"";
+
+  // Load loyalty points & score
+  if(user.loyaltyPoints !== undefined){
+    const lpEl = document.getElementById("loyalty-pts");
+    if(lpEl) lpEl.textContent = user.loyaltyPoints + " pts";
+  }
+  if(user.clientScore !== undefined){
+    const csEl = document.getElementById("client-score");
+    if(csEl) csEl.textContent = user.clientScore + "/100";
+  }
+
+  // Show admin link only for admin/superadmin roles
+  const adminLink = document.querySelector(".admin-link");
+  if(adminLink) adminLink.style.display = ['admin','superadmin'].includes(user.role) ? 'block' : 'none';
+
+  // Load orders from API
+  try {
+    const API = window.ESHOPIA_API_URL || 'https://eshopia-backend.onrender.com/api';
+    const token = localStorage.getItem('eshopia_token');
+    if(token){
+      // Load my orders (search by phone)
+      const res = await fetch(`${API}/orders?search=${encodeURIComponent(user.phone||user.email)}&limit=10`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if(res.ok){
+        const data = await res.json();
+        const ordersEl = document.getElementById("my-orders-list");
+        if(ordersEl && data.orders && data.orders.length){
+          ordersEl.innerHTML = data.orders.map(o => `
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--g200)">
+              <div>
+                <div style="font-family:var(--fh);font-size:.88rem;font-weight:700">${o.orderNumber}</div>
+                <div style="font-size:.75rem;color:var(--text4);margin-top:2px">${new Date(o.createdAt).toLocaleDateString('fr-MA')} · ${o.total} DH</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:20px;background:${getStatusBg(o.status)};color:${getStatusColor(o.status)}">${o.status}</span>
+                <a href="tracking.html?track=${o.orderNumber}" style="color:var(--blue);font-size:.78rem;font-weight:600">Suivre →</a>
+              </div>
+            </div>`).join('');
+        } else if(ordersEl) {
+          ordersEl.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text4)"><div style="font-size:2.5rem;margin-bottom:10px">📦</div>Aucune commande pour le moment</div>';
+        }
+      }
+    }
+  } catch(e) {
+    console.warn('[Account] Could not load orders:', e.message);
+  }
+
+  // Load wishlist from localStorage
+  const wishIds = Wishlist.get();
+  const wishEl = document.getElementById("wishlist-grid");
+  if(wishIds.length && wishEl){
+    const items = PRODUCTS.filter(p=>wishIds.includes(p.id));
+    wishEl.innerHTML = items.length
+      ? `<div class="prod-grid">${items.map(p=>pCard(p,"../")).join("")}</div>`
+      : '<div style="text-align:center;padding:32px;color:var(--text4)">❤️ Votre liste de favoris est vide</div>';
+  }
+}
+
+function getStatusBg(s){
+  return {pending:'#fef3c7',confirmed:'#dbeafe',shipped:'#ede9fe',delivered:'#d1fae5',refused:'#fee2e2',cancelled:'#f3f4f6'}[s]||'#f3f4f6';
+}
+function getStatusColor(s){
+  return {pending:'#92400e',confirmed:'#1e40af',shipped:'#5b21b6',delivered:'#065f46',refused:'#991b1b',cancelled:'#374151'}[s]||'#374151';
+}
+
+function logout(){
+  AuthAPI.logout();
+}
+
+document.addEventListener("DOMContentLoaded", initAccount);
+</script>
+</body>
+</html>
