@@ -399,6 +399,47 @@
       // Load orders on page load
       document.addEventListener('DOMContentLoaded', loadOrders);
     </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebarLinks = document.querySelectorAll('.sidebar a, .nav-item');
+    
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const text = link.textContent.trim().toLowerCase();
+            
+            if (text.includes('orders')) {
+                e.preventDefault();
+                showSection('orders');
+            } else if (text.includes('products')) {
+                e.preventDefault();
+                showSection('products');
+            } else if (text.includes('dashboard')) {
+                e.preventDefault();
+                showSection('dashboard');
+            } else if (text.includes('customers')) {
+                e.preventDefault();
+                showSection('customers');
+            }
+        });
+    });
+
+    function showSection(type) {
+        const overview = document.querySelector('.sales-analytics, .revenue-sources, .grid-container, .dashboard-cards, .overview-section') || document.querySelector('.main-content > div');
+        const ordersSection = document.querySelector('.recent-orders, .orders-table-container, #orders-section');
+
+        if (type === 'orders' && ordersSection) {
+            if (overview && overview !== ordersSection) overview.style.display = 'none';
+            ordersSection.style.display = 'block';
+            ordersSection.scrollIntoView({ behavior: 'smooth' });
+        } else if (type === 'dashboard') {
+            if (overview) overview.style.display = 'grid';
+            if (ordersSection) ordersSection.style.display = 'block';
+        }
+    }
+});
+</script>
+
 </body>
 
 </html>
