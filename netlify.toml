@@ -1,4 +1,12 @@
+[build]
+  publish = "frontend"
+
 [[redirects]]
   from = "/admin"
-  to = "/pages/admin-dashboard.html"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
   status = 200
