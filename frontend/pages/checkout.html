@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <link rel="manifest" href="../manifest.json">
   <meta name="theme-color" content="#1565c0">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -284,12 +284,17 @@
       };
 
       let oid = null;
+      let success = false;
 
       try {
         const data = await OrdersAPI.place(payload);
         oid = data.order?.orderNumber || ("ESH-" + genId().slice(-8).toUpperCase());
-      } catch (err) {
-        console.error(err);
+        success = true;
+      } catch(err) {
+        console.error("Order placement failed:", err);
+        toast("Erreur lors de la création de la commande", "error");
+        
+        // Generate fallback order number for offline mode
         oid = "ESH-" + genId().slice(-6).toUpperCase();
 
         const pending = JSON.parse(localStorage.getItem("eshopia_pending") || "[]");
@@ -303,7 +308,7 @@
         city,
         total,
         items: cartItems.length,
-        status: "pending"
+        status: success ? "confirmed" : "pending"
       }));
 
       localStorage.removeItem("eshopia_idem");
@@ -389,4 +394,6 @@
   </script>
 </body>
 
-</html>
+</html>```
+
+frontend/pages/admin-dashboard.html

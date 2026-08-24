@@ -64,13 +64,15 @@ const OrdersAPI = {
   async place(orderData){
     const ref = localStorage.getItem('eshopia_ref');
     if(ref) orderData.affiliateCode = ref;
+    
     try {
       const result = await _api.post('/orders', orderData);
+      // Clean up after successful order placement
       localStorage.removeItem('eshopia_cart');
       localStorage.removeItem('eshopia_ref');
       return result;
     } catch(err) {
-      // Save offline
+      // Save offline pending orders
       const pending = JSON.parse(localStorage.getItem('eshopia_pending')||'[]');
       pending.push({...orderData, ts: Date.now()});
       localStorage.setItem('eshopia_pending', JSON.stringify(pending));
@@ -80,8 +82,27 @@ const OrdersAPI = {
   async syncPending(){
     const pending = JSON.parse(localStorage.getItem('eshopia_pending')||'[]');
     if(!pending.length) return;
-    for(const o of pending){ try{ await _api.post('/orders', o); }catch{} }
+    for(const o of pending){ 
+      try{ await _api.post('/orders', o); }catch{} 
+    }
     localStorage.removeItem('eshopia_pending');
+  },
+  async getOrders(params=''){
+    // Admin endpoint - requires authentication
+    const token = localStorage.getItem('eshopia_token');
+    if(!token) {
+      throw new Error('Authentication required to view orders');
+    }
+    return await _api.get(`/orders?${params}`, true);
+  },
+  async getOrder(orderNumber){
+    // Public tracking endpoint - no auth needed
+    try {
+      const result = await _api.get(`/orders/track/${orderNumber}`);
+      return result;
+    } catch(err) {
+      throw err;
+    }
   }
 };
 
@@ -199,7 +220,7 @@ const AdminAPI = {
     return await _api.get('/orders/stats/summary', true);
   },
   async getOrders(params=''){
-    return await _api.get(`/orders?limit=200${params}`, true);
+    return await _api.get(`/orders?${params}`, true);
   },
   async confirmOrder(id, data){
     return await _api.put(`/orders/${id}/confirm`, data, true);
