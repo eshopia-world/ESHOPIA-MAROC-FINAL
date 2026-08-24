@@ -5,7 +5,7 @@
    Usage: set window.ESHOPIA_API_URL before loading this file
    ============================================================ */
 
-const API_URL = window.ESHOPIA_API_URL || 'https://eshopia-backend.onrender.com/api';
+const API_URL = window.ESHOPIA_API_URL || 'http://localhost:5000/api';
 
 /* ── Core fetch wrapper ── */
 const _api = {
@@ -72,10 +72,44 @@ const OrdersAPI = {
       localStorage.removeItem('eshopia_ref');
       return result;
     } catch(err) {
-      // Save offline pending orders
+      // Save offline pending orders to eshopia_orders
+      const existingOrders = JSON.parse(localStorage.getItem('eshopia_orders')||'[]');
+      const newOrder = {...orderData, ts: Date.now(), status: 'pending'};
+      existingOrders.push(newOrder);
+      localStorage.setItem('eshopia_orders', JSON.stringify(existingOrders));
+      
+      // Also save to pending for sync later
       const pending = JSON.parse(localStorage.getItem('eshopia_pending')||'[]');
       pending.push({...orderData, ts: Date.now()});
       localStorage.setItem('eshopia_pending', JSON.stringify(pending));
+      
+      throw err;
+    }
+  },
+  async getOrders(){
+    // Get live orders from API first
+    try {
+      const token = localStorage.getItem('eshopia_token');
+      if(!token) {
+        throw new Error('Authentication required to view orders');
+      }
+      const apiOrders = await _api.get('/orders', true);
+      
+      // Merge with localStorage fallback
+      const localOrders = JSON.parse(localStorage.getItem('eshopia_orders')||'[]');
+      return [...apiOrders, ...localOrders];
+    } catch(err) {
+      // Fallback to localStorage only
+      const localOrders = JSON.parse(localStorage.getItem('eshopia_orders')||'[]');
+      return localOrders;
+    }
+  },
+  async getOrder(orderNumber){
+    // Public tracking endpoint - no auth needed
+    try {
+      const result = await _api.get(`/orders/track/${orderNumber}`);
+      return result;
+    } catch(err) {
       throw err;
     }
   },
@@ -87,22 +121,12 @@ const OrdersAPI = {
     }
     localStorage.removeItem('eshopia_pending');
   },
-  async getOrders(params=''){
-    // Admin endpoint - requires authentication
+  async getStats(){
     const token = localStorage.getItem('eshopia_token');
     if(!token) {
-      throw new Error('Authentication required to view orders');
+      throw new Error('Authentication required to view order stats');
     }
-    return await _api.get(`/orders?${params}`, true);
-  },
-  async getOrder(orderNumber){
-    // Public tracking endpoint - no auth needed
-    try {
-      const result = await _api.get(`/orders/track/${orderNumber}`);
-      return result;
-    } catch(err) {
-      throw err;
-    }
+    return await _api.get('/orders/stats', true);
   }
 };
 
@@ -145,8 +169,8 @@ function patchLoginModal(){
       e.preventDefault();
       const inputs = document.querySelectorAll('#p-register input');
       const name   = (inputs[0]?.value||'') + ' ' + (inputs[1]?.value||'');
-      const email  = inputs[2]?.value;
-      const phone  = inputs[3]?.value;
+      const email  = inputs[2].value;
+      const phone  = inputs[3].value;
       const pass   = document.querySelector('#p-register input[type="password"]')?.value;
       if(!name.trim()||!email||!pass){ toast('Veuillez remplir tous les champs','error'); return; }
       try {

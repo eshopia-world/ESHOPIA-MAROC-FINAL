@@ -125,8 +125,8 @@
 
                             <div>
                                 <span>Total Revenue</span>
-                                <h2>78,450 DH</h2>
-                                <div class="up">+18% this month</div>
+                                <h2 id="total-revenue">Loading...</h2>
+                                <div class="up" id="revenue-change">+18% this month</div>
                             </div>
                         </div>
 
@@ -139,8 +139,8 @@
 
                             <div>
                                 <span>Total Orders</span>
-                                <h2>1,248</h2>
-                                <div class="up">+12% this week</div>
+                                <h2 id="total-orders">Loading...</h2>
+                                <div class="up" id="orders-change">+12% this week</div>
                             </div>
                         </div>
 
@@ -153,8 +153,8 @@
 
                             <div>
                                 <span>Customers</span>
-                                <h2>3,582</h2>
-                                <div class="up">+8% new users</div>
+                                <h2 id="total-customers">Loading...</h2>
+                                <div class="up" id="customers-change">+8% new users</div>
                             </div>
                         </div>
 
@@ -167,8 +167,8 @@
 
                             <div>
                                 <span>Products</span>
-                                <h2>284</h2>
-                                <div class="up">+24 products</div>
+                                <h2 id="total-products">Loading...</h2>
+                                <div class="up" id="products-change">+24 products</div>
                             </div>
                         </div>
 
@@ -252,12 +252,12 @@
                         <div class="panel-head">
                             <h3>Recent Orders</h3>
 
-                            <button class="select-btn">
-                                View All
+                            <button class="select-btn" onclick="loadOrders()">
+                                Refresh Data
                             </button>
                         </div>
 
-                        <table>
+                        <table id="orders-table">
 
                             <thead>
                                 <tr>
@@ -268,41 +268,8 @@
                                 </tr>
                             </thead>
 
-                            <tbody>
-
-                                <tr>
-                                    <td>Ahmed Salah</td>
-                                    <td>Smart Watch</td>
-                                    <td>
-                                        <span class="badge done">
-                                            Delivered
-                                        </span>
-                                    </td>
-                                    <td>1,200 DH</td>
-                                </tr>
-
-                                <tr>
-                                    <td>Sarah Ali</td>
-                                    <td>Gaming Headset</td>
-                                    <td>
-                                        <span class="badge wait">
-                                            Shipping
-                                        </span>
-                                    </td>
-                                    <td>850 DH</td>
-                                </tr>
-
-                                <tr>
-                                    <td>Youssef Karim</td>
-                                    <td>iPhone Case</td>
-                                    <td>
-                                        <span class="badge run">
-                                            Pending
-                                        </span>
-                                    </td>
-                                    <td>180 DH</td>
-                                </tr>
-
+                            <tbody id="orders-tbody">
+                                <!-- Orders will be loaded here -->
                             </tbody>
 
                         </table>
@@ -388,6 +355,50 @@
 
     </div>
 
+    <!-- Load orders from API and localStorage -->
+    <script>
+      async function loadOrders() {
+        const tbody = document.getElementById('orders-tbody');
+        tbody.innerHTML = '<tr><td colspan="4" class="loading">Loading orders...</td></tr>';
+        
+        try {
+          const orders = await OrdersAPI.getOrders();
+          
+          // Clear loading message
+          tbody.innerHTML = '';
+          
+          // Sort by timestamp (newest first)
+          orders.sort((a, b) => b.ts - a.ts);
+          
+          // Display orders
+          orders.forEach(order => {
+            const tr = document.createElement('tr');
+            
+            const clientName = order.client?.name || 'Unknown';
+            const productName = order.product || 'N/A';
+            const statusClass = order.status === 'delivered' ? 'done' : 
+                              order.status === 'shipped' ? 'wait' : 'run';
+            const total = order.total || 0;
+            
+            tr.innerHTML = `
+              <td>${clientName}</td>
+              <td>${productName}</td>
+              <td><span class="badge ${statusClass}">${order.status || 'Pending'}</span></td>
+              <td>${total.toLocaleString()} DH</td>
+            `;
+            
+            tbody.appendChild(tr);
+          });
+          
+        } catch(err) {
+          console.error('Failed to load orders:', err);
+          tbody.innerHTML = '<tr><td colspan="4" class="error">Error loading orders. Showing cached data.</td></tr>';
+        }
+      }
+
+      // Load orders on page load
+      document.addEventListener('DOMContentLoaded', loadOrders);
+    </script>
 </body>
 
 </html>
